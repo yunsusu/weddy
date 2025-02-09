@@ -1,4 +1,4 @@
-@use "../../../../styles/main.scss" as *;
+// @use "../../../../styles/main.scss" as *; // ✅ main.scss 가져오기
 
 .dashWrap {
   width: 29.2rem;
@@ -10,6 +10,13 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  & > span {
+    display: flex;
+    & > div {
+      position: relative;
+    }
+  }
 
   & h2 {
     color: #000;
@@ -40,6 +47,7 @@
     justify-content: start;
     align-items: center;
     gap: 0.8rem;
+    cursor: pointer;
 
     color: #000;
     font-size: 2rem;
@@ -51,6 +59,7 @@
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+      // @include ellipsis;
     }
   }
 }

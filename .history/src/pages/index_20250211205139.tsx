@@ -13,9 +13,7 @@ export default function Home() {
         결혼의 모든 것 
         <br /> 웨디에서 쉽고 간편하게
       </h1>
-      <div className={cn("checkList")}>
-        <Link href="/workSpace" className={cn("indexBtn")}> 체크리스트 만들기</Link>
-      </div>
+      <Link href="/workspace" className={cn("indexBtn")}> 체크리스트 만들기</Link>
     </div>
 
   );

@@ -1,3 +1,5 @@
+import "@/styles/base/index.scss";
+import "@/styles/main.scss";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import type { AppProps } from "next/app";

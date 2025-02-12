@@ -1,0 +1,40 @@
+.navWrap {
+  height: 7rem;
+  padding: 0 2rem;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: absolute;
+  left: 0;
+}
+
+.linkWrap {
+  display: flex;
+  align-items: center;
+}
+
+.logoImgWrap {
+  width: 8rem;
+  height: 5rem;
+  font-size: 1.5rem;
+}
+
+.aboutWeddy {
+  font-size: 1.5rem;
+  color: #aaa;
+  margin-left: 4rem;
+}
+
+.lonInWrap {
+  display: flex;
+}
+
+.logInBtn, .logOutBtn {
+  border: 1px solid #bbb;
+  padding: 0.7rem 1.4rem;
+  border-radius: 0.5rem;
+  color: #bbb;
+  font-size: 1.1rem;
+}
+

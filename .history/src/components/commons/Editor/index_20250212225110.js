@@ -66,9 +66,7 @@ const DraftEditor = () => {
     <div>
       <div>
         <div className={cn("modalContents")}>
-          <div>
-            <p>내용</p>
-          </div>
+          <p>내용</p>
           <Editor 
             editorState={editorState} 
             onChange={onChange} 

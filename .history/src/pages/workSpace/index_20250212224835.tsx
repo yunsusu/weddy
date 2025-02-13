@@ -35,7 +35,6 @@ const mockData = {
       assignee: "신랑",
       date: "2025.01.09",
       state: true,
-      amount: "1,000,000",
     },
     {
       id: 4,
@@ -43,7 +42,6 @@ const mockData = {
       assignee: "신랑",
       date: "2025.01.29",
       state: false,
-      amount: "1,000,000",
     },
     {
       id: 5,
@@ -51,7 +49,6 @@ const mockData = {
       assignee: "신랑",
       date: "2025.01.29",
       state: false,
-      amount: "1,000,000",
     },
     {
       id: 6,
@@ -59,7 +56,6 @@ const mockData = {
       assignee: "신랑",
       date: "2025.01.29",
       state: false,
-      amount: "1,000,000",
     },
   ],
 };

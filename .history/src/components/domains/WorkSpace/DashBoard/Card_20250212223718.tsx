@@ -18,7 +18,6 @@ interface Card {
     assignee: string;
     date: string;
     state: boolean;
-    amount: string;
   };
 }
 
@@ -55,7 +54,7 @@ export default function Card({ item }: Card) {
           <p>{item.date}</p>
         </div>
       </div>
-      {isModalOpen && <CheckListPage onClose={() => setIsModalOpen(false)} item={item} />}
+      {isModalOpen && <CheckListPage onClose={() => setIsModalOpen(false)} item={item/ >}
     </div>
   );
 }

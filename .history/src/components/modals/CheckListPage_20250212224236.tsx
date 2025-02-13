@@ -5,8 +5,10 @@ import deleteIcon from "@/../public/icons/deleteRed.svg"
 import Image from 'next/image';
 import useColorStore from '@/lib/store/mainColor';
 import Editor from '@/components/commons/Editor/index.js'
+import { mockData } from '@/lib/apis/mock.js';
 import assignee from "@/../public/icons/people.svg";
 import date from "@/../public/icons/date.svg";
+import styles from '@/components/domains/WorkSpace/DashBoard/'
 
 const cn = classNames.bind(styles);
 
@@ -21,7 +23,6 @@ export default function CheckListPage({
     assignee: string;
     date: string;
     state: boolean;
-    amount: string;
   };
 }) {
   const modalRef = useRef<HTMLDivElement>(null);
@@ -63,10 +64,7 @@ export default function CheckListPage({
           <Image src={date} alt="날짜" width={16} height={16} />
           <p>{item.date} 까지</p>
         </div>
-        <div className={cn("amount")}>
-          <Image src={date} alt="금액" width={16} height={16} />
-          <p>{item.amount} 원</p>
-        </div>
+        <p></p>
       </div>
 
       <Editor />

@@ -67,6 +67,7 @@ const DraftEditor = () => {
       <div>
         <div className={cn("modalContents")}>
           <div>
+            <img src="@/../public/icons/kakaoTalk.svg" width={30} height={30} />
             <p>내용</p>
           </div>
           <Editor 

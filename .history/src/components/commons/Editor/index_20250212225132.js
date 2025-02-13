@@ -67,6 +67,7 @@ const DraftEditor = () => {
       <div>
         <div className={cn("modalContents")}>
           <div>
+            <Image src={}></Image>
             <p>내용</p>
           </div>
           <Editor 

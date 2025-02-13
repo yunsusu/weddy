@@ -5,6 +5,7 @@ import deleteIcon from "@/../public/icons/deleteRed.svg"
 import Image from 'next/image';
 import useColorStore from '@/lib/store/mainColor';
 import Editor from '@/components/commons/Editor/index.js'
+import { mockData } from '@/lib/apis/mock.js';
 import assignee from "@/../public/icons/people.svg";
 import date from "@/../public/icons/date.svg";
 

@@ -4,6 +4,7 @@ import styles from '@/components/modals/style.module.scss';
 import classNames from "classnames/bind";
 
 const cn = classNames.bind(styles);
+const img = require("./myIcon.svg").default
 
 const DraftEditor = () => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
@@ -67,6 +68,7 @@ const DraftEditor = () => {
       <div>
         <div className={cn("modalContents")}>
           <div>
+            <img src="@/../public/icons/kakaoTalk.svg" width={30} height={30} />
             <p>내용</p>
           </div>
           <Editor 

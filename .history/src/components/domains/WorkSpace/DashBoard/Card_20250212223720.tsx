@@ -18,7 +18,6 @@ interface Card {
     assignee: string;
     date: string;
     state: boolean;
-    amount: string;
   };
 }
 

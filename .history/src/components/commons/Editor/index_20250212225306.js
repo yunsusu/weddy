@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Editor, EditorState, RichUtils, convertToRaw, convertFromRaw } from 'draft-js';
 import styles from '@/components/modals/style.module.scss';
 import classNames from "classnames/bind";
+import img from '@/../public/icons/checkIcon.svg'
 
 const cn = classNames.bind(styles);
 
@@ -67,6 +68,7 @@ const DraftEditor = () => {
       <div>
         <div className={cn("modalContents")}>
           <div>
+            <img src={img} width={15} height={15} />
             <p>내용</p>
           </div>
           <Editor 

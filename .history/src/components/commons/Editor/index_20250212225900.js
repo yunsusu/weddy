@@ -4,6 +4,7 @@ import styles from '@/components/modals/style.module.scss';
 import classNames from "classnames/bind";
 
 const cn = classNames.bind(styles);
+const img = require("@/../public/icons/checkIcon.svg").default
 
 const DraftEditor = () => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());

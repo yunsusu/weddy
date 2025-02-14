@@ -16,6 +16,7 @@ const mockData = {
     {
       id: 1,
       title: "부모님 메이크업 업체 선정",
+      progress: "진행중",
       assignee: "신랑",
       date: "2025.01.29",
       state: true,
@@ -24,6 +25,7 @@ const mockData = {
     {
       id: 2,
       title: "예식장 예약하기",
+      progress: "시작전",
       assignee: "신부",
       date: "2025.01.02",
       state: true,
@@ -32,6 +34,7 @@ const mockData = {
     {
       id: 3,
       title: "부모님 메이크업 업체 선정",
+      progress: "시작전",
       assignee: "신랑",
       date: "2025.01.09",
       state: true,
@@ -40,6 +43,7 @@ const mockData = {
     {
       id: 4,
       title: "부모님 메이크업 업체 선정",
+      progress: "시작전",
       assignee: "신랑",
       date: "2025.01.29",
       state: false,
@@ -48,6 +52,7 @@ const mockData = {
     {
       id: 5,
       title: "부모님 메이크업 업체 선정",
+      progress: "시작전",
       assignee: "신랑",
       date: "2025.01.29",
       state: false,
@@ -56,6 +61,7 @@ const mockData = {
     {
       id: 6,
       title: "부모님 메이크업 업체 선정",
+      progress: "시작전",
       assignee: "신랑",
       date: "2025.01.29",
       state: false,

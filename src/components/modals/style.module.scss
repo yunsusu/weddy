@@ -11,7 +11,77 @@
 }
 
 .modalContents {
-  padding: 4rem 6rem;
+  padding: 4rem 6rem 0 6rem;
+
+  & > * {
+    margin-bottom: 1rem;
+  }
+
+  
+
+  & > button > p {
+    margin-right: 0.5rem;
+  }
+
+  & > h2 {
+    font-size: 3rem;
+  }
+
+  & > .assignee {
+    margin-bottom: 1rem;
+  }
+
+  & > .people {
+    display: flex;
+    margin-bottom: 3rem;
+
+    & > div {
+      margin-right: 3rem;
+      padding: 1rem 7rem;
+      border-radius: 1.5rem;
+      background-color: #f5f5f5;
+      color: #959595;
+      font-size: 1.6rem;
+    }
+  }
+}
+
+.progress {
+  height: 3rem;
+  display: flex;
+  padding: 0 1rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2rem;
+  font-size: 1.4rem;
+  font-weight: 900;
+}
+
+.before {
+  background-color: #E5E2E8;
+  color: #756D80;
+}
+
+.now {
+  background-color: #DACDFF;
+  color: #7034F3;
+}
+
+.complete {
+  background-color: #7034F3;
+  color: #fff;
+}
+
+.label {
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  color: #333;
+  margin-bottom: 3rem;
+
+  & > p {
+    margin-left: 0.8rem;
+  }
 }
 
 .modalNav {
@@ -28,6 +98,16 @@
     color: #ccc;
     cursor: pointer;
   }
+}
+
+.modalDetail {
+  padding: 0 6rem;
+  font-size: 1.5rem;
+  position: relative;
+}
+
+.placeholder {
+  color: #aaa;
 }
 
 .modalFooter {
@@ -62,6 +142,22 @@
   }
 }
 
-.modalTextarea {
+.modalUL {
+  width: 13rem;
+  padding: 2rem 2.2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 1rem;
+  position: absolute;
+  background-color: #fff;
+  box-shadow: 0 0 10px #ccc;
 
+  & > li:not(:last-child) {
+    margin-bottom: 2rem;
+  }
+}
+
+.modalSpan {
+  margin-left: 0.5rem;
 }

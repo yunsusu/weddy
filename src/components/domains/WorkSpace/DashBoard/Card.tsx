@@ -15,6 +15,7 @@ interface Card {
   item: {
     id: number;
     title: string;
+    progress: string;
     assignee: string;
     date: string;
     state: boolean;

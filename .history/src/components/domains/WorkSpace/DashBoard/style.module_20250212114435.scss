@@ -1,0 +1,89 @@
+// @use "../../../../styles/main.scss" as *; // ✅ main.scss 가져오기
+
+.dashWrap {
+  width: 29.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+}
+.title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  & > span {
+    display: flex;
+    & > div {
+      position: relative;
+    }
+  }
+
+  & h2 {
+    color: #000;
+    font-size: 2.4rem;
+    font-weight: 700;
+    line-height: 140%;
+    letter-spacing: -0.6px;
+  }
+
+  & img {
+    cursor: pointer;
+  }
+}
+
+.cardWrap,
+.cardWrapNone {
+  max-width: 29.2rem;
+  height: 14.2rem;
+  padding: 2.2rem 2.7rem;
+  border-radius: 2rem;
+  border: 1px solid #7034f3;
+  display: flex;
+  flex-direction: column;
+  gap: 1.3rem;
+
+  & .title {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 0.8rem;
+    cursor: pointer;
+
+    color: #000;
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 140%;
+    letter-spacing: -0.5px;
+
+    & h3 {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      // @include ellipsis;
+    }
+  }
+}
+.cardWrapNone {
+  filter: grayscale(1);
+  opacity: 0.4;
+}
+.colorTag {
+  min-width: 2rem;
+  height: 2rem;
+  border-radius: 500px;
+  border: 1px solid #7034f3;
+  background: #7034f3;
+}
+.assignee,
+.date {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 0.8rem;
+
+  color: #000;
+  font-size: 1.6rem;
+  font-weight: 400;
+  line-height: 140%;
+  letter-spacing: -0.4px;
+}

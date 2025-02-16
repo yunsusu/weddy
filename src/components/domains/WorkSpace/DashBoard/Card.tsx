@@ -5,6 +5,9 @@ import useColorStore from "@/lib/store/mainColor";
 import classNames from "classnames/bind";
 import Image from "next/image";
 import styles from "./style.module.scss";
+import { useRouter } from "next/router";
+import CheckListPage from "@/components/modals/CheckListPage";
+import { useState } from "react";
 
 const cn = classNames.bind(styles);
 
@@ -12,16 +15,21 @@ interface Card {
   item: {
     id: number;
     title: string;
+    progress: string;
     assignee: string;
     date: string;
     state: boolean;
+    amount: string;
     progress:number;
   };
 }
+
 export default function Card({ item }: Card) {
   const { setChoiceCard } = useCardStore();
   const { color } = useColorStore();
   const state = item.progress; 
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const choice = () => {
     setChoiceCard(String(item.id));
@@ -45,15 +53,16 @@ export default function Card({ item }: Card) {
         ></div>
         <h3>{item.title}</h3>
       </div>
-
-      <div className={cn("assignee")}>
-        <Image src={assignee} alt="담당자" width={16} height={16} />
-        <p>{item.assignee}</p>
+        <div className={cn("assignee")}>
+          <Image src={assignee} alt="담당자" width={16} height={16} />
+          <p>{item.assignee}</p>
+        </div>
+        <div className={cn("date")}>
+          <Image src={date} alt="날짜" width={16} height={16} />
+          <p>{item.date}</p>
+        </div>
       </div>
-      <div className={cn("date")}>
-        <Image src={date} alt="날짜" width={16} height={16} />
-        <p>{item.date}</p>
-      </div>
+      {isModalOpen && <CheckListPage onClose={() => setIsModalOpen(false)} item={item} />}
     </div>
   );
 }

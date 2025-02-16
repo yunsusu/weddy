@@ -1,0 +1,27 @@
+.logInWrap {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.logInWeddy {
+  font-size: 4rem;
+  line-height: 5rem;
+  text-align: center;
+  margin-bottom: 14rem;
+}
+
+.weddyIntro {
+  margin-top: 4rem;
+}
+
+.LoginBtn {
+  width: 37rem;
+  background-color:#FEE500;
+  display: flex;
+  align-items: center;
+  
+}

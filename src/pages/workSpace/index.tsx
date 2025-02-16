@@ -21,6 +21,7 @@ const mockData = {
       date: "2025.01.29",
       state: true,
       amount: "1,000,000",
+      progress : 1,
     },
     {
       id: 2,
@@ -30,6 +31,7 @@ const mockData = {
       date: "2025.01.02",
       state: true,
       amount: "1,000,000",
+      progress : 2,
     },
     {
       id: 3,
@@ -39,6 +41,7 @@ const mockData = {
       date: "2025.01.09",
       state: true,
       amount: "1,000,000",
+      progress : 3,
     },
     {
       id: 4,
@@ -48,6 +51,7 @@ const mockData = {
       date: "2025.01.29",
       state: false,
       amount: "1,000,000",
+      progress : 1,
     },
     {
       id: 5,
@@ -57,6 +61,7 @@ const mockData = {
       date: "2025.01.29",
       state: false,
       amount: "1,000,000",
+      progress : 1,
     },
     {
       id: 6,
@@ -66,6 +71,7 @@ const mockData = {
       date: "2025.01.29",
       state: false,
       amount: "1,000,000",
+      progress : 1,
     },
   ],
 };

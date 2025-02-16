@@ -34,7 +34,8 @@
 .cardWrap,
 .cardWrapNone {
   max-width: 29.2rem;
-  height: 14.2rem;
+  min-height: 14.2rem;
+  height: fit-content;
   padding: 2.2rem 2.7rem;
   border-radius: 2rem;
   border: 1px solid #7034f3;
@@ -87,4 +88,38 @@
   font-weight: 400;
   line-height: 140%;
   letter-spacing: -0.4px;
+}
+
+.cardState{
+  display: flex;
+  // width: 4.5rem;
+  width: fit-content;
+  height: 1.8rem;
+  padding: 2px 8px 2px 9px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100px;
+  background: var(--Gray300, #E5E2E8);
+
+  color: var(--Gray600, #756D80);
+text-align: center;
+font-family: "Noto Sans KR";
+font-size: 1rem;
+font-style: normal;
+font-weight: 700;
+line-height: 140%; /* 14px */
+letter-spacing: -0.25px;
+}
+
+.cardState2{
+  border-radius: 100px;
+background: var(--Primary-Color_Soft, #DACDFF);
+
+color: var(--Primary-Color, #7034F3);
+}
+.cardState3{
+  border-radius: 100px;
+  background: var(--Primary-Color, #7034F3);
+
+  color: #FFF;
 }

@@ -1,0 +1,22 @@
+.searchInput {
+  max-width: 53rem;
+  display: inline-flex;
+  padding: 1.3rem 2rem 1.3rem 2rem;
+  align-items: flex-start;
+  gap: 10px;
+  border-radius: 100px;
+  border: 2px solid #7034f3;
+
+  & label {
+    cursor: pointer;
+  }
+  & input {
+    width: 100%;
+    color: #7c8792;
+    font-family: "Noto Sans KR";
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 140%; /* 28px */
+  }
+}

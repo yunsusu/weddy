@@ -1,15 +1,14 @@
-import { useEffect, useRef, useState } from 'react';
-import styles from './style.module.scss';
-import classNames from "classnames/bind";
-import deleteIcon from "@/../public/icons/deleteRed.svg"
-import Image from 'next/image';
-import useColorStore from '@/lib/store/mainColor';
-import Editor from '@/components/commons/Editor/index.js'
-import assignee from "@/../public/icons/people.svg";
+import amount from "@/../public/icons/amount-icon.png";
 import date from "@/../public/icons/date.svg";
-import amount from '@/../public/icons/amount-icon.png'
-import detail from '@/../public/icons/detail-icon.png'
-import ProgressModal from './ProgressModal';
+import deleteIcon from "@/../public/icons/deleteRed.svg";
+import detail from "@/../public/icons/detail-icon.png";
+import assignee from "@/../public/icons/people.svg";
+import Editor from "@/components/commons/Editor/index.js";
+import classNames from "classnames/bind";
+import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
+import ProgressModal from "./ProgressModal";
+import styles from "./style.module.scss";
 
 const cn = classNames.bind(styles);
 
@@ -26,7 +25,7 @@ export default function CheckListPage({
     date: string;
     state: boolean;
     amount: string;
-  }
+  };
 }) {
   const modalRef = useRef<HTMLDivElement>(null);
   const [currentItem, setCurrentItem] = useState(item);
@@ -40,10 +39,13 @@ export default function CheckListPage({
     document.addEventListener("mousedown", handleOutsideClick);
     return () => {
       document.removeEventListener("mousedown", handleOutsideClick);
-    }
+    };
   }, [onClose]);
 
-  const handleProgressChange = (id: number, newProgress: "시작전" | "진행중" | "완료") => {
+  const handleProgressChange = (
+    id: number,
+    newProgress: "시작전" | "진행중" | "완료"
+  ) => {
     if (currentItem.id === id) {
       setCurrentItem((prevItem) => ({
         ...prevItem,
@@ -57,7 +59,12 @@ export default function CheckListPage({
       <div className={cn("modalNav")}>
         <button onClick={onClose}>→</button>
         <button className={cn("trashIcon")}>
-          <Image src={deleteIcon} alt="소분류 삭제하기" width={24} height={24} />
+          <Image
+            src={deleteIcon}
+            alt="소분류 삭제하기"
+            width={24}
+            height={24}
+          />
         </button>
       </div>
 
@@ -81,7 +88,7 @@ export default function CheckListPage({
           <p>{item.amount} 원</p>
         </div>
         <div className={cn("label")}>
-          <Image src={detail} alt='내용' width={16} height={16} />
+          <Image src={detail} alt="내용" width={16} height={16} />
           <p>내용</p>
         </div>
       </div>
@@ -89,4 +96,4 @@ export default function CheckListPage({
       <Editor />
     </div>
   );
-};
+}

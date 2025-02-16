@@ -3,6 +3,7 @@
 }
 
 .workSpaceWrap {
+  margin-top: 7rem;
   background: var(--Gray100, #f9f9fb);
   min-width: calc(100% - 24rem);
   padding: 6.2rem 4rem 0;
@@ -52,8 +53,16 @@
   position: relative;
 
   /* 우측으로 갈수록 점점 투명해지는 효과 (얇게 적용) */
-  -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 97%, rgba(0, 0, 0, 0) 100%);
-  mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 97%, rgba(0, 0, 0, 0) 100%);
+  -webkit-mask-image: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 1) 97%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 1) 97%,
+    rgba(0, 0, 0, 0) 100%
+  );
 }
 
 .sideMenuBox {
@@ -62,13 +71,4 @@
 }
 .sideMenuBox.active {
   min-width: 24rem;
-}
-.side {
-  position: absolute;
-  top: 0;
-  left: 1rem;
-  font-size: 4rem;
-  font-weight: bold;
-  z-index: 1;
-  cursor: pointer;
 }

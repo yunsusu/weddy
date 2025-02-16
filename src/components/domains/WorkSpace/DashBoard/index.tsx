@@ -20,7 +20,9 @@ interface DashBoardProps {
       assignee: string;
       date: string;
       state: boolean;
-      progress : number;
+      progress: string;
+      progress2: number;
+      amount: string;
     }[];
   };
 }
@@ -37,7 +39,6 @@ export default function DashBoard({ data }: DashBoardProps) {
 
   useOnClickOutside(ref, handleClickOutside);
 
-  console.log(data.item);
   return (
     <div className={cn("dashWrap")}>
       <div className={cn("title")}>

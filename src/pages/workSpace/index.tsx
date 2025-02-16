@@ -1,8 +1,12 @@
 import profileImg from "@/../public/images/testImg.jpg";
 import DashBoard from "@/components/domains/WorkSpace/DashBoard";
+import GNB from "@/components/domains/WorkSpace/GNB";
 import SideMenu from "@/components/domains/WorkSpace/SideMenu";
 import SpaceSearch from "@/components/domains/WorkSpace/SpaceSearch";
+import { getCard } from "@/lib/apis/workSpace";
 import useColorStore from "@/lib/store/mainColor";
+import useSideMenuStore from "@/lib/store/sideMenu";
+import { useQuery } from "@tanstack/react-query";
 import classNames from "classnames/bind";
 import Image from "next/image";
 import { useState } from "react";
@@ -21,7 +25,7 @@ const mockData = {
       date: "2025.01.29",
       state: true,
       amount: "1,000,000",
-      progress : 1,
+      progress2: 1,
     },
     {
       id: 2,
@@ -31,7 +35,7 @@ const mockData = {
       date: "2025.01.02",
       state: true,
       amount: "1,000,000",
-      progress : 2,
+      progress2: 2,
     },
     {
       id: 3,
@@ -41,7 +45,7 @@ const mockData = {
       date: "2025.01.09",
       state: true,
       amount: "1,000,000",
-      progress : 3,
+      progress2: 3,
     },
     {
       id: 4,
@@ -51,7 +55,7 @@ const mockData = {
       date: "2025.01.29",
       state: false,
       amount: "1,000,000",
-      progress : 1,
+      progress2: 1,
     },
     {
       id: 5,
@@ -61,7 +65,7 @@ const mockData = {
       date: "2025.01.29",
       state: false,
       amount: "1,000,000",
-      progress : 1,
+      progress2: 1,
     },
     {
       id: 6,
@@ -71,7 +75,7 @@ const mockData = {
       date: "2025.01.29",
       state: false,
       amount: "1,000,000",
-      progress : 1,
+      progress2: 1,
     },
   ],
 };
@@ -79,15 +83,18 @@ const mockData = {
 export default function WorkSpace() {
   const [name, setName] = useState<String>("이름");
   const [dDay, setDDay] = useState<number>(100);
-  const [sideMenu, setSideMenu] = useState<boolean>(false);
+  const { sideMenuState, setSideMenuState } = useSideMenuStore();
   const { color } = useColorStore();
 
+  const { data } = useQuery({
+    queryKey: ["cardData"],
+    queryFn: () => getCard(1),
+  });
+  console.log(data);
   return (
     <div className={cn("workSide")}>
-      <span className={cn("sideMenuBox", { active: sideMenu })}></span>
-      <div className={cn("side")} onClick={() => setSideMenu((prev) => !prev)}>
-        {sideMenu ? "<<" : ">>"}
-      </div>
+      <span className={cn("sideMenuBox", { active: sideMenuState })}></span>
+
       <main className={cn("workSpaceWrap")}>
         <div className={cn("profile")}>
           <Image src={profileImg} alt="프로필 사진" width={169} height={169} />
@@ -114,7 +121,8 @@ export default function WorkSpace() {
         </div>
       </main>
 
-      <SideMenu state={sideMenu} />
+      <SideMenu state={sideMenuState} />
+      <GNB />
     </div>
   );
 }

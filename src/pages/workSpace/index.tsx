@@ -1,6 +1,5 @@
 import profileImg from "@/../public/images/testImg.jpg";
 import DashBoard from "@/components/domains/WorkSpace/DashBoard";
-import GNB from "@/components/domains/WorkSpace/GNB";
 import SideMenu from "@/components/domains/WorkSpace/SideMenu";
 import SpaceSearch from "@/components/domains/WorkSpace/SpaceSearch";
 import { getCard } from "@/lib/apis/workSpace";
@@ -83,12 +82,13 @@ const mockData = {
 export default function WorkSpace() {
   const [name, setName] = useState<String>("이름");
   const [dDay, setDDay] = useState<number>(100);
+  const [cardId, setCardId] = useState<number>(1);
   const { sideMenuState, setSideMenuState } = useSideMenuStore();
   const { color } = useColorStore();
 
   const { data } = useQuery({
-    queryKey: ["cardData"],
-    queryFn: () => getCard(1),
+    queryKey: ["cardData", cardId], // queryKey에 id 추가
+    queryFn: () => getCard(cardId),
   });
   console.log(data);
   return (
@@ -122,7 +122,6 @@ export default function WorkSpace() {
       </main>
 
       <SideMenu state={sideMenuState} />
-      <GNB />
     </div>
   );
 }

@@ -20,6 +20,7 @@ interface DashBoardProps {
       assignee: string;
       date: string;
       state: boolean;
+      progress : number;
     }[];
   };
 }

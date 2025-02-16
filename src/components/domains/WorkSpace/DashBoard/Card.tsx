@@ -15,11 +15,13 @@ interface Card {
     assignee: string;
     date: string;
     state: boolean;
+    progress:number;
   };
 }
 export default function Card({ item }: Card) {
   const { setChoiceCard } = useCardStore();
   const { color } = useColorStore();
+  const state = item.progress; 
 
   const choice = () => {
     setChoiceCard(String(item.id));
@@ -29,6 +31,13 @@ export default function Card({ item }: Card) {
       className={item.state ? cn("cardWrap") : cn("cardWrapNone")}
       style={{ border: `1px solid ${color}` }}
     >
+    <div className={cn("cardState", {
+      "cardState1": state === 1,
+      "cardState2": state === 2,
+      "cardState3": state === 3
+    })}>
+      {state === 1 ? "시작전" : state === 2 ? "진행중" : "완료"}
+    </div>
       <div className={cn("title")} onClick={choice}>
         <div
           className={cn("colorTag")}

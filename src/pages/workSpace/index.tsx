@@ -19,6 +19,7 @@ const mockData = {
       assignee: "신랑",
       date: "2025.01.29",
       state: true,
+      progress : 1,
     },
     {
       id: 2,
@@ -26,6 +27,7 @@ const mockData = {
       assignee: "신부",
       date: "2025.01.02",
       state: true,
+      progress : 2,
     },
     {
       id: 3,
@@ -33,6 +35,7 @@ const mockData = {
       assignee: "신랑",
       date: "2025.01.09",
       state: true,
+      progress : 3,
     },
     {
       id: 4,
@@ -40,6 +43,7 @@ const mockData = {
       assignee: "신랑",
       date: "2025.01.29",
       state: false,
+      progress : 1,
     },
     {
       id: 5,
@@ -47,6 +51,7 @@ const mockData = {
       assignee: "신랑",
       date: "2025.01.29",
       state: false,
+      progress : 1,
     },
     {
       id: 6,
@@ -54,6 +59,7 @@ const mockData = {
       assignee: "신랑",
       date: "2025.01.29",
       state: false,
+      progress : 1,
     },
   ],
 };

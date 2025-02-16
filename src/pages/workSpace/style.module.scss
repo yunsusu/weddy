@@ -49,11 +49,6 @@
   overflow-x: scroll;
   display: flex;
   gap: 5rem;
-  position: relative;
-
-  /* 우측으로 갈수록 점점 투명해지는 효과 (얇게 적용) */
-  -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 97%, rgba(0, 0, 0, 0) 100%);
-  mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 97%, rgba(0, 0, 0, 0) 100%);
 }
 
 .sideMenuBox {

@@ -1,0 +1,10 @@
+/* Frame 1202 */
+
+width: 35px;
+height: 35px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;

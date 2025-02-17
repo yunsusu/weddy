@@ -12,9 +12,9 @@ interface DropDownProps {
 export default function DropDown({ item }: DropDownProps) {
   return (
     <div className={cn("dropWrap")}>
-      {item.map((item: { color: string; text: string }, index: number) => {
+      {item.map((item: { color: string; text: string, click:()=>void }, index: number) => {
         return (
-          <div key={index} className={cn("item")} style={{ color: item.color }}>
+          <div key={index} className={cn("item")} style={{ color: item.color }} onClick={item.click}>
             <Image
               src={item.color === "red" ? deleteRed : rename}
               alt="버튼"

@@ -26,8 +26,8 @@ export default function Card({ item, checklistId }: Card) {
   const { setChoiceCard } = useCardStore();
   const { color } = useColorStore();
   const statusName = item.statusName;
-  const itemDate = 123;
-  console.log(item);
+  const itemDate = item?.dueDate.split("T")[0];
+
   const ids = {
     checklistId: checklistId,
     largeCatItemId: item.largeCatItemId,

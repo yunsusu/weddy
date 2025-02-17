@@ -8,21 +8,23 @@ import { useRef, useState } from "react";
 import { useOnClickOutside } from "usehooks-ts";
 import Card from "./Card";
 import styles from "./style.module.scss";
+import { deleteCard } from "@/lib/apis/workSpace";
+import { useMutation } from "@tanstack/react-query";
 
 const cn = classNames.bind(styles);
 
 interface DashBoardProps {
   data: {
-    dash: string;
-    item: {
-      id: number;
-      title: string;
-      assignee: string;
-      date: string;
-      state: boolean;
-      progress: string;
-      progress2: number;
-      amount: string;
+    id: number,
+    checklistId: number,
+    title: string,
+    smallCatItems: {
+      id: number,
+        largeCatItemId: number,
+        title: string,
+        dueDate: string,
+        assigneeName: string,
+        statusName: string
     }[];
   };
 }
@@ -39,10 +41,14 @@ export default function DashBoard({ data }: DashBoardProps) {
 
   useOnClickOutside(ref, handleClickOutside);
 
+  const { mutate: deleteCardMutate } = useMutation({
+    mutationFn: () => deleteCard(data.id, data.checklistId),
+  });
+
   return (
     <div className={cn("dashWrap")}>
       <div className={cn("title")}>
-        <h2>{data.dash}</h2>
+        <h2>{data?.title}</h2>
         <span>
           <Image src={moreBtn} alt="more" width={20} height={20} />
           <div onClick={() => setDotDrop((prev: boolean) => !prev)} ref={ref}>
@@ -50,8 +56,8 @@ export default function DashBoard({ data }: DashBoardProps) {
             {dotDrop && (
               <DropDown
                 item={[
-                  { color: "gray", text: "섹션 이름 바꾸기" },
-                  { color: "red", text: "섹션 삭제하기" },
+                  { color: "gray", text: "섹션 이름 바꾸기", click : {}},
+                  { color: "red", text: "섹션 삭제하기", click : {deleteCardMutate}},
                 ]}
               />
             )}
@@ -59,8 +65,8 @@ export default function DashBoard({ data }: DashBoardProps) {
         </span>
       </div>
 
-      {data.item.map((item, index) => {
-        return <Card key={item.id} item={item} />;
+      {data?.smallCatItems.map((item, index) => {
+        return <Card key={item.id} item={item} checklistId={data.checklistId} />;
       })}
     </div>
   );

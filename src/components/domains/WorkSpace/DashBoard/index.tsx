@@ -31,6 +31,7 @@ interface DashBoardProps {
   memberData: any;
   setCard: any;
   num: number;
+  onOpenModal: (item: any) => void;
 }
 
 interface IFormInput {
@@ -42,6 +43,7 @@ export default function DashBoard({
   memberData,
   setCard,
   num,
+  onOpenModal,
 }: DashBoardProps) {
   const { searchWord, setSearchWord } = useWorkSpaceStore();
   const [dotDrop, setDotDrop] = useState<boolean>(false);
@@ -52,6 +54,8 @@ export default function DashBoard({
       (a, b) => Number(b.statusName) - Number(a.statusName)
     ) // statusName을 기준으로 정렬
   );
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { register, handleSubmit } = useForm<IFormInput>();
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
     setNewTitle(data.name);
@@ -168,7 +172,12 @@ export default function DashBoard({
       </div>
 
       {filteredItems.map((item) => (
-        <Card key={item.id} item={item} checklistId={data.checklistId} />
+        <Card
+          key={item.id}
+          item={item}
+          checklistId={data.checklistId}
+          onOpenModal={onOpenModal}
+        />
       ))}
     </div>
   );

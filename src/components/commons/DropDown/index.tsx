@@ -10,6 +10,7 @@ interface DropDownProps {
   item: any;
 }
 export default function DropDown({ item }: DropDownProps) {
+  console.log(item)
   return (
     <div className={cn("dropWrap")}>
       {item.map((item: { color: string; text: string, click:()=>void }, index: number) => {

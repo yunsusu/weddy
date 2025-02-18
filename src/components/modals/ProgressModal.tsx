@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import styles from './style.module.scss';
 import classNames from "classnames/bind";
+import { useState } from "react";
+import styles from "./style.module.scss";
 
 const cn = classNames.bind(styles);
 
@@ -16,10 +16,10 @@ export default function ProgressModal({
     date: string;
     state: boolean;
     amount: string;
-  },
+  };
   onChange: (id: number, newProgress: "시작전" | "진행중" | "완료") => void;
 }) {
-  const [ isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleProgressChange = (newProgress: "시작전" | "진행중" | "완료") => {
     onChange(item.id, newProgress); // 부모 컴포넌트로 상태 변경 요청
@@ -28,11 +28,12 @@ export default function ProgressModal({
 
   return (
     <div>
-      <button className={cn(
-        "progress",
-        item.progress === "시작전" && "before",
-        item.progress === "진행중" && "now",
-        item.progress === "완료" && "complete"
+      <button
+        className={cn(
+          "progress",
+          item.progress === "시작전" && "before",
+          item.progress === "진행중" && "now",
+          item.progress === "완료" && "complete"
         )}
         onClick={() => setIsModalOpen(!isModalOpen)}
       >
@@ -51,9 +52,11 @@ export default function ProgressModal({
                     status === "시작전" && "before",
                     status === "진행중" && "now",
                     status === "완료" && "complete"
-                    )}
+                  )}
                   onClick={() => {
-                    handleProgressChange(status as "시작전" | "진행중" | "완료"); 
+                    handleProgressChange(
+                      status as "시작전" | "진행중" | "완료"
+                    );
                     setIsModalOpen(false);
                   }}
                 >
@@ -66,5 +69,5 @@ export default function ProgressModal({
         </div>
       )}
     </div>
-  )
-};
+  );
+}

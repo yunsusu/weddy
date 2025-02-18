@@ -28,7 +28,9 @@ export default function SpaceSearch({ placeholder }: searchProps) {
   return (
     <form className={cn("searchInput")} onSubmit={handleSubmit(onSubmit)}>
       <label htmlFor="search">
+        <button type="submit">
         <Image src={searchImg} alt="검색버튼" width={26} height={26} />
+        </button>
       </label>
       <input
         placeholder={placeholder}

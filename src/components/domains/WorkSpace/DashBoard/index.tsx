@@ -27,11 +27,13 @@ interface DashBoardProps {
         statusName: string
     }[];
   };
+  onOpenModal: (item: any) => void
 }
 
-export default function DashBoard({ data }: DashBoardProps) {
+export default function DashBoard({ data, onOpenModal }: DashBoardProps) {
   const { searchWord, setSearchWord } = useWorkSpaceStore();
   const [dotDrop, setDotDrop] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const ref = useRef<any>(null);
 
@@ -66,7 +68,7 @@ export default function DashBoard({ data }: DashBoardProps) {
       </div>
 
       {data?.smallCatItems.map((item, index) => {
-        return <Card key={item.id} item={item} checklistId={data.checklistId} />;
+        return <Card key={item.id} item={item} checklistId={data.checklistId} onOpenModal={onOpenModal} />;
       })}
     </div>
   );

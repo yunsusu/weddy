@@ -10,6 +10,7 @@ import classNames from "classnames/bind";
 import Image from "next/image";
 import { useState } from "react";
 import styles from "./style.module.scss";
+import CheckListPage from "@/components/modals/CheckListPage";
 
 const cn = classNames.bind(styles);
 
@@ -25,6 +26,7 @@ export default function WorkSpace() {
   const [cardId, setCardId] = useState<number>(1);
   const { sideMenuState, setSideMenuState } = useSideMenuStore();
   const { color } = useColorStore();
+  const [ selectItem, setSelectItem ] = useState(null);
 
   const { data: cardDatas } = useQuery({
     queryKey: ["cardData", cardId],
@@ -35,6 +37,14 @@ export default function WorkSpace() {
     queryKey: ["memberData", cardId],
     queryFn: () => getMember(cardId),
   });
+
+  const handleOpenModal = (item: any) => {
+    setSelectItem(item);
+  };
+
+  const handleCloseModal = () => {
+    setSelectItem(null);
+  }
 
   console.log(memberData);
   return (
@@ -60,12 +70,16 @@ export default function WorkSpace() {
 
         <div className={cn("dashWrap")}>
           {cardDatas?.map((item) => (
-            <DashBoard data={item} />
+            <DashBoard data={item} onOpenModal={handleOpenModal} />
           ))}
         </div>
       </main>
 
       <SideMenu state={sideMenuState} />
+
+      {selectItem && (
+        <CheckListPage onClose={handleCloseModal} item={selectItem} />
+      )}
     </div>
   );
 }

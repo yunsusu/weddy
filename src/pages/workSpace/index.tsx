@@ -3,6 +3,7 @@ import DashBoard from "@/components/domains/WorkSpace/DashBoard";
 import DashBoardMore from "@/components/domains/WorkSpace/DashBoardMore";
 import SideMenu from "@/components/domains/WorkSpace/SideMenu";
 import SpaceSearch from "@/components/domains/WorkSpace/SpaceSearch";
+import CheckListPage from "@/components/modals/CheckListPage";
 import { getCard, getMember } from "@/lib/apis/workSpace";
 import useColorStore from "@/lib/store/mainColor";
 import useSideMenuStore from "@/lib/store/sideMenu";
@@ -14,12 +15,6 @@ import { useEffect, useState } from "react";
 import styles from "./style.module.scss";
 
 const cn = classNames.bind(styles);
-
-const mockData2 = {
-  id: 1,
-  memberId: "string",
-  getdDay: 100,
-};
 
 export default function WorkSpace() {
   const [card, setCard] = useState([]);
@@ -39,6 +34,14 @@ export default function WorkSpace() {
     queryKey: ["memberData", cardId],
     queryFn: () => getMember(cardId),
   });
+
+  const handleOpenModal = (item: any) => {
+    setSelectItem(item);
+  };
+
+  const handleCloseModal = () => {
+    setSelectItem(null);
+  };
 
   useEffect(() => {
     setCard(cardDatas);
@@ -74,6 +77,7 @@ export default function WorkSpace() {
               num={index}
               memberData={memberData}
               setCard={setCard}
+              onOpenModal={handleOpenModal}
             />
           ))}
           <DashBoardMore

@@ -25,7 +25,7 @@ export default function FilterShare({ item }: any) {
 
       {/* filterWrap 리스트 */}
       <div>
-        {item.item.map((item: any, index: Key | null | undefined) => (
+        {item?.item?.map((item: any, index: Key | null | undefined) => (
           <div key={index} className={cn(dropState ? "filterWrapOff" : "filterWrap")}>
             <Item item={item} />
           </div>

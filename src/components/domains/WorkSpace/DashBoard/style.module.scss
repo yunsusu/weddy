@@ -1,7 +1,7 @@
 // @use "../../../../styles/main.scss" as *; // ✅ main.scss 가져오기
 
 .dashWrap {
-  width: 29.2rem;
+  min-width: 29.2rem;
   display: flex;
   flex-direction: column;
   gap: 1.4rem;

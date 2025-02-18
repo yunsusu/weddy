@@ -1,18 +1,17 @@
 import profileImg from "@/../public/images/testImg.jpg";
 import DashBoard from "@/components/domains/WorkSpace/DashBoard";
+import DashBoardMore from "@/components/domains/WorkSpace/DashBoardMore";
 import SideMenu from "@/components/domains/WorkSpace/SideMenu";
 import SpaceSearch from "@/components/domains/WorkSpace/SpaceSearch";
 import { getCard, getMember } from "@/lib/apis/workSpace";
 import useColorStore from "@/lib/store/mainColor";
 import useSideMenuStore from "@/lib/store/sideMenu";
+import useSideMenuValStore from "@/lib/store/sideMenuValue";
 import { useQuery } from "@tanstack/react-query";
 import classNames from "classnames/bind";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import styles from "./style.module.scss";
-import DashBoardMore from "@/components/domains/WorkSpace/DashBoardMore";
-import useSideMenuValStore from "@/lib/store/sideMenuValue";
-import useWorkSpaceStore from "@/lib/store/workSpace";
 
 const cn = classNames.bind(styles);
 
@@ -23,15 +22,16 @@ const mockData2 = {
 };
 
 export default function WorkSpace() {
-  const [card,setCard] = useState([])
+  const [card, setCard] = useState([]);
   const [cardId, setCardId] = useState<number>(1);
   const [cardLength, setCardLength] = useState<number>(0);
   const { sideMenuState } = useSideMenuStore();
   const { sideMenuValue, setSideMenuValue } = useSideMenuValStore();
   const { color } = useColorStore();
+  const [selectItem, setSelectItem] = useState(null);
 
   const { data: cardDatas, isSuccess } = useQuery({
-    queryKey: ["cardData", cardId,cardLength],
+    queryKey: ["cardData", cardId, cardLength],
     queryFn: () => getCard(cardId),
   });
 
@@ -40,10 +40,10 @@ export default function WorkSpace() {
     queryFn: () => getMember(cardId),
   });
 
-  useEffect(()=>{
-    setCard(cardDatas)
-    setSideMenuValue(cardDatas)
-  },[isSuccess])
+  useEffect(() => {
+    setCard(cardDatas);
+    setSideMenuValue(cardDatas);
+  }, [isSuccess]);
 
   return (
     <div className={cn("workSide")}>
@@ -67,14 +67,27 @@ export default function WorkSpace() {
         <SpaceSearch placeholder={"할 일을 검색해 주세요."} />
 
         <div className={cn("dashWrap")}>
-          {card?.map((item:any, index:number) => (
-            <DashBoard data={item} key={index} num={index} memberData={memberData} setCard={setCard}/>
+          {card?.map((item: any, index: number) => (
+            <DashBoard
+              data={item}
+              key={index}
+              num={index}
+              memberData={memberData}
+              setCard={setCard}
+            />
           ))}
-          <DashBoardMore memberData={memberData} setCardLength={setCardLength}/>
+          <DashBoardMore
+            memberData={memberData}
+            setCardLength={setCardLength}
+          />
         </div>
       </main>
 
       <SideMenu state={sideMenuState} />
+
+      {selectItem && (
+        <CheckListPage onClose={handleCloseModal} item={selectItem} />
+      )}
     </div>
   );
 }

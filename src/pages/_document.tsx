@@ -1,5 +1,5 @@
-import { Head, Html, Main, NextScript } from "next/document";
 import KakaoScript from "@/components/commons/KakaoScript";
+import { Head, Html, Main, NextScript } from "next/document";
 
 declare global {
   interface Window {
@@ -7,11 +7,7 @@ declare global {
   }
 }
 
-export default function Document({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function Document({ children }: { children: React.ReactNode }) {
   return (
     <Html lang="ko">
       <Head>

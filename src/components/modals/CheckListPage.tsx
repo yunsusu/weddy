@@ -3,14 +3,24 @@ import date from "@/../public/icons/date.svg";
 import deleteIcon from "@/../public/icons/deleteRed.svg";
 import detail from "@/../public/icons/detail-icon.png";
 import assignee from "@/../public/icons/people.svg";
-import Editor from "@/components/commons/Editor/index.js";
 import classNames from "classnames/bind";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import ProgressModal from "./ProgressModal";
 import styles from "./style.module.scss";
+import { useQuery } from "@tanstack/react-query";
+import { instance } from "@/lib/apis/axios";
 
 const cn = classNames.bind(styles);
+
+const fetchItemData = async (itemId: number) => {
+  try {
+    const response = await instance.get(`/items/${itemId}`); // instance 사용
+    return response.data;
+  } catch (error) {
+    throw new Error('데이터를 불러오는 중 오류가 발생했습니다.');
+  }
+};
 
 export default function CheckListPage({
   onClose,
@@ -93,7 +103,13 @@ export default function CheckListPage({
         </div>
       </div>
 
-      <Editor />
+      <div>
+        <div className={cn("modalDetail")}></div>
+        <div className={cn("modalFooter")}>
+          <div className={cn("footerContents")}></div>
+          <button className={cn("saveBtn")}>저장하기</button>
+        </div>
+      </div>
     </div>
   );
 }

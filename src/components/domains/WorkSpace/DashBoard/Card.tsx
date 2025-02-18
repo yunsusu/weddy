@@ -20,14 +20,15 @@ interface Card {
     statusName: string;
   };
   checklistId: any;
+  onOpenModal?: (item: any) => void;
 }
 
-export default function Card({ item, checklistId }: Card) {
+export default function Card({ item, checklistId, onOpenModal }: Card) {
   const { setChoiceCard } = useCardStore();
   const { color } = useColorStore();
   const statusName = item.statusName;
-  const itemDate = 123;
-  console.log(item);
+  const itemDate = item?.dueDate?.split("T")[0] ;
+
   const ids = {
     checklistId: checklistId,
     largeCatItemId: item.largeCatItemId,
@@ -44,7 +45,7 @@ export default function Card({ item, checklistId }: Card) {
       <div
         className={item.statusName ? cn("cardWrap") : cn("cardWrapNone")}
         style={{ border: `1px solid ${color}` }}
-        onClick={() => setIsModalOpen(true)}
+        onClick={() => onOpenModal?.(item)}
       >
         <div
           className={cn("cardState", {

@@ -1,5 +1,6 @@
 .dropWrap {
   display: flex;
+  z-index: 3;
   min-width: 14.1rem;
   height: 7.4rem;
   padding: 9px 6px;
@@ -15,7 +16,7 @@
 }
 .item {
   display: flex;
-  min-width: 13rem;
+  min-width: 14rem;
   height: 2.8rem;
   padding: 4px 5px 4px 6px;
   //   justify-content: space-between;

@@ -50,7 +50,6 @@ export default function WorkSpace() {
   return (
     <div className={cn("workSide")}>
       <span className={cn("sideMenuBox", { active: sideMenuState })}></span>
-
       <main className={cn("workSpaceWrap")}>
         <div className={cn("profile")}>
           <Image src={profileImg} alt="프로필 사진" width={169} height={169} />

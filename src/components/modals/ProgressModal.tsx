@@ -10,16 +10,16 @@ export default function ProgressModal({
 }: {
   item: {
     id: number;
+    largeCatItemId: number;
     title: string;
-    progress: string;
-    assignee: string;
-    date: string;
-    state: boolean;
-    amount: string;
+    dueDate: string;
+    assigneeName: string;
+    statusName: string;
   },
   onChange: (id: number, newProgress: "시작전" | "진행중" | "완료") => void;
 }) {
   const [ isModalOpen, setIsModalOpen] = useState(false);
+  const statusName = item.statusName;
 
   const handleProgressChange = (newProgress: "시작전" | "진행중" | "완료") => {
     onChange(item.id, newProgress); // 부모 컴포넌트로 상태 변경 요청
@@ -28,15 +28,14 @@ export default function ProgressModal({
 
   return (
     <div>
-      <button className={cn(
-        "progress",
-        item.progress === "시작전" && "before",
-        item.progress === "진행중" && "now",
-        item.progress === "완료" && "complete"
-        )}
+      <button className={cn("progress", {
+            cardState1: statusName === "시작전",
+            cardState2: statusName === "진행중",
+            cardState3: statusName === "완료",
+          })}
         onClick={() => setIsModalOpen(!isModalOpen)}
       >
-        <p>{item.progress}</p>
+        <p>{item.statusName}</p>
         <span>∨</span>
       </button>
 

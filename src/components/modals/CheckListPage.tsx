@@ -13,6 +13,12 @@ import { instance } from "@/lib/apis/axios";
 
 const cn = classNames.bind(styles);
 
+const mockData2 = {
+  id: 1,
+  memberId: "string",
+  getdDay: 100,
+};
+
 const fetchItemData = async (itemId: number) => {
   try {
     const response = await instance.get(`/items/${itemId}`); // instance 사용
@@ -29,12 +35,12 @@ export default function CheckListPage({
   onClose: () => void;
   item: {
     id: number;
+    largeCatItemId: number;
     title: string;
-    progress: string;
-    assignee: string;
-    date: string;
-    state: boolean;
-    amount: string;
+    dueDate: string;
+    assigneeName: string;
+    statusName: string;
+    amount: 0;
   };
 }) {
   const modalRef = useRef<HTMLDivElement>(null);
@@ -86,12 +92,12 @@ export default function CheckListPage({
           <p>담당자</p>
         </div>
         <div className={cn("people")}>
-          <div>{item.assignee}</div>
+          <div>{item.assigneeName}</div>
           <div>김지연</div>
         </div>
         <div className={cn("date", "label")}>
           <Image src={date} alt="날짜" width={16} height={16} />
-          <p>{item.date} 까지</p>
+          <p>{item.dueDate} 까지</p>
         </div>
         <div className={cn("amount", "label")}>
           <Image src={amount} alt="금액" width={16} height={16} />

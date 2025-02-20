@@ -3,7 +3,7 @@ import date from "@/../public/icons/date.svg";
 import deleteIcon from "@/../public/icons/deleteRed.svg";
 import detail from "@/../public/icons/detail-icon.png";
 import assignee from "@/../public/icons/people.svg";
-import Editor from "@/components/commons/Editor/index.js";
+import { instance } from "@/lib/apis/axios";
 import classNames from "classnames/bind";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
@@ -12,20 +12,22 @@ import styles from "./style.module.scss";
 
 const cn = classNames.bind(styles);
 
+const fetchItemData = async (itemId: number) => {
+  try {
+    const response = await instance.get(`/items/${itemId}`); // instance 사용
+    return response.data;
+  } catch (error) {
+    throw new Error("데이터를 불러오는 중 오류가 발생했습니다.");
+  }
+};
+
 export default function CheckListPage({
   onClose,
   item,
 }: {
   onClose: () => void;
-  item: {
-    id: number;
-    title: string;
-    progress: string;
-    assignee: string;
-    date: string;
-    state: boolean;
-    amount: string;
-  };
+  item: any;
+  ids?: any;
 }) {
   const modalRef = useRef<HTMLDivElement>(null);
   const [currentItem, setCurrentItem] = useState(item);
@@ -47,7 +49,7 @@ export default function CheckListPage({
     newProgress: "시작전" | "진행중" | "완료"
   ) => {
     if (currentItem.id === id) {
-      setCurrentItem((prevItem) => ({
+      setCurrentItem((prevItem: any) => ({
         ...prevItem,
         progress: newProgress,
       }));
@@ -93,7 +95,13 @@ export default function CheckListPage({
         </div>
       </div>
 
-      <Editor />
+      <div>
+        <div className={cn("modalDetail")}></div>
+        <div className={cn("modalFooter")}>
+          <div className={cn("footerContents")}></div>
+          <button className={cn("saveBtn")}>저장하기</button>
+        </div>
+      </div>
     </div>
   );
 }

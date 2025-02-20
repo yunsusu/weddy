@@ -13,20 +13,27 @@ const cn = classNames.bind(styles);
 interface Card {
   item: {
     id: number;
+    largeCatItemId: number;
     title: string;
-    assignee: string;
-    date: string;
-    state: boolean;
-    amount: string;
-    progress2: number;
-    progress: string;
+    dueDate: string;
+    assigneeName: string;
+    statusName: string;
   };
+  checklistId: any;
+  onOpenModal?: (item: any) => void;
 }
 
-export default function Card({ item }: Card) {
+export default function Card({ item, checklistId, onOpenModal }: Card) {
   const { setChoiceCard } = useCardStore();
   const { color } = useColorStore();
-  const state = item.progress2;
+  const statusName = Number(item.statusName);
+  const itemDate = item?.dueDate === "string" ? item.dueDate.split("T")[0] : "";
+
+  const ids = {
+    checklistId: checklistId,
+    largeCatItemId: item.largeCatItemId,
+    smallCatItemId: item.id,
+  };
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -36,19 +43,20 @@ export default function Card({ item }: Card) {
   return (
     <>
       <div
-        className={item.state ? cn("cardWrap") : cn("cardWrapNone")}
+        className={item.statusName ? cn("cardWrap") : cn("cardWrapNone")}
         style={{ border: `1px solid ${color}` }}
-        onClick={() => setIsModalOpen(true)}
+        onClick={() => onOpenModal?.(item)}
       >
         <div
           className={cn("cardState", {
-            cardState1: state === 1,
-            cardState2: state === 2,
-            cardState3: state === 3,
+            cardState1: statusName === 1,
+            cardState2: statusName === 2,
+            cardState3: statusName === 3,
           })}
         >
-          {state === 1 ? "시작전" : state === 2 ? "진행중" : "완료"}
+          {statusName === 1 ? "시작전" : statusName === 2 ? "진행중" : "완료"}
         </div>
+
         <div className={cn("title")} onClick={choice}>
           <div
             className={cn("colorTag")}
@@ -58,15 +66,19 @@ export default function Card({ item }: Card) {
         </div>
         <div className={cn("assignee")}>
           <Image src={assignee} alt="담당자" width={16} height={16} />
-          <p>{item.assignee}</p>
+          <p>{item.assigneeName}</p>
         </div>
         <div className={cn("date")}>
           <Image src={date} alt="날짜" width={16} height={16} />
-          <p>{item.date}</p>
+          <p>{itemDate}</p>
         </div>
       </div>
       {isModalOpen && (
-        <CheckListPage onClose={() => setIsModalOpen(false)} item={item} />
+        <CheckListPage
+          onClose={() => setIsModalOpen(false)}
+          item={item}
+          ids={ids}
+        />
       )}
     </>
   );

@@ -55,7 +55,6 @@ export default function DashBoard({
     ) // statusName을 기준으로 정렬
   );
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const { register, handleSubmit } = useForm<IFormInput>();
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
     setNewTitle(data.name);

@@ -1,3 +1,4 @@
+import { AxiosResponse } from "axios";
 import { instance } from "./axios";
 
 export const getMember = async (memberId: any) => {
@@ -46,7 +47,18 @@ export const changeCardName = async (memberId: any, id: any, newTitle:string) =>
 export const deleteCard = async (memberId: any, id: any) => {
   try {
     const res = await instance.patch(`/checklist/large-cat-item/delete`, {
-       memberId, id 
+      memberId, id 
+    });
+    return res.data;
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+export const deleteItem = async (checklistId: number, largeCatItemId: number, id: number) => {
+  try {
+    const res = await instance.patch(`/checklist/large-cat-item/small-cat-Item/delete-item`, {
+      checklistId, largeCatItemId, id
     });
     return res.data;
   } catch (e) {

@@ -77,7 +77,7 @@ export default function Card({ item, checklistId, onOpenModal }: Card) {
         <CheckListPage
           onClose={() => setIsModalOpen(false)}
           item={item}
-          ids={ids}
+          // ids={ids}
         />
       )}
     </>

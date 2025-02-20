@@ -4,20 +4,18 @@ import styles from "./style.module.scss";
 
 const cn = classNames.bind(styles);
 
-export default function ProgressModal({
-  item,
-  onChange,
-}: {
-  item: {
-    id: number;
-    largeCatItemId: number;
-    title: string;
-    dueDate: string;
-    assigneeName: string;
-    statusName: string;
-  };
-  onChange: (newProgress: "시작전" | "진행중" | "완료") => void;
-}) {
+export default function ProgressModal({ item, onChange }: any) // {
+//   item: {
+//     id: number;
+//     largeCatItemId: number;
+//     title: string;
+//     dueDate: string;
+//     assigneeName: string;
+//     statusName: string;
+//   };
+//   onChange: (newProgress: "시작전" | "진행중" | "완료") => void;
+// }
+{
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentStatus, setCurrentStatus] = useState<string>(
     item.statusName || "시작전"
@@ -25,8 +23,8 @@ export default function ProgressModal({
 
   const handleStatusChange = (newProgress: "시작전" | "진행중" | "완료") => {
     setCurrentStatus(newProgress);
-    onChange(newProgress); 
-    setIsModalOpen(false); 
+    onChange(newProgress);
+    setIsModalOpen(false);
   };
 
   return (
@@ -56,7 +54,11 @@ export default function ProgressModal({
                     statusName === "진행중" && "now",
                     statusName === "완료" && "complete"
                   )}
-                  onClick={() => handleStatusChange(statusName as "시작전" | "진행중" | "완료")}
+                  onClick={() =>
+                    handleStatusChange(
+                      statusName as "시작전" | "진행중" | "완료"
+                    )
+                  }
                 >
                   {statusName}
                   <span className={cn("modalSpan")}>∨</span>

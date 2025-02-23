@@ -8,7 +8,7 @@ const cn = classNames.bind(styles);
 
 export default function LogIn() {
   function loginWithKakao() {
-    const clientId = process.env.NEXT_PUBLIC_KAKAO_CLIENTID;
+    const clientId = "9f29e33b8a15254447b4b72f3f550b13";
     const redirectUri = "https://your-weddy.pe.kr/auth/kakao/callback";
 
     window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code`;

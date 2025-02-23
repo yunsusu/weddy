@@ -1,6 +1,7 @@
 import dblArrow from "@/../public/icons/dblArrow.svg";
 import logoImg from "@/../public/images/Homepage Logo.svg";
-import { getMyData, getMyToken } from "@/lib/apis/authme";
+import { getMyData } from "@/lib/apis/authme";
+import useLoginData from "@/lib/store/loginData";
 import useSideMenuStore from "@/lib/store/sideMenu";
 import { useQuery } from "@tanstack/react-query";
 import classNames from "classnames/bind";
@@ -16,6 +17,7 @@ const cn = classNames.bind(styles);
 export default function GNB() {
   const { data: session } = useSession();
   const { sideMenuState, setSideMenuState } = useSideMenuStore();
+  const { data: loginData, setData } = useLoginData();
   const [page, setPage] = useState<String>("");
   const router = useRouter();
 
@@ -46,18 +48,13 @@ export default function GNB() {
     }
   }, [session]);
 
-  const { data: token, isSuccess } = useQuery({
-    queryKey: ["getMyData"],
-    queryFn: getMyToken,
-  });
-
-  const { data } = useQuery({
+  const { data, isSuccess } = useQuery({
     queryKey: ["getMyData"],
     queryFn: getMyData,
-    enabled: !!isSuccess,
   });
-
-  console.log(data);
+  useEffect(() => {
+    setData(data);
+  }, [isSuccess]);
   return (
     <nav className={cn("navWrap")}>
       {page === "/workSpace" ? (
@@ -106,7 +103,7 @@ export default function GNB() {
       )}
 
       <div className={cn("lonInWrap")}>
-        {!session ? (
+        {!loginData ? (
           <button className={cn("logInBtn")} onClick={handleLogin}>
             {" "}
             로그인

@@ -26,7 +26,7 @@ interface Card {
 export default function Card({ item, checklistId, onOpenModal }: Card) {
   const { setChoiceCard } = useCardStore();
   const { color } = useColorStore();
-  const statusName = Number(item.statusName);
+  const statusName = item.statusName;
   const itemDate = item?.dueDate === "string" ? item.dueDate.split("T")[0] : "";
 
   const ids = {
@@ -49,12 +49,12 @@ export default function Card({ item, checklistId, onOpenModal }: Card) {
       >
         <div
           className={cn("cardState", {
-            cardState1: statusName === 1,
-            cardState2: statusName === 2,
-            cardState3: statusName === 3,
+            cardState1: statusName === "시작전",
+            cardState2: statusName === "진행중",
+            cardState3: statusName === "완료",
           })}
         >
-          {statusName === 1 ? "시작전" : statusName === 2 ? "진행중" : "완료"}
+          {statusName}
         </div>
 
         <div className={cn("title")} onClick={choice}>

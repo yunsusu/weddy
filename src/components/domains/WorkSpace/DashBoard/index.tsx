@@ -7,6 +7,7 @@ import { useMutation } from "@tanstack/react-query";
 import classNames from "classnames/bind";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import { Draggable, Droppable } from "react-beautiful-dnd";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useOnClickOutside } from "usehooks-ts";
 import Card from "./Card";
@@ -62,13 +63,14 @@ export default function DashBoard({
   };
   const nowDate = new Date();
   const addItem = {
+    id: 0,
     checklistId: data.checklistId,
     largeCatItemId: data.id,
     title: "새로운 항목",
     dueDate: nowDate,
     assigneeName: "담당자",
     body: "내용",
-    statusName: "1",
+    statusName: "시작전",
     amount: 0,
   };
 
@@ -104,7 +106,7 @@ export default function DashBoard({
           card.id === data.id
             ? {
                 ...card,
-                smallCatItems: [addItem, ...card.smallCatItems, addItem],
+                smallCatItems: [addItem, ...card.smallCatItems],
               }
             : card
         )
@@ -170,14 +172,40 @@ export default function DashBoard({
         </span>
       </div>
 
-      {filteredItems.map((item) => (
-        <Card
-          key={item.id}
-          item={item}
-          checklistId={data.checklistId}
-          onOpenModal={onOpenModal}
-        />
-      ))}
+      {/* Droppable 영역 */}
+      <Droppable droppableId={`${data.id}`}>
+        {(provided) => (
+          <div
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+            className={cn("droppableContainer")}
+          >
+            {/* Draggable 아이템들 */}
+            {filteredItems.map((item, index) => (
+              <Draggable
+                key={item.id}
+                draggableId={item.id.toString()}
+                index={index}
+              >
+                {(provided) => (
+                  <div
+                    ref={provided.innerRef}
+                    {...provided.draggableProps}
+                    {...provided.dragHandleProps}
+                  >
+                    <Card
+                      item={item}
+                      checklistId={data.checklistId}
+                      onOpenModal={onOpenModal}
+                    />
+                  </div>
+                )}
+              </Draggable>
+            ))}
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
     </div>
   );
 }

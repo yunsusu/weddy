@@ -1,6 +1,6 @@
 import dblArrow from "@/../public/icons/dblArrow.svg";
 import logoImg from "@/../public/images/Homepage Logo.svg";
-import { getMyData, getMyToken } from "@/lib/apis/authme";
+import { getMyData } from "@/lib/apis/authme";
 import useSideMenuStore from "@/lib/store/sideMenu";
 import { useQuery } from "@tanstack/react-query";
 import classNames from "classnames/bind";
@@ -45,16 +45,10 @@ export default function GNB() {
         .catch((err) => console.error("쿠키 설정 실패", err));
     }
   }, [session]);
-
-  const { data: token, isSuccess } = useQuery({
-    queryKey: ["getMyData"],
-    queryFn: getMyToken,
-  });
-
+  console.log(document.cookie);
   const { data } = useQuery({
     queryKey: ["getMyData"],
     queryFn: getMyData,
-    enabled: !!isSuccess,
   });
 
   console.log(data);

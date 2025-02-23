@@ -1,6 +1,8 @@
 import dblArrow from "@/../public/icons/dblArrow.svg";
 import logoImg from "@/../public/images/Homepage Logo.svg";
+import { getMyData } from "@/lib/apis/authme";
 import useSideMenuStore from "@/lib/store/sideMenu";
+import { useQuery } from "@tanstack/react-query";
 import classNames from "classnames/bind";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
@@ -30,7 +32,7 @@ export default function GNB() {
     console.log("Session 데이터:", session);
 
     if (session?.accessToken) {
-      fetch("http://localhost:8080/auth/login/kakao", {
+      fetch("https://your-weddy.pe.kr/auth/login/kakao", {
         method: "POST",
         credentials: "include",
         headers: {
@@ -44,6 +46,11 @@ export default function GNB() {
     }
   }, [session]);
 
+  const { data } = useQuery({
+    queryKey: ["getMyData"],
+    queryFn: getMyData,
+  });
+  console.log(data);
   return (
     <nav className={cn("navWrap")}>
       {page === "/workSpace" ? (

@@ -45,12 +45,14 @@ export default function GNB() {
         .catch((err) => console.error("쿠키 설정 실패", err));
     }
   }, [session]);
-  console.log(document.cookie);
+
   const { data } = useQuery({
     queryKey: ["getMyData"],
     queryFn: getMyData,
   });
-
+  useEffect(() => {
+    console.log(document.cookie);
+  }, []);
   console.log(data);
   return (
     <nav className={cn("navWrap")}>

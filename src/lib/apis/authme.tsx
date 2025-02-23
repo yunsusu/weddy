@@ -8,3 +8,11 @@ export const getMyData = async () => {
     console.error(e);
   }
 };
+export const getMyToken = async () => {
+  try {
+    const res = await instance.get("/auth/regenerate-token");
+    return res.data;
+  } catch (e) {
+    console.error(e);
+  }
+};

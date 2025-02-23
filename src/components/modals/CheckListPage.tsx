@@ -7,9 +7,10 @@ import classNames from "classnames/bind";
 import Image from "next/image";
 import ProgressModal from "./ProgressModal";
 import styles from "./style.module.scss";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { addSmallCard, deleteItem } from "@/lib/apis/workSpace";
-import React, { useRef } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { addSmallCard, deleteItem, getCard } from "@/lib/apis/workSpace";
+import React, { useEffect, useRef, useState } from "react";
+import useSideMenuValStore from "@/lib/store/sideMenuValue";
 
 const cn = classNames.bind(styles);
 
@@ -37,11 +38,24 @@ type CheckListPageProps = {
     statusName?: string;
     amount?: number;
   };
+  ids?: Ids;
 };
 
-export default function CheckListPage({ onClose, item }: CheckListPageProps) {
+type Ids = {
+  checklistId?: number;
+  largeCatItemId?: number;
+  smallCatItemId?: number;
+};
+
+
+export default function CheckListPage({ onClose, item, ids }: CheckListPageProps) {
   const modalRef = useRef<HTMLDivElement>(null);
   const queryClient = useQueryClient();
+  const [cardId, setCardId] = useState<number>(1);
+  const [cardLength, setCardLength] = useState<number>(0);
+  const [card, setCard] = useState([]);
+  const { sideMenuValue, setSideMenuValue } = useSideMenuValStore();
+
 
   const [formData, setFormData] = React.useState({
     title: item.title || '',
@@ -52,10 +66,15 @@ export default function CheckListPage({ onClose, item }: CheckListPageProps) {
     amount: item.amount || 0
   });
 
+  const { data: cardDatas, isSuccess } = useQuery({
+    queryKey: ["cardData", cardId, cardLength],
+    queryFn: () => getCard(cardId),
+  });
+
   const { mutate: addSmallItem, isLoading } = useMutation({
     mutationFn: (payload: Payload) => addSmallCard(payload),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["cardData"] });
+      queryClient.invalidateQueries({ queryKey: ["cardData", cardId, cardLength] });
       onClose();
     },
     onError: (error: Error) => {
@@ -64,7 +83,10 @@ export default function CheckListPage({ onClose, item }: CheckListPageProps) {
     },
   });
 
-  
+  useEffect(() => {
+      setCard(cardDatas);
+      setSideMenuValue(cardDatas);
+    }, [isSuccess]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -75,9 +97,9 @@ export default function CheckListPage({ onClose, item }: CheckListPageProps) {
   };
 
   const handleDelete = async () => {
-    if (!item.checklistId || !item.largeCatItemId || !item.id) {
+    if (!ids?.checklistId || !ids?.largeCatItemId || !item.id) {
       alert("삭제할 항목의 필수 데이터가 없습니다.");
-      console.log(item.checklistId, item.largeCatItemId, item.id)
+      console.log(ids?.checklistId, ids?.largeCatItemId, item.id)
       return;
     }
   
@@ -85,7 +107,7 @@ export default function CheckListPage({ onClose, item }: CheckListPageProps) {
     if (!confirmDelete) return;
   
     try {
-      await deleteItem(item.checklistId, item.largeCatItemId, item.id);
+      await deleteItem(ids.checklistId, ids.largeCatItemId, item.id);
       alert("삭제되었습니다.");
       onClose(); // 삭제 후 모달 닫기
     } catch (error) {
@@ -105,8 +127,8 @@ export default function CheckListPage({ onClose, item }: CheckListPageProps) {
     e.preventDefault();
 
     const payload: Payload = {
-      checklistId: item.checklistId || 0,
-      largeCatItemId: item.largeCatItemId || 0,
+      checklistId: ids?.checklistId || 0,
+      largeCatItemId: ids?.largeCatItemId || 0,
       title: formData.title,
       dueDate: formData.dueDate || new Date().toISOString().split("T")[0],
       assigneeName: formData.assigneeName,

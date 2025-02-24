@@ -1,4 +1,3 @@
-import { AxiosResponse } from "axios";
 import { instance } from "./axios";
 
 export const getMember = async (memberId: any) => {
@@ -20,6 +19,7 @@ export const getCard = async (memberId: any) => {
     console.error(e);
   }
 };
+
 export const postCard = async (memberId: any, title: string) => {
   try {
     const res = await instance.post(`/checklist/large-cat-item`, {
@@ -48,17 +48,6 @@ export const deleteCard = async (memberId: any, id: any) => {
   try {
     const res = await instance.patch(`/checklist/large-cat-item/delete`, {
       memberId, id 
-    });
-    return res.data;
-  } catch (e) {
-    console.error(e);
-  }
-};
-
-export const deleteItem = async (checklistId: number, largeCatItemId: number, id: number) => {
-  try {
-    const res = await instance.patch(`/checklist/large-cat-item/small-cat-Item/delete-item`, {
-      checklistId, largeCatItemId, id
     });
     return res.data;
   } catch (e) {

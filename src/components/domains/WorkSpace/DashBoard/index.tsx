@@ -117,7 +117,7 @@ export default function DashBoard({
   useEffect(() => {
     const debounceTimeout = setTimeout(() => {
       const result = data.smallCatItems.filter((item) =>
-        item.title.includes(searchWord)
+        item?.title.includes(searchWord)
       );
       setFilteredItems(result);
     }, 300);

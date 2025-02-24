@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { getCard, getMember } from '../apis/workSpace';
-import { SmallCatItem } from '../apis/types';
+import { SmallCatItem } from '../apis/types/types';
 
 interface WorkSpaceState {
   checklistId: number;

@@ -71,6 +71,7 @@ export const addSmallCard = async (data: any) => {
     console.error(e);
   }
 };
+
 export const moveSmallCard = async (data: any) => {
   try {
     const res = await instance.patch(

@@ -16,6 +16,8 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { DragDropContext } from "react-beautiful-dnd";
 import styles from "./style.module.scss";
+import { SmallCatItem } from "@/lib/apis/types";
+import { useWorkSpaceStore } from "@/lib/store/workSpaceData";
 
 const cn = classNames.bind(styles);
 
@@ -27,7 +29,7 @@ export default function WorkSpace() {
   const { sideMenuValue, setSideMenuValue } = useSideMenuValStore();
   const { data: loginData } = useLoginData();
   const { color } = useColorStore();
-  const [selectItem, setSelectItem] = useState(null);
+  const { checklistId, selectedItem, setSelectedItem } = useWorkSpaceStore();
   const router = useRouter();
 
   const { data: cardDatas, isSuccess } = useQuery({
@@ -40,12 +42,32 @@ export default function WorkSpace() {
     queryFn: () => getMember(cardId),
   });
 
-  const handleOpenModal = (item: any) => {
-    setSelectItem(item);
+  const handleOpenModal = (item: SmallCatItem) => {
+    setSelectedItem(item);
   };
 
   const handleCloseModal = () => {
-    setSelectItem(null);
+    setSelectedItem(null);
+  };
+
+  const handleItemDelete = () => {
+    setCard((prev: any) => {
+      return prev.map((cardItem: any) => ({
+        ...cardItem,
+        smallCatItems: cardItem.smallCatItems.filter(
+          (item: any) => item.id !== selectedItem?.id
+        )
+      }));
+    });
+
+    setSideMenuValue((prev: any) => {
+      return prev.map((item: any) => ({
+        ...item,
+        smallCatItems: item.smallCatItems.filter(
+          (smallItem: any) => smallItem.id !== selectedItem?.id
+        )
+      }));
+    });
   };
 
   useEffect(() => {
@@ -150,8 +172,17 @@ export default function WorkSpace() {
 
       <SideMenu state={sideMenuState} />
 
-      {selectItem && (
-        <CheckListPage onClose={handleCloseModal} item={selectItem} />
+      {selectedItem && (
+        <CheckListPage 
+          onClose={handleCloseModal} 
+          item={selectedItem} 
+          ids={{
+            checklistId: checklistId || 0,
+            largeCatItemId: selectedItem?.largeCatItemId || 0,
+            smallCatItemId: selectedItem?.id || 0
+          }} 
+          onDeleteSuccess={handleItemDelete}
+        />
       )}
     </div>
   );

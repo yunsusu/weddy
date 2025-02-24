@@ -37,13 +37,28 @@ type CheckListPageProps = {
   onDeleteSuccess: () => void;
 };
 
+interface SmallCatItem {
+  id: number;
+  largeCatItemId: number;
+  title: string;
+  dueDate: string;
+  assigneeName: string;
+  statusName: string;
+  amount?: number;
+  body?: string;
+}
+
+interface Card {
+  id: number;
+  smallCatItems: SmallCatItem[];
+}
 
 export default function CheckListPage({ onClose, item, ids, onDeleteSuccess }: CheckListPageProps) {
   const modalRef = useRef<HTMLDivElement>(null);
   const queryClient = useQueryClient();
   const [ cardId, setCardId ] = useState<number>(1);
   const [ cardLength, setCardLength ] = useState<number>(0);
-  const [ card, setCard ] = useState([]);
+  const [ card, setCard ] = useState<Card[]>([]);
   const { sideMenuValue, setSideMenuValue } = useSideMenuValStore();
 
   const [formData, setFormData] = React.useState({
@@ -60,11 +75,11 @@ export default function CheckListPage({ onClose, item, ids, onDeleteSuccess }: C
     queryFn: () => getCard(cardId),
   });
 
-  const { mutate: updateItemMutate, isLoading: isUpdating } = useMutation({
+  const { mutate: updateItemMutate, isPending: isUpdating } = useMutation({
     mutationFn: (payload: UpdateItemPayload) => updateItem(payload),
     onSuccess: async (response, payload) => {
       try {
-        const newData = await getCard(cardId);
+        const newData: Card[] = await getCard(cardId);
         const updatedCard = newData.find(card => 
           card.smallCatItems.some(item => item.id === payload.id)
         );
@@ -78,9 +93,9 @@ export default function CheckListPage({ onClose, item, ids, onDeleteSuccess }: C
         if (updatedItem) {
           const completeItem = {
             ...updatedItem,
-            amount: payload.amount,  // payload의 amount 사용
-            body: payload.body,      // payload의 body 사용
-            assigneeName: updatedItem.assigneeName || payload.assigneeName // null 처리
+            amount: payload.amount,  
+            body: payload.body,   
+            assigneeName: updatedItem.assigneeName || payload.assigneeName
           };
 
           setFormData({

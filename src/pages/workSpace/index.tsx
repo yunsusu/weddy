@@ -175,7 +175,7 @@ export default function WorkSpace() {
       {selectedItem && (
         <CheckListPage 
           onClose={handleCloseModal} 
-          item={selectedItem} 
+          item={{ ...selectedItem, checklistId }}
           ids={{
             checklistId: checklistId || 0,
             largeCatItemId: selectedItem?.largeCatItemId || 0,

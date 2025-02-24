@@ -7,6 +7,7 @@ import classNames from "classnames/bind";
 import Image from "next/image";
 import { useState } from "react";
 import styles from "./style.module.scss";
+import useWorkSpaceStore from "@/lib/store/workSpace";
 
 const cn = classNames.bind(styles);
 
@@ -79,13 +80,7 @@ export default function Card({ item, checklistId, onOpenModal }: Card) {
         </div>
       </div>
 
-      {isModalOpen && item && (
-        <CheckListPage
-          onClose={() => setIsModalOpen(false)}
-          item={item}
-          // ids={ids}
-        />
-      )}
+      
     </>
   );
 }

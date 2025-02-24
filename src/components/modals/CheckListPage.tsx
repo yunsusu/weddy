@@ -13,6 +13,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { updateItem, UpdateItemPayload } from "@/lib/apis/types/updateItem";
 import { useWorkSpaceStore } from "@/lib/store/workSpaceData";
 import { getItem } from "@/lib/apis/workSpace";
+import TextEditor from "./TextEditor";
 
 const cn = classNames.bind(styles);
 
@@ -238,7 +239,9 @@ export default function CheckListPage({ onClose, item, ids, onDeleteSuccess }: C
               />
             </div>
             <div className={cn("modalFooter")}>
-              <div className={cn("footerContents")}></div>
+              <div className={cn("footerContents")}>
+                <TextEditor />
+              </div>
               <button type="submit" className={cn("saveBtn")} disabled={isUpdating}>
                 {isUpdating ? "저장 중..." : "저장하기"}
               </button>

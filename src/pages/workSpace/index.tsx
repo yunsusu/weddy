@@ -130,9 +130,9 @@ export default function WorkSpace() {
 
     // postMoveCard 생성
     let postMoveCard: any = {
-      checklistId: filteredList[0].checklistId,
-      largeCatItemId: filteredList[0].id,
-      smallCatItemIds: filteredList[0].smallCatItems.map(
+      checklistId: filteredList[0]?.checklistId,
+      largeCatItemId: filteredList[0]?.id,
+      smallCatItemIds: filteredList[0]?.smallCatItems.map(
         (item: any) => item.id
       ),
     };

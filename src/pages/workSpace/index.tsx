@@ -4,7 +4,6 @@ import DashBoardMore from "@/components/domains/WorkSpace/DashBoardMore";
 import SideMenu from "@/components/domains/WorkSpace/SideMenu";
 import SpaceSearch from "@/components/domains/WorkSpace/SpaceSearch";
 import CheckListPage from "@/components/modals/CheckListPage";
-import { SmallCatItem } from "@/lib/apis/types/types";
 import { getCard, getMember, moveSmallCard } from "@/lib/apis/workSpace";
 import useLoginData from "@/lib/store/loginData";
 import useColorStore from "@/lib/store/mainColor";
@@ -41,6 +40,8 @@ export default function WorkSpace() {
     queryKey: ["memberData", cardId],
     queryFn: () => getMember(cardId),
   });
+
+
 
   const handleOpenModal = (item: SmallCatItem) => {
     setSelectedItem(item);

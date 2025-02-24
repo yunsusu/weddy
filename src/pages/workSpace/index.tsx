@@ -18,6 +18,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { DragDropContext } from "react-beautiful-dnd";
 import styles from "./style.module.scss";
+import { SmallCatItem } from "@/lib/apis/types/types";
 
 const cn = classNames.bind(styles);
 

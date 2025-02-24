@@ -7,6 +7,7 @@ import classNames from "classnames/bind";
 import Image from "next/image";
 import { useState } from "react";
 import styles from "./style.module.scss";
+import useWorkSpaceStore from "@/lib/store/workSpace";
 
 const cn = classNames.bind(styles);
 
@@ -19,7 +20,7 @@ interface Card {
     assigneeName: string;
     statusName: string;
   };
-  checklistId: any;
+  checklistId: number;
   onOpenModal?: (item: any) => void;
 }
 
@@ -31,21 +32,26 @@ export default function Card({ item, checklistId, onOpenModal }: Card) {
 
   const ids = {
     checklistId: checklistId,
-    largeCatItemId: item.largeCatItemId,
-    smallCatItemId: item.id,
+    largeCatItemId: item.largeCatItemId || 0,
+    smallCatItemId: item.id || 0,
   };
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const handleOpenModal = () => {
+    onOpenModal?.(item);
+  };
+
   const choice = () => {
     setChoiceCard(String(item.id));
   };
+
   return (
     <>
       <div
         className={item.statusName ? cn("cardWrap") : cn("cardWrapNone")}
         style={{ border: `1px solid ${color}` }}
-        onClick={() => onOpenModal?.(item)}
+        onClick={handleOpenModal}
       >
         <div
           className={cn("cardState", {
@@ -73,13 +79,8 @@ export default function Card({ item, checklistId, onOpenModal }: Card) {
           <p>{itemDate}</p>
         </div>
       </div>
-      {isModalOpen && (
-        <CheckListPage
-          onClose={() => setIsModalOpen(false)}
-          item={item}
-          // ids={ids}
-        />
-      )}
+
+      
     </>
   );
 }

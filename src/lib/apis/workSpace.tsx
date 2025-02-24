@@ -19,6 +19,7 @@ export const getCard = async (memberId: any) => {
     console.error(e);
   }
 };
+
 export const postCard = async (memberId: any, title: string) => {
   try {
     const res = await instance.post(`/checklist/large-cat-item`, {
@@ -59,26 +60,6 @@ export const deleteCard = async (memberId: any, id: any) => {
   }
 };
 
-export const deleteItem = async (
-  checklistId: number,
-  largeCatItemId: number,
-  id: number
-) => {
-  try {
-    const res = await instance.patch(
-      `/checklist/large-cat-item/small-cat-Item/delete-item`,
-      {
-        checklistId,
-        largeCatItemId,
-        id,
-      }
-    );
-    return res.data;
-  } catch (e) {
-    console.error(e);
-  }
-};
-
 export const addSmallCard = async (data: any) => {
   try {
     const res = await instance.post(
@@ -90,6 +71,7 @@ export const addSmallCard = async (data: any) => {
     console.error(e);
   }
 };
+
 export const moveSmallCard = async (data: any) => {
   try {
     const res = await instance.patch(

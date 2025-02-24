@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { LargeCatItem } from '../apis/types';
+import { LargeCatItem } from '../apis/types/types';
 import { instance } from '../apis/axios';
 
 

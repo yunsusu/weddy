@@ -3,29 +3,18 @@ import date from "@/../public/icons/date.svg";
 import deleteIcon from "@/../public/icons/deleteRed.svg";
 import detail from "@/../public/icons/detail-icon.png";
 import assignee from "@/../public/icons/people.svg";
-import { addSmallCard, getCard } from "@/lib/apis/workSpace";
+import { getCard } from "@/lib/apis/workSpace";
 import classNames from "classnames/bind";
 import Image from "next/image";
 import ProgressModal from "./ProgressModal";
 import styles from "./style.module.scss";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { deleteItem } from "@/lib/apis/deleteItem";
+import { deleteItem } from "@/lib/apis/types/deleteItem";
 import React, { useEffect, useRef, useState } from "react";
 import useSideMenuValStore from "@/lib/store/sideMenuValue";
+import { updateItem, UpdateItemPayload } from "@/lib/apis/types/updateItem";
 
 const cn = classNames.bind(styles);
-
-type Payload = {
-  checklistId: number;
-  largeCatItemId: number;
-  smallCatItemId: any;
-  title: string;
-  dueDate: string;
-  assigneeName: string;
-  body: string;
-  statusName: string;
-  amount: number;
-};
 
 type CheckListPageProps = {
   onClose: () => void;
@@ -48,13 +37,28 @@ type CheckListPageProps = {
   onDeleteSuccess: () => void;
 };
 
+interface SmallCatItem {
+  id: number;
+  largeCatItemId: number;
+  title: string;
+  dueDate: string;
+  assigneeName: string;
+  statusName: string;
+  amount?: number;
+  body?: string;
+}
+
+interface Card {
+  id: number;
+  smallCatItems: SmallCatItem[];
+}
 
 export default function CheckListPage({ onClose, item, ids, onDeleteSuccess }: CheckListPageProps) {
   const modalRef = useRef<HTMLDivElement>(null);
   const queryClient = useQueryClient();
   const [ cardId, setCardId ] = useState<number>(1);
   const [ cardLength, setCardLength ] = useState<number>(0);
-  const [ card, setCard ] = useState([]);
+  const [ card, setCard ] = useState<Card[]>([]);
   const { sideMenuValue, setSideMenuValue } = useSideMenuValStore();
 
   const [formData, setFormData] = React.useState({
@@ -71,14 +75,58 @@ export default function CheckListPage({ onClose, item, ids, onDeleteSuccess }: C
     queryFn: () => getCard(cardId),
   });
 
-  const { mutate: addSmallItem, isLoading }: any = useMutation({
-    mutationFn: (payload: Payload) => addSmallCard(payload),
-    onSuccess: async () => {
-      queryClient.invalidateQueries({ queryKey: ["cardData", cardId, cardLength] });
+  const { mutate: updateItemMutate, isPending: isUpdating } = useMutation({
+    mutationFn: (payload: UpdateItemPayload) => updateItem(payload),
+    onSuccess: async (response, payload) => {
+      try {
+        const newData: Card[] = await getCard(cardId);
+        const updatedCard = newData.find(card => 
+          card.smallCatItems.some(item => item.id === payload.id)
+        );
+
+        const updatedItem = updatedCard?.smallCatItems.find(item => 
+          item.id === payload.id
+        );
+
+        console.log('Updated item found:', updatedItem);
+
+        if (updatedItem) {
+          const completeItem = {
+            ...updatedItem,
+            amount: payload.amount,  
+            body: payload.body,   
+            assigneeName: updatedItem.assigneeName || payload.assigneeName
+          };
+
+          setFormData({
+          title: completeItem.title,
+          dueDate: completeItem.dueDate,
+          assigneeName: completeItem.assigneeName || "미지정",
+          statusName: completeItem.statusName,
+          amount: completeItem.amount,
+          body: completeItem.body
+        });
+
+        const updatedNewData = newData.map(card => ({
+          ...card,
+          smallCatItems: card.smallCatItems.map(item => 
+            item.id === payload.id ? completeItem : item
+          )
+        }));
+        
+        setCard(newData);
+        setSideMenuValue(newData);
+
+        queryClient.setQueryData(["cardData", cardId, cardLength], newData);
+      }
+        alert("성공적으로 수정되었습니다.");
+      } catch (error) {
+        console.error("데이터 갱신 실패:", error);
+      }
     },
     onError: (error: Error) => {
       console.error("에러 발생:", error);
-      alert("저장 중 오류가 발생했습니다.");
+      alert("수정 중 오류가 발생했습니다.");
     },
   });
 
@@ -96,11 +144,11 @@ export default function CheckListPage({ onClose, item, ids, onDeleteSuccess }: C
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-  setFormData(prev => ({
-    ...prev,
-    [name]: value
-  }));
-  };
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+    };
 
   const { mutate: deleteItemMutate } = useMutation({
     mutationFn: () => {
@@ -147,39 +195,24 @@ export default function CheckListPage({ onClose, item, ids, onDeleteSuccess }: C
   const handleSave = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!ids.checklistId || !ids.largeCatItemId) {
+    if (!ids.checklistId || !ids.largeCatItemId || !ids.smallCatItemId) {
       alert("필수 데이터가 누락되었습니다.");
-      console.log(ids.checklistId, ids.largeCatItemId)
       return;
     }
-
-    const payload: Payload = {
-      checklistId: ids?.checklistId,
-      largeCatItemId: ids?.largeCatItemId,
-      smallCatItemId: ids?.smallCatItemId,
+    const payload: UpdateItemPayload = {
+      checklistId: ids.checklistId,
+      id: ids.smallCatItemId,
+      largeCatItemId: ids.largeCatItemId,
       title: formData.title,
       dueDate: formData.dueDate || new Date().toISOString().split("T")[0],
       assigneeName: formData.assigneeName,
-      body: formData.body,
+      body: formData.body || "",
       statusName: formData.statusName,
-      amount: typeof formData.amount === 'string' ? parseInt(formData.amount, 10) : formData.amount || 0,
+      amount: formData.amount,
     };
-
-    try {
-      await addSmallItem(payload); // 데이터 저장
-      const updatedData = await getCard(cardId);
-      if (updatedData) {
-        setCard(updatedData);
-        setFormData(prev => ({
-          ...prev,
-          ...updatedData 
-        }));
-      }
-    } catch (error) {
-      console.error("저장 후 데이터 갱신 실패:", error);
-      alert("저장 후 데이터를 불러오는 중 오류가 발생했습니다.");
-    }
-  }
+    console.log('Payload being sent:', payload);
+    updateItemMutate(payload);
+  };
 
   return (
     <div className={cn("checkModalWrap")} ref={modalRef}>
@@ -199,17 +232,13 @@ export default function CheckListPage({ onClose, item, ids, onDeleteSuccess }: C
         <ProgressModal item={item} onChange={handleProgressChange} />
         <form className={cn("modalForm")} onSubmit={handleSave}>
           <h2>
-            {formData.title ? (
-              formData.title
-            ) : (
-              <input
+            <input
                 type="text"
                 name="title"
                 value={formData.title}
                 placeholder="제목을 입력하세요."
                 onChange={handleChange}
               />
-            )}
           </h2>
           <div className={cn("assignee", "label")}>
             <Image src={assignee} alt="담당자" width={16} height={16} />
@@ -221,29 +250,24 @@ export default function CheckListPage({ onClose, item, ids, onDeleteSuccess }: C
           </div>
           <div className={cn("date", "label")}>
             <Image src={date} alt="날짜" width={16} height={16} />
-            {formData.dueDate ? (
-              <p>{formData.dueDate} 까지</p>
-            ) : (
-              <input
-                type="date"
-                onChange={handleChange}
-                value={formData.dueDate}
-                name="dueDate"
-                placeholder="날짜를 선택하세요."
-              />
-            )}
+            <input
+              type="date"
+              onChange={handleChange}
+              value={formData.dueDate}
+              name="dueDate"
+              placeholder="날짜를 선택하세요."
+            />
           </div>
           <div className={cn("amount", "label")}>
             <Image src={amount} alt="금액" width={16} height={16} />
             <input type="number" onChange={handleChange} value={formData.amount} name="amount" placeholder="금액을 입력하세요." />
             <span>원</span>
           </div>
-          <div className={cn("label")}>
-            <Image src={detail} alt="내용" width={16} height={16} />
-            <p>내용</p>
-          </div>
-
-          <div>
+          <div className={cn("detail","label")}>
+            <div className={cn("detailIcon")}>
+              <Image className={cn("detailIconMargin")} src={detail} alt="내용" width={16} height={16} />
+              <p>내용</p>
+            </div>
             <div className={cn("modalDetail")}>
               <textarea
                 name="body"
@@ -257,12 +281,8 @@ export default function CheckListPage({ onClose, item, ids, onDeleteSuccess }: C
             </div>
             <div className={cn("modalFooter")}>
               <div className={cn("footerContents")}></div>
-              <button
-                type="submit"
-                className={cn("saveBtn")}
-                disabled={isLoading}
-              >
-                {isLoading ? "저장 중..." : "저장하기"}
+              <button type="submit" className={cn("saveBtn")} disabled={isUpdating}>
+                {isUpdating ? "저장 중..." : "저장하기"}
               </button>
             </div>
           </div>

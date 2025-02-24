@@ -16,7 +16,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { DragDropContext } from "react-beautiful-dnd";
 import styles from "./style.module.scss";
-import { SmallCatItem } from "@/lib/apis/types";
+import { SmallCatItem } from "@/lib/apis/types/types";
 import { useWorkSpaceStore } from "@/lib/store/workSpaceData";
 
 const cn = classNames.bind(styles);
@@ -175,7 +175,7 @@ export default function WorkSpace() {
       {selectedItem && (
         <CheckListPage 
           onClose={handleCloseModal} 
-          item={selectedItem} 
+          item={{ ...selectedItem, checklistId }}
           ids={{
             checklistId: checklistId || 0,
             largeCatItemId: selectedItem?.largeCatItemId || 0,

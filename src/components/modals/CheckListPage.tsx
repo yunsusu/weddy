@@ -30,14 +30,14 @@ type Payload = {
 type CheckListPageProps = {
   onClose: () => void;
   item: {
-    checklistId?: number;
-    id?: number;
-    largeCatItemId?: number;
-    title?: string;
-    dueDate?: string;
-    assigneeName?: string;
+    checklistId: number;
+    id: number;
+    largeCatItemId: number;
+    title: string;
+    dueDate: string;
+    assigneeName: string;
     body?: string;
-    statusName?: string;
+    statusName: string;
     amount?: number;
   };
   ids: {

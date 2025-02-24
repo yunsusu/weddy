@@ -4,7 +4,8 @@ import DashBoardMore from "@/components/domains/WorkSpace/DashBoardMore";
 import SideMenu from "@/components/domains/WorkSpace/SideMenu";
 import SpaceSearch from "@/components/domains/WorkSpace/SpaceSearch";
 import CheckListPage from "@/components/modals/CheckListPage";
-import { getCard, getMember, moveSmallCard } from "@/lib/apis/workSpace";
+import { getCard, getItem, getMember, moveSmallCard } from "@/lib/apis/workSpace";
+
 import useLoginData from "@/lib/store/loginData";
 import useColorStore from "@/lib/store/mainColor";
 import useSideMenuStore from "@/lib/store/sideMenu";

@@ -22,7 +22,6 @@ export default function GNB() {
   const router = useRouter();
 
   useEffect(() => {
-    console.log(router.pathname);
     setPage(router.pathname);
   }, [router]);
 
@@ -41,11 +40,10 @@ export default function GNB() {
         .then((res) => res.json())
         .then((data) => {
           console.log("쿠키 설정 완료", data);
-          setData(data.user || data);
         })
         .catch((err) => console.error("쿠키 설정 실패", err));
     }
-  }, [session, setData]);
+  }, [session]);
 
   const handleLogin = () => {
     router.push("/logIn");
@@ -53,9 +51,10 @@ export default function GNB() {
 
   const handleLogout = async () => {
     try {
-      const response = await logoutAPI();
-      console.log("로그아웃 성공", response);
-
+      localStorage.setItem('isLoggedOut', 'true');
+      localStorage.removeItem('userData');
+      localStorage.removeItem('isLoggedIn');
+      await logoutAPI();
       setData(null);
 
       router.push("/");
@@ -63,15 +62,6 @@ export default function GNB() {
       console.error("로그아웃 실패:", error);
     }
   };
-
-  useEffect(() => {
-    const isLoggedOut = localStorage.getItem('isLoggedOut') === 'true';
-    
-    if (isLoggedOut) {
-      setData(null);
-      return;
-    }
-  }, []);
 
   const { data, isSuccess } = useQuery({
     queryKey: ["getMyData"],
@@ -144,7 +134,7 @@ export default function GNB() {
             로그인
           </button>
         ) : (
-          <button className={cn("logOutBtn")} onClick={handleLogout} onMouseDown={() => console.log("로그아웃 버튼 클릭됨")}> 로그아웃</button>
+          <button className={cn("logOutBtn")} onClick={handleLogout}> 로그아웃</button>
         )}
       </div>
     </nav>

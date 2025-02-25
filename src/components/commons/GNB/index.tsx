@@ -20,6 +20,7 @@ export default function GNB() {
   const { data: loginData, setData } = useLoginData();
   const [ page, setPage ] = useState<String>("");
   const router = useRouter();
+  const [ isLoggingOut, setIsLoggingOut ] = useState(false);
 
   useEffect(() => {
     setPage(router.pathname);
@@ -50,16 +51,23 @@ export default function GNB() {
   };
 
   const handleLogout = async () => {
+    setIsLoggingOut(true);
+    setData(null);
     try {
       localStorage.setItem('isLoggedOut', 'true');
       localStorage.removeItem('userData');
       localStorage.removeItem('isLoggedIn');
+      
       await logoutAPI();
-      setData(null);
 
       router.push("/");
     } catch (error) {
       console.error("로그아웃 실패:", error);
+      router.push("/");
+    } finally {
+      setTimeout(() => {
+        setIsLoggingOut(false);
+      }, 500);
     }
   };
 

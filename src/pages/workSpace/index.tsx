@@ -31,7 +31,6 @@ export default function WorkSpace() {
   const { data: loginData } = useLoginData();
   const { color } = useColorStore();
   const { checklistId, selectedItem, setSelectedItem } = useWorkSpaceStore();
-  const router = useRouter();
 
   const { data: cardDatas, isSuccess } = useQuery({
     queryKey: ["cardData", cardId, cardLength],

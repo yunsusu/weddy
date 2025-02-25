@@ -16,3 +16,11 @@ export const getMyToken = async () => {
     console.error(e);
   }
 };
+export const logoutAPI = async () => {
+  try {
+    const res = await instance.get("/auth/logout");
+    return res.data;
+  } catch (e) {
+    console.error(e);
+  }
+};

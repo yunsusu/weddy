@@ -44,6 +44,7 @@ export default function CheckListPage({ onClose, item, ids, onDeleteSuccess }: C
   const queryClient = useQueryClient();
   const [ cardId, setCardId ] = useState<number>(1);
   const [ cardLength, setCardLength ] = useState<number>(0);
+  const today = new Date().toISOString().split('T')[0];
 
   const [formData, setFormData] = React.useState({
     title: item.title || "",
@@ -192,12 +193,12 @@ export default function CheckListPage({ onClose, item, ids, onDeleteSuccess }: C
         <form className={cn("modalForm")} onSubmit={handleSave}>
           <h2>
             <input
-                type="text"
-                name="title"
-                value={formData.title}
-                placeholder="제목을 입력하세요."
-                onChange={handleChange}
-              />
+              type="text"
+              name="title"
+              value={formData.title}
+              placeholder="제목을 입력하세요."
+              onChange={handleChange}
+            />
           </h2>
           <div className={cn("assignee", "label")}>
             <Image src={assignee} alt="담당자" width={16} height={16} />
@@ -215,6 +216,7 @@ export default function CheckListPage({ onClose, item, ids, onDeleteSuccess }: C
               value={formData.dueDate}
               name="dueDate"
               placeholder="날짜를 선택하세요."
+              min={today}
             />
           </div>
           <div className={cn("amount", "label")}>
@@ -231,21 +233,20 @@ export default function CheckListPage({ onClose, item, ids, onDeleteSuccess }: C
               <textarea
                 name="body"
                 value={formData.body}
-                onChange={(e) =>
-                  setFormData((prev) => ({ ...prev, body: e.target.value }))
-                }
+                onChange={(e) => setFormData((prev) => ({ ...prev, body: e.target.value }))}
                 placeholder="내용을 입력하세요."
                 rows={4}
+                className={cn("scroll")}
               />
             </div>
-            <div className={cn("modalFooter")}>
-              <div className={cn("footerContents")}>
-                <TextEditor />
-              </div>
-              <button type="submit" className={cn("saveBtn")} disabled={isUpdating}>
-                {isUpdating ? "저장 중..." : "저장하기"}
-              </button>
+          </div>
+          <div className={cn("modalFooter")}>
+            <div className={cn("footerContents")}>
+              <TextEditor />
             </div>
+            <button type="submit" className={cn("saveBtn")} disabled={isUpdating}>
+              {isUpdating ? "저장 중..." : "저장하기"}
+            </button>
           </div>
         </form>
       </div>

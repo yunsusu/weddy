@@ -24,7 +24,7 @@ export default function Home() {
     if (isSuccess) {
       console.log('Navigating to workspace');
       setChecklistId(checklistId);
-      router.push('/workspace');
+      router.push('/workSpace');
     } else if (!isSuccess) {
       console.log('Navigating to login');
       router.push('/logIn');

@@ -44,6 +44,7 @@ export default function CheckListPage({ onClose, item, ids, onDeleteSuccess }: C
   const queryClient = useQueryClient();
   const [ cardId, setCardId ] = useState<number>(1);
   const [ cardLength, setCardLength ] = useState<number>(0);
+  const today = new Date().toISOString().split('T')[0];
 
   const [formData, setFormData] = React.useState({
     title: item.title || "",
@@ -53,19 +54,31 @@ export default function CheckListPage({ onClose, item, ids, onDeleteSuccess }: C
     statusName: item.statusName || "진행 중",
     amount: item.amount || 0,
   });
+
   
-  const { data: smallCatData } = useQuery({
+  const { data: smallCatData, isLoading, refetch } = useQuery({
     queryKey: ["smallCatData", ids.checklistId, ids.largeCatItemId, ids.smallCatItemId],
-    queryFn: () => getItem(
-      ids.checklistId, ids.largeCatItemId, ids.smallCatItemId
-    ),
+    queryFn: async () => {
+      const data = await getItem(ids.checklistId, ids.largeCatItemId, ids.smallCatItemId);
+      if (data && data.amount) {
+        data.displayAmount = data.amount / 10000;
+      }
+      return data;
+    },
     enabled: !!ids.checklistId && !!ids.largeCatItemId && !!ids.smallCatItemId,
   });
 
   const { mutate: updateItemMutate, isPending: isUpdating } = useMutation({
     mutationFn: (payload: UpdateItemPayload) => updateItem(payload),
     onSuccess: async (data, variables) => {
-
+      const displayAmount = variables.amount / 10000;
+      queryClient.setQueryData(
+        ["smallCatData", ids.checklistId, ids.largeCatItemId, ids.smallCatItemId], 
+        (oldData: any) => ({
+          ...oldData,
+          ...variables
+        })
+      );
       await queryClient.invalidateQueries({ queryKey: ["cardData", cardId, cardLength] });
       
       if (selectedItem && selectedItem.id === variables.id) {
@@ -79,6 +92,16 @@ export default function CheckListPage({ onClose, item, ids, onDeleteSuccess }: C
           amount: variables.amount
         });
       }
+
+      setFormData({
+        title: variables.title,
+        dueDate: variables.dueDate,
+        assigneeName: variables.assigneeName,
+        body: variables.body || "",
+        statusName: variables.statusName,
+        amount: variables.amount
+      });
+
       alert("성공적으로 수정되었습니다.");
     },
     onError: (error: Error) => {
@@ -192,12 +215,12 @@ export default function CheckListPage({ onClose, item, ids, onDeleteSuccess }: C
         <form className={cn("modalForm")} onSubmit={handleSave}>
           <h2>
             <input
-                type="text"
-                name="title"
-                value={formData.title}
-                placeholder="제목을 입력하세요."
-                onChange={handleChange}
-              />
+              type="text"
+              name="title"
+              value={formData.title}
+              placeholder="제목을 입력하세요."
+              onChange={handleChange}
+            />
           </h2>
           <div className={cn("assignee", "label")}>
             <Image src={assignee} alt="담당자" width={16} height={16} />
@@ -215,12 +238,13 @@ export default function CheckListPage({ onClose, item, ids, onDeleteSuccess }: C
               value={formData.dueDate}
               name="dueDate"
               placeholder="날짜를 선택하세요."
+              min={today}
             />
           </div>
           <div className={cn("amount", "label")}>
             <Image src={amount} alt="금액" width={16} height={16} />
             <input type="number" onChange={handleChange} value={formData.amount} name="amount" placeholder="금액을 입력하세요." />
-            <span>원</span>
+            <span>만원</span>
           </div>
           <div className={cn("detail","label")}>
             <div className={cn("detailIcon")}>
@@ -231,21 +255,20 @@ export default function CheckListPage({ onClose, item, ids, onDeleteSuccess }: C
               <textarea
                 name="body"
                 value={formData.body}
-                onChange={(e) =>
-                  setFormData((prev) => ({ ...prev, body: e.target.value }))
-                }
+                onChange={(e) => setFormData((prev) => ({ ...prev, body: e.target.value }))}
                 placeholder="내용을 입력하세요."
                 rows={4}
+                className={cn("scroll")}
               />
             </div>
-            <div className={cn("modalFooter")}>
-              <div className={cn("footerContents")}>
-                <TextEditor />
-              </div>
-              <button type="submit" className={cn("saveBtn")} disabled={isUpdating}>
-                {isUpdating ? "저장 중..." : "저장하기"}
-              </button>
+          </div>
+          <div className={cn("modalFooter")}>
+            <div className={cn("footerContents")}>
+              <TextEditor />
             </div>
+            <button type="submit" className={cn("saveBtn")} disabled={isUpdating}>
+              {isUpdating ? "저장 중..." : "저장하기"}
+            </button>
           </div>
         </form>
       </div>

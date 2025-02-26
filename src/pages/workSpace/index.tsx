@@ -18,6 +18,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { DragDropContext } from "react-beautiful-dnd";
 import styles from "./style.module.scss";
+import { SmallCatItem } from "@/lib/apis/types/types";
 
 const cn = classNames.bind(styles);
 
@@ -30,7 +31,6 @@ export default function WorkSpace() {
   const { data: loginData } = useLoginData();
   const { color } = useColorStore();
   const { checklistId, selectedItem, setSelectedItem } = useWorkSpaceStore();
-  const router = useRouter();
 
   const { data: cardDatas, isSuccess } = useQuery({
     queryKey: ["cardData", cardId, cardLength],

@@ -42,15 +42,25 @@
   & > .people {
     display: flex;
     margin-bottom: 3rem;
+  }
+}
 
-    & > div {
-      margin-right: 3rem;
-      padding: 1rem 7rem;
-      border-radius: 1.5rem;
-      background-color: #f5f5f5;
-      color: #959595;
-      font-size: 1.6rem;
-    }
+.assigneeBtn {
+  margin-right: 3rem;
+  padding: 1rem 7rem;
+  border-radius: 1.5rem;
+  background-color: #f5f5f5;
+  color: #959595;
+  font-size: 1.6rem;
+
+  &:hover {
+    background-color: #f5f5f5;
+  }
+
+  &.active {
+    border: 1px solid #7034F3;
+    color: #7034F3;
+    background-color: white;
   }
 }
 

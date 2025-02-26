@@ -50,7 +50,7 @@ export default function CheckListPage({ onClose, item, ids, onDeleteSuccess }: C
   const [formData, setFormData] = React.useState({
     title: item.title || "",
     dueDate: item.dueDate || "",
-    assigneeName: item.assigneeName || "미지정",
+    assigneeName: item.assigneeName || "신부",
     body: item.body || "",
     statusName: item.statusName || "진행 중",
     amount: displayAmount,
@@ -145,7 +145,7 @@ export default function CheckListPage({ onClose, item, ids, onDeleteSuccess }: C
       setFormData({
         title: smallCatData.title || item.title || "",
         dueDate: smallCatData.dueDate || item.dueDate || "",
-        assigneeName: smallCatData.assigneeName || item.assigneeName || "미지정",
+        assigneeName: smallCatData.assigneeName || item.assigneeName || "신부",
         body: smallCatData.body || item.body || "",
         statusName: smallCatData.statusName || item.statusName || "진행 중",
         amount: displayAmount,
@@ -245,8 +245,21 @@ export default function CheckListPage({ onClose, item, ids, onDeleteSuccess }: C
             <p>담당자</p>
           </div>
           <div className={cn("people")}>
-            <div>{formData.assigneeName}</div>
-            <div>김지연</div>
+          <button 
+              type="button"
+              className={cn("assigneeBtn", { active: formData.assigneeName === "신랑" })}
+              onClick={() => setFormData(prev => ({ ...prev, assigneeName: "신랑" }))}
+            >
+              신랑
+            </button>
+            <button 
+              type="button"
+              className={cn("assigneeBtn", { active: formData.assigneeName === "신부" })}
+              onClick={() => setFormData(prev => ({ ...prev, assigneeName: "신부" }))}
+            >
+              신부
+            </button>
+
           </div>
           <div className={cn("date", "label")}>
             <Image src={date} alt="날짜" width={16} height={16} />

@@ -45,6 +45,7 @@ export default function CheckListPage({ onClose, item, ids, onDeleteSuccess }: C
   const [ cardId, setCardId ] = useState<number>(1);
   const [ cardLength, setCardLength ] = useState<number>(0);
   const today = new Date().toISOString().split('T')[0];
+  const displayAmount = item.amount ? item.amount / 10000 : 0;
 
   const [formData, setFormData] = React.useState({
     title: item.title || "",
@@ -52,19 +53,15 @@ export default function CheckListPage({ onClose, item, ids, onDeleteSuccess }: C
     assigneeName: item.assigneeName || "미지정",
     body: item.body || "",
     statusName: item.statusName || "진행 중",
-    amount: item.amount || 0,
+    amount: displayAmount,
   });
 
   
   const { data: smallCatData, isLoading, refetch } = useQuery({
     queryKey: ["smallCatData", ids.checklistId, ids.largeCatItemId, ids.smallCatItemId],
-    queryFn: async () => {
-      const data = await getItem(ids.checklistId, ids.largeCatItemId, ids.smallCatItemId);
-      if (data && data.amount) {
-        data.displayAmount = data.amount / 10000;
-      }
-      return data;
-    },
+    queryFn: () => getItem(
+      ids.checklistId, ids.largeCatItemId, ids.smallCatItemId
+    ),
     enabled: !!ids.checklistId && !!ids.largeCatItemId && !!ids.smallCatItemId,
   });
 
@@ -99,7 +96,7 @@ export default function CheckListPage({ onClose, item, ids, onDeleteSuccess }: C
         assigneeName: variables.assigneeName,
         body: variables.body || "",
         statusName: variables.statusName,
-        amount: variables.amount
+        amount: displayAmount 
       });
 
       alert("성공적으로 수정되었습니다.");
@@ -123,6 +120,12 @@ export default function CheckListPage({ onClose, item, ids, onDeleteSuccess }: C
       );
     },
     onSuccess: () => {
+      queryClient.removeQueries({ 
+        queryKey: ["smallCatData", ids.checklistId, ids.largeCatItemId, ids.smallCatItemId] 
+      });
+      queryClient.invalidateQueries({ 
+        queryKey: ["cardData"] 
+      });
       onDeleteSuccess();
       alert("성공적으로 삭제되었습니다.");
       onClose();
@@ -136,6 +139,8 @@ export default function CheckListPage({ onClose, item, ids, onDeleteSuccess }: C
   useEffect(() => {
     if (smallCatData) {
       console.log('Loaded small cat data:', smallCatData);
+
+      const displayAmount = smallCatData.amount ? smallCatData.amount / 10000 : 0;
       
       setFormData({
         title: smallCatData.title || item.title || "",
@@ -143,7 +148,7 @@ export default function CheckListPage({ onClose, item, ids, onDeleteSuccess }: C
         assigneeName: smallCatData.assigneeName || item.assigneeName || "미지정",
         body: smallCatData.body || item.body || "",
         statusName: smallCatData.statusName || item.statusName || "진행 중",
-        amount: smallCatData.amount || item.amount || 0,
+        amount: displayAmount,
       });
     }
   }, [smallCatData, item]);
@@ -182,6 +187,9 @@ export default function CheckListPage({ onClose, item, ids, onDeleteSuccess }: C
       alert("필수 데이터가 누락되었습니다.");
       return;
     }
+
+    const serverAmount = Number(formData.amount) * 10000;
+
     const payload: UpdateItemPayload = {
       checklistId: ids.checklistId,
       id: ids.smallCatItemId,
@@ -191,8 +199,18 @@ export default function CheckListPage({ onClose, item, ids, onDeleteSuccess }: C
       assigneeName: formData.assigneeName,
       body: formData.body || "",
       statusName: formData.statusName,
-      amount: formData.amount,
+      amount: serverAmount,
     };
+
+    setFormData(prev => ({
+      ...prev,
+      title: formData.title,
+      dueDate: formData.dueDate || new Date().toISOString().split("T")[0],
+      assigneeName: formData.assigneeName,
+      body: formData.body || "",
+      statusName: formData.statusName,
+    }));
+
     updateItemMutate(payload);
   };
 
@@ -243,7 +261,7 @@ export default function CheckListPage({ onClose, item, ids, onDeleteSuccess }: C
           </div>
           <div className={cn("amount", "label")}>
             <Image src={amount} alt="금액" width={16} height={16} />
-            <input type="number" onChange={handleChange} value={formData.amount} name="amount" placeholder="금액을 입력하세요." />
+            <input type="number" onChange={handleChange} value={formData.amount} name="amount" />
             <span>만원</span>
           </div>
           <div className={cn("detail","label")}>

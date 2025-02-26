@@ -283,20 +283,15 @@ export default function CheckListPage({ onClose, item, ids, onDeleteSuccess }: C
               <p>내용</p>
             </div>
             <div className={cn("modalDetail")}>
-              <textarea
-                name="body"
-                value={formData.body}
-                onChange={(e) => setFormData((prev) => ({ ...prev, body: e.target.value }))}
-                placeholder="내용을 입력하세요."
-                rows={4}
-                className={cn("scroll")}
+              <TextEditor 
+                content={formData.body} 
+                onContentChange={(newContent: any) => 
+                  setFormData((prev) => ({ ...prev, body: newContent }))
+                }              
               />
             </div>
           </div>
           <div className={cn("modalFooter")}>
-            <div className={cn("footerContents")}>
-              <TextEditor />
-            </div>
             <button type="submit" className={cn("saveBtn")} disabled={isUpdating}>
               {isUpdating ? "저장 중..." : "저장하기"}
             </button>

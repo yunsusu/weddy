@@ -18,7 +18,7 @@
 
 .modalForm {
   width: 100%;
-  height: 100%;
+  height: 82%;
   margin-top: 1rem;;
 
   & > * {
@@ -124,7 +124,7 @@
 
 .detail {
   width: 100%;
-  height: 45%;
+  height: 70%;
   display: flex;
   flex-direction: column;
   align-items: start;
@@ -145,27 +145,6 @@
   font-size: 1.5rem;
   position: relative;
   flex-grow: 1;
-
-  & > textarea {
-    width: 100%;
-    height: 100%;
-    resize: none;
-    overflow-y: auto;
-  }
-
-  & > .scroll::-webkit-scrollbar {
-    width: 15px;  
-  }
-
-  & > .scroll::-webkit-scrollbar-thumb {
-    background: #7034F3;
-    border-radius: 10px;
-  }
-
-  & > .scroll::-webkit-scrollbar-track {
-    background: #eee;
-    border-radius: 10px;
-  }
 }
 
 .placeholder {
@@ -177,7 +156,6 @@
   position: absolute;
   bottom: 0;
   left: 0;
-  border-top: 1px solid #ccc;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -221,13 +199,47 @@
   margin-left: 0.5rem;
 }
 
-
 .editorWrap {
-  display: flex;
-  justify-content: space-around;
+  width: 100%;
+  height: 100%;
+}
 
-  & > button {
-    
+.editorContents {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.editor {
+  width: 100%;
+  height: 75%;
+  margin-bottom: 2rem;
+  border: none;
+  padding: 2rem;
+  outline: none;
+  overflow-y: auto;
+  overflow-x: hidden;
+  line-height: 1.5;
+  font-size: 1.6rem;
+
+  &::-webkit-scrollbar {
+    width: 10px;  
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #7034F3;
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #eee;
+    border-radius: 10px;
   }
 }
 
+.editorBtns {
+  display: flex;
+  justify-content: space-between;
+
+}

@@ -1,4 +1,3 @@
-import axios from "axios";
 import { instance } from "./axios";
 
 export const getMember = async (memberId: any) => {
@@ -49,6 +48,37 @@ export const postCard = async (memberId: any, title: string) => {
     console.error(e);
   }
 };
+
+export const uploadFile = async (file: File) => {
+  try {
+    const formData = new FormData();
+    formData.append("file", file);
+    
+    const response = await instance.post('/api/files', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+    console.log('파일 업로드 응답:', response.data);
+    if (response.data) {
+      if (typeof response.data === 'string') {
+        return response.data;
+      }
+
+      if (typeof response.data === 'object') {
+        if (response.data.file) return response.data.file;
+        if (response.data.url) return response.data.url;
+        if (response.data.fileUrl) return response.data.fileUrl;
+      }
+    }
+    console.error('예상치 못한 응답 형식:', response.data);
+    return response.data.file;
+  } catch (error) {
+    console.error("파일 업로드 에러:", error);
+    throw error;
+  }
+};
+
 export const changeCardName = async (
   memberId: any,
   id: any,

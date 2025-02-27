@@ -124,7 +124,7 @@
 
 .detail {
   width: 100%;
-  height: 70%;
+  height: 67%;
   display: flex;
   flex-direction: column;
   align-items: start;
@@ -141,7 +141,7 @@
 
 .modalDetail {
   width: 100%;
-  height: 100%;
+  height: 89%;
   font-size: 1.5rem;
   position: relative;
   flex-grow: 1;
@@ -209,11 +209,12 @@
   height: 100%;
   display: flex;
   flex-direction: column;
+  justify-content: end;
 }
 
 .editor {
   width: 100%;
-  height: 75%;
+  height: 88%;
   margin-bottom: 2rem;
   border: none;
   padding: 2rem;
@@ -222,6 +223,7 @@
   overflow-x: hidden;
   line-height: 1.5;
   font-size: 1.6rem;
+  box-sizing: border-box;
 
   &::-webkit-scrollbar {
     width: 10px;  
@@ -241,5 +243,5 @@
 .editorBtns {
   display: flex;
   justify-content: space-between;
-
 }
+

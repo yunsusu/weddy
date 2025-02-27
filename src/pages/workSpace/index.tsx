@@ -4,7 +4,7 @@ import DashBoardMore from "@/components/domains/WorkSpace/DashBoardMore";
 import SideMenu from "@/components/domains/WorkSpace/SideMenu";
 import SpaceSearch from "@/components/domains/WorkSpace/SpaceSearch";
 import CheckListPage from "@/components/modals/CheckListPage";
-import { getCard, getItem, getMember, moveSmallCard } from "@/lib/apis/workSpace";
+import { getCard, getMember, moveSmallCard } from "@/lib/apis/workSpace";
 
 import useLoginData from "@/lib/store/loginData";
 import useColorStore from "@/lib/store/mainColor";
@@ -14,11 +14,11 @@ import { useWorkSpaceStore } from "@/lib/store/workSpaceData";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import classNames from "classnames/bind";
 import Image from "next/image";
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { DragDropContext } from "react-beautiful-dnd";
 import styles from "./style.module.scss";
 import { SmallCatItem } from "@/lib/apis/types/types";
+import SaveModal from "@/components/modals/SaveModal";
 
 const cn = classNames.bind(styles);
 
@@ -31,6 +31,7 @@ export default function WorkSpace() {
   const { data: loginData } = useLoginData();
   const { color } = useColorStore();
   const { checklistId, selectedItem, setSelectedItem } = useWorkSpaceStore();
+  const [ showSaveModal, setShowSaveModal ] = useState(false);
 
   const { data: cardDatas, isSuccess } = useQuery({
     queryKey: ["cardData", cardId, cardLength],
@@ -42,14 +43,20 @@ export default function WorkSpace() {
     queryFn: () => getMember(cardId),
   });
 
-
-
   const handleOpenModal = (item: SmallCatItem) => {
     setSelectedItem(item);
   };
 
   const handleCloseModal = () => {
     setSelectedItem(null);
+  };
+
+  const handleShowSaveModal = () => {
+    setShowSaveModal(true);
+  };
+
+  const handleCloseSaveModal = () => {
+    setShowSaveModal(false);
   };
 
   const handleItemDelete = () => {
@@ -205,8 +212,11 @@ export default function WorkSpace() {
             smallCatItemId: selectedItem?.id || 0,
           }}
           onDeleteSuccess={handleItemDelete}
+          onShowSaveModal={handleShowSaveModal}
         />
       )}
+      
+      {showSaveModal && <SaveModal onClose={handleCloseSaveModal} />}
     </div>
   );
 }

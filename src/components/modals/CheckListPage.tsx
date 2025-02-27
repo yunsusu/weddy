@@ -14,6 +14,7 @@ import { updateItem, UpdateItemPayload } from "@/lib/apis/types/updateItem";
 import { useWorkSpaceStore } from "@/lib/store/workSpaceData";
 import { getItem } from "@/lib/apis/workSpace";
 import TextEditor from "./TextEditor";
+import SaveModal from "./SaveModal";
 
 const cn = classNames.bind(styles);
 
@@ -36,9 +37,10 @@ type CheckListPageProps = {
     smallCatItemId?: number;
   }
   onDeleteSuccess: () => void;
+  onShowSaveModal: () => void;
 };
 
-export default function CheckListPage({ onClose, item, ids, onDeleteSuccess }: CheckListPageProps) {
+export default function CheckListPage({ onClose, item, ids, onDeleteSuccess, onShowSaveModal }: CheckListPageProps) {
   const { selectedItem, setSelectedItem } = useWorkSpaceStore();
   const modalRef = useRef<HTMLDivElement>(null);
   const queryClient = useQueryClient();
@@ -46,6 +48,7 @@ export default function CheckListPage({ onClose, item, ids, onDeleteSuccess }: C
   const [ cardLength, setCardLength ] = useState<number>(0);
   const today = new Date().toISOString().split('T')[0];
   const displayAmount = item.amount ? item.amount / 10000 : 0;
+
 
   const [formData, setFormData] = React.useState({
     title: item.title || "",
@@ -98,8 +101,7 @@ export default function CheckListPage({ onClose, item, ids, onDeleteSuccess }: C
         statusName: variables.statusName,
         amount: displayAmount 
       });
-
-      alert("성공적으로 수정되었습니다.");
+      onShowSaveModal();
     },
     onError: (error: Error) => {
       console.error("에러 발생:", error);

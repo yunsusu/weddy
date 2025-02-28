@@ -16,7 +16,7 @@ const cn = classNames.bind(styles);
 type EditorProps = {
   content: any;
   onContentChange: any;
-  onFileUpload?: (fileUrl: string | null) => void;
+  onFileUpload?: (fileUrl: string) => void;
   item: {
     checklistId: number;
     id: number;
@@ -348,7 +348,7 @@ export default function TextEditor({ content, onContentChange, onFileUpload, ite
       setAttachedFileUrl(undefined);
       
       if (onFileUpload) {
-        onFileUpload(null);
+        onFileUpload("");
       }
     }
     setPrevHtml(newContent);

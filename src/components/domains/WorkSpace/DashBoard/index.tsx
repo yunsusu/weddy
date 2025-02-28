@@ -27,6 +27,7 @@ interface DashBoardProps {
       dueDate: string;
       assigneeName: string;
       statusName: string;
+      attachedFileUrl: string;
     }[];
   };
   memberData: any;

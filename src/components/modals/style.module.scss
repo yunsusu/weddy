@@ -95,7 +95,7 @@
   display: flex;
   align-items: center;
   color: #333;
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
 
   & > p {
     margin-left: 0.8rem;
@@ -124,7 +124,7 @@
 
 .detail {
   width: 100%;
-  height: 67%;
+  height: 70%;
   display: flex;
   flex-direction: column;
   align-items: start;
@@ -132,7 +132,7 @@
 
 .detailIcon {
   display: flex;
-  margin-bottom: 3rem;
+  margin-bottom: 1rem;
 }
 
 .detailIconMargin {
@@ -141,7 +141,7 @@
 
 .modalDetail {
   width: 100%;
-  height: 89%;
+  height: 80%;
   font-size: 1.5rem;
   position: relative;
   flex-grow: 1;
@@ -209,21 +209,19 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: end;
+  justify-content: space-between;
 }
 
 .editor {
   width: 100%;
-  height: 88%;
+  height: 85%;
   margin-bottom: 2rem;
   border: none;
-  padding: 2rem;
   outline: none;
   overflow-y: auto;
   overflow-x: hidden;
   line-height: 1.5;
   font-size: 1.6rem;
-  box-sizing: border-box;
 
   &::-webkit-scrollbar {
     width: 10px;  
@@ -243,5 +241,5 @@
 .editorBtns {
   display: flex;
   justify-content: space-between;
-}
 
+}

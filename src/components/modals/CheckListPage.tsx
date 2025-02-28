@@ -14,7 +14,6 @@ import { updateItem, UpdateItemPayload } from "@/lib/apis/types/updateItem";
 import { useWorkSpaceStore } from "@/lib/store/workSpaceData";
 import { getItem } from "@/lib/apis/workSpace";
 import TextEditor from "./TextEditor";
-import SaveModal from "./SaveModal";
 
 const cn = classNames.bind(styles);
 
@@ -30,6 +29,7 @@ type CheckListPageProps = {
     body: string;
     statusName: string;
     amount: number;
+    attachedFileUrl?: string;
   };
   ids: {
     checklistId?: number;
@@ -57,6 +57,7 @@ export default function CheckListPage({ onClose, item, ids, onDeleteSuccess, onS
     body: item.body || "",
     statusName: item.statusName || "진행 중",
     amount: displayAmount,
+    attachedFileUrl: item.attachedFileUrl || "",
   });
 
   
@@ -69,7 +70,20 @@ export default function CheckListPage({ onClose, item, ids, onDeleteSuccess, onS
   });
 
   const { mutate: updateItemMutate, isPending: isUpdating } = useMutation({
-    mutationFn: (payload: UpdateItemPayload) => updateItem(payload),
+    mutationFn: (payload: UpdateItemPayload) => {
+      const isImageData = payload.attachedFileUrl && 
+      payload.attachedFileUrl.startsWith('data:image/');
+      if (isImageData) {
+        console.log("이미지 데이터 감지됨, 특수 처리 적용");
+        
+        const modifiedPayload = {
+          ...payload,
+          attachedFileUrl: ""
+        };
+        return updateItem(modifiedPayload);
+      }
+      return updateItem(payload);
+    },
     onSuccess: async (data, variables) => {
       const displayAmount = variables.amount / 10000;
       queryClient.setQueryData(
@@ -82,15 +96,23 @@ export default function CheckListPage({ onClose, item, ids, onDeleteSuccess, onS
       await queryClient.invalidateQueries({ queryKey: ["cardData", cardId, cardLength] });
       
       if (selectedItem && selectedItem.id === variables.id) {
-        setSelectedItem({
+        const updatedItem = {
           ...selectedItem,
           title: variables.title,
           dueDate: variables.dueDate,
           assigneeName: variables.assigneeName,
           statusName: variables.statusName,
           body: variables.body,
-          amount: variables.amount
-        });
+          amount: variables.amount,
+        };
+        const isImageAttachment = variables.attachedFileUrl && 
+        variables.attachedFileUrl.startsWith('data:image/');
+      
+        if (!isImageAttachment) {
+          (updatedItem as any).attachedFileUrl = variables.attachedFileUrl;
+        }
+        
+        setSelectedItem(updatedItem);
       }
 
       setFormData({
@@ -99,7 +121,8 @@ export default function CheckListPage({ onClose, item, ids, onDeleteSuccess, onS
         assigneeName: variables.assigneeName,
         body: variables.body || "",
         statusName: variables.statusName,
-        amount: displayAmount 
+        amount: displayAmount,
+        attachedFileUrl: variables.attachedFileUrl || "",
       });
       onShowSaveModal();
     },
@@ -151,6 +174,7 @@ export default function CheckListPage({ onClose, item, ids, onDeleteSuccess, onS
         body: smallCatData.body || item.body || "",
         statusName: smallCatData.statusName || item.statusName || "진행 중",
         amount: displayAmount,
+        attachedFileUrl: smallCatData.attachedFileUrl || item.attachedFileUrl || "",
       });
     }
   }, [smallCatData, item]);
@@ -160,6 +184,13 @@ export default function CheckListPage({ onClose, item, ids, onDeleteSuccess, onS
     setFormData(prev => ({
       ...prev,
       [name]: value
+    }));
+  };
+
+  const handleFileUpload = (fileUrl: string) => {
+    setFormData(prev => ({
+      ...prev,
+      attachedFileUrl: fileUrl
     }));
   };
 
@@ -192,6 +223,16 @@ export default function CheckListPage({ onClose, item, ids, onDeleteSuccess, onS
 
     const serverAmount = Number(formData.amount) * 10000;
 
+    if (formData.attachedFileUrl) {
+      const sizeInKB = Math.round(formData.attachedFileUrl.length / 1024);
+      console.log(`attachedFileUrl 크기: ${sizeInKB}KB`);
+      
+      // 경고: 1MB 이상이면 경고 표시
+      if (sizeInKB > 1024) {
+        console.warn(`첨부 파일 크기가 큽니다: ${sizeInKB}KB`);
+      }
+    }
+
     const payload: UpdateItemPayload = {
       checklistId: ids.checklistId,
       id: ids.smallCatItemId,
@@ -202,6 +243,7 @@ export default function CheckListPage({ onClose, item, ids, onDeleteSuccess, onS
       body: formData.body || "",
       statusName: formData.statusName,
       amount: serverAmount,
+      attachedFileUrl: formData.attachedFileUrl || "",
     };
 
     setFormData(prev => ({
@@ -212,7 +254,7 @@ export default function CheckListPage({ onClose, item, ids, onDeleteSuccess, onS
       body: formData.body || "",
       statusName: formData.statusName,
     }));
-
+    
     updateItemMutate(payload);
   };
 
@@ -287,9 +329,9 @@ export default function CheckListPage({ onClose, item, ids, onDeleteSuccess, onS
             <div className={cn("modalDetail")}>
               <TextEditor 
                 content={formData.body} 
-                onContentChange={(newContent: any) => 
-                  setFormData((prev) => ({ ...prev, body: newContent }))
-                }              
+                onContentChange={(newContent: any) => setFormData((prev) => ({ ...prev, body: newContent }))}
+                onFileUpload={handleFileUpload}
+                item={item}
               />
             </div>
           </div>

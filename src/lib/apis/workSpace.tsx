@@ -9,26 +9,38 @@ export const getMember = async (memberId: any) => {
   }
 };
 
-export const getCard = async (memberId: any) => {
+export const getCard = async (memberId: any, itemStatus: string) => {
   try {
-    const res = await instance.get(
-      `/checklist/large-cat-item?memberId=${memberId}`
-    );
-    return res.data;
+    if (itemStatus) {
+      const res = await instance.get(
+        `/checklist/large-cat-item?memberId=${memberId}&itemStatuses=${itemStatus}`
+      );
+      return res.data;
+    } else {
+      const res = await instance.get(
+        `/checklist/large-cat-item?memberId=${memberId}`
+      );
+      return res.data;
+    }
   } catch (e) {
     console.error(e);
   }
 };
 
-export const getItem = async (checklistId: any, largeCatItemId:any, smallCatItemId: any) => {
+export const getItem = async (
+  checklistId: any,
+  largeCatItemId: any,
+  smallCatItemId: any
+) => {
   try {
     const res = await instance.get(
-      `/checklist/large-cat-item/small-cat-Item/item`, {
+      `/checklist/large-cat-item/small-cat-Item/item`,
+      {
         params: {
           checklistId,
           largeCatItemId,
-          smallCatItemId
-        }
+          smallCatItemId,
+        },
       }
     );
     return res.data;

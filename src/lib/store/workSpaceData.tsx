@@ -1,6 +1,6 @@
-import { create } from 'zustand';
-import { getCard, getMember } from '../apis/workSpace';
-import { LargeCatItem, SmallCatItem } from '../apis/types/types';
+import { create } from "zustand";
+import { SmallCatItem } from "../apis/types/types";
+import { getCard, getMember } from "../apis/workSpace";
 
 interface WorkSpaceState {
   checklistId: number;
@@ -41,7 +41,7 @@ export const useWorkSpaceStore = create<WorkSpaceState>((set, get) => ({
   setSelectedItem: (item) => set({ selectedItem: item }),
   setSideMenuValue: (value) => set({ sideMenuValue: value }),
   fetchCardData: async (cardId) => {
-    const data = await getCard(cardId);
+    const data = await getCard(cardId, "");
     set({ card: data });
     set({ sideMenuValue: data });
   },

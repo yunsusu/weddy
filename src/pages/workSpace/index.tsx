@@ -6,6 +6,7 @@ import SpaceSearch from "@/components/domains/WorkSpace/SpaceSearch";
 import CheckListPage from "@/components/modals/CheckListPage";
 import { getCard, getMember, moveSmallCard } from "@/lib/apis/workSpace";
 
+import MobileFilter from "@/components/commons/Filter/mobileFilter";
 import SaveModal from "@/components/modals/SaveModal";
 import { SmallCatItem } from "@/lib/apis/types/types";
 import useFilterStore from "@/lib/store/filter";
@@ -25,6 +26,7 @@ const cn = classNames.bind(styles);
 
 export default function WorkSpace() {
   const [card, setCard] = useState<any>([]);
+  const [dDay, setDDay] = useState<boolean>(false);
   const [cardId, setCardId] = useState<number>(1);
   const [cardLength, setCardLength] = useState<number>(0);
   const { sideMenuState } = useSideMenuStore();
@@ -143,7 +145,9 @@ export default function WorkSpace() {
     setCard(dragCardList);
     moveCard(postMoveCard);
   };
-  // console.log(card);
+  const handleChangeDday = () => {
+    setDDay(true);
+  };
   return (
     <div className={cn("workSide")}>
       <span className={cn("sideMenuBox", { active: sideMenuState })}></span>
@@ -164,14 +168,33 @@ export default function WorkSpace() {
             <br /> 웨디가 함께할께요.
           </h2>
           <div className={cn("dDay")}>
-            <p>결혼식</p>
+            <p>
+              결혼식{" "}
+              {dDay ? (
+                <span onClick={() => setDDay((prev) => !prev)}>(변경하기)</span>
+              ) : (
+                <span onClick={handleChangeDday}>(수정)</span>
+              )}
+            </p>
             <p className={cn("ddayNum")}>
-              D - <span style={{ color: color }}>{memberData?.dDay}</span>
+              D -{" "}
+              {dDay ? (
+                <input
+                  style={{ color: color }}
+                  type="text"
+                  defaultValue={memberData?.dDay}
+                  className={cn("dDayChange")}
+                />
+              ) : (
+                <span style={{ color: color }}>{memberData?.dDay}</span>
+              )}
             </p>
           </div>
         </div>
 
         <SpaceSearch placeholder={"할 일을 검색해 주세요."} />
+
+        <MobileFilter />
 
         <div className={cn("dashWrap")}>
           <DragDropContext onDragEnd={onDragEnd}>

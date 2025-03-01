@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { SmallCatItem } from "../apis/types/types";
+import { LargeCatItem, SmallCatItem } from "../apis/types/types";
 import { getCard, getMember } from "../apis/workSpace";
 
 interface WorkSpaceState {
@@ -37,7 +37,7 @@ export const useWorkSpaceStore = create<WorkSpaceState>((set, get) => ({
   setCardId: (id) => set({ cardId: id }),
   setCardLength: (length) => set({ cardLength: length }),
   setMemberData: (data) => set({ memberData: data }),
-  setSelectLargeItem: (item) => set({ selectLargeItem: item}),
+  setSelectLargeItem: (item) => set({ selectLargeItem: item }),
   setSelectedItem: (item) => set({ selectedItem: item }),
   setSideMenuValue: (value) => set({ sideMenuValue: value }),
   fetchCardData: async (cardId) => {

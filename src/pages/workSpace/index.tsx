@@ -4,8 +4,11 @@ import DashBoardMore from "@/components/domains/WorkSpace/DashBoardMore";
 import SideMenu from "@/components/domains/WorkSpace/SideMenu";
 import SpaceSearch from "@/components/domains/WorkSpace/SpaceSearch";
 import CheckListPage from "@/components/modals/CheckListPage";
-import { getCard, getItem, getMember, moveSmallCard } from "@/lib/apis/workSpace";
+import { getCard, getMember, moveSmallCard } from "@/lib/apis/workSpace";
 
+import SaveModal from "@/components/modals/SaveModal";
+import { SmallCatItem } from "@/lib/apis/types/types";
+import useFilterStore from "@/lib/store/filter";
 import useLoginData from "@/lib/store/loginData";
 import useColorStore from "@/lib/store/mainColor";
 import useSideMenuStore from "@/lib/store/sideMenu";
@@ -14,11 +17,9 @@ import { useWorkSpaceStore } from "@/lib/store/workSpaceData";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import classNames from "classnames/bind";
 import Image from "next/image";
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { DragDropContext } from "react-beautiful-dnd";
 import styles from "./style.module.scss";
-import { SmallCatItem } from "@/lib/apis/types/types";
 
 const cn = classNames.bind(styles);
 
@@ -31,18 +32,20 @@ export default function WorkSpace() {
   const { data: loginData } = useLoginData();
   const { color } = useColorStore();
   const { checklistId, selectedItem, setSelectedItem } = useWorkSpaceStore();
+  const [showSaveModal, setShowSaveModal] = useState(false);
+  const { filterBox } = useFilterStore();
 
   const { data: cardDatas, isSuccess } = useQuery({
     queryKey: ["cardData", cardId, cardLength],
-    queryFn: () => getCard(cardId),
+    queryFn: () => getCard(cardId, filterBox.progressStatus),
   });
-
+  useEffect(() => {
+    setCardLength((prev) => prev + 1);
+  }, [filterBox.progressStatus]);
   const { data: memberData } = useQuery({
     queryKey: ["memberData", cardId],
     queryFn: () => getMember(cardId),
   });
-
-
 
   const handleOpenModal = (item: SmallCatItem) => {
     setSelectedItem(item);
@@ -50,6 +53,14 @@ export default function WorkSpace() {
 
   const handleCloseModal = () => {
     setSelectedItem(null);
+  };
+
+  const handleShowSaveModal = () => {
+    setShowSaveModal(true);
+  };
+
+  const handleCloseSaveModal = () => {
+    setShowSaveModal(false);
   };
 
   const handleItemDelete = () => {
@@ -76,16 +87,6 @@ export default function WorkSpace() {
     setCard(cardDatas);
     setSideMenuValue(cardDatas);
   }, [isSuccess]);
-
-  // useEffect(() => {
-  //   if (loginData) {
-  //     router.push("/login");
-  //   }
-
-  //   // setCardId(loginData?.id);
-  // }, [loginData]);
-
-  console.log(card);
 
   const { mutate: moveCard } = useMutation({
     mutationFn: (data) => moveSmallCard(data),
@@ -139,11 +140,10 @@ export default function WorkSpace() {
       ),
     };
 
-    console.log(postMoveCard);
-
     setCard(dragCardList);
     moveCard(postMoveCard);
   };
+  // console.log(card);
   return (
     <div className={cn("workSide")}>
       <span className={cn("sideMenuBox", { active: sideMenuState })}></span>
@@ -175,16 +175,22 @@ export default function WorkSpace() {
 
         <div className={cn("dashWrap")}>
           <DragDropContext onDragEnd={onDragEnd}>
-            {card?.map((item: any, index: number) => (
-              <DashBoard
-                data={item}
-                key={item.id}
-                num={index}
-                memberData={memberData}
-                setCard={setCard}
-                onOpenModal={handleOpenModal}
-              />
-            ))}
+            {card
+              ?.filter((item: any) =>
+                filterBox.category.length === 0
+                  ? true
+                  : filterBox.category.includes(item.title)
+              )
+              .map((item: any, index: number) => (
+                <DashBoard
+                  data={item}
+                  key={item.id}
+                  num={index}
+                  memberData={memberData}
+                  setCard={setCard}
+                  onOpenModal={handleOpenModal}
+                />
+              ))}
             <DashBoardMore
               memberData={memberData}
               setCardLength={setCardLength}
@@ -205,8 +211,11 @@ export default function WorkSpace() {
             smallCatItemId: selectedItem?.id || 0,
           }}
           onDeleteSuccess={handleItemDelete}
+          onShowSaveModal={handleShowSaveModal}
         />
       )}
+
+      {showSaveModal && <SaveModal onClose={handleCloseSaveModal} />}
     </div>
   );
 }

@@ -9,7 +9,9 @@ import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import styles from "./style.module.scss";
 
-import page2Img from "@/../public/images/testImg.jpg";
+import main1 from "@/../public/images/main1.png";
+import main2 from "@/../public/images/main2.png";
+import Footer from "@/components/commons/Footer";
 import { getCheckList, postCheckListCreate } from "@/lib/apis/firstVisit";
 
 const cn = classNames.bind(styles);
@@ -42,7 +44,7 @@ export default function Home() {
     queryKey: ["getMyData", data],
     queryFn: () => getCheckList(data.id),
   });
-  console.log(checkSuccess);
+  console.log(data);
   const handlePost = () => {
     if (data) {
       const dataBox: any = {
@@ -151,57 +153,57 @@ export default function Home() {
       }
 
       // 콘솔 로그 추가 - 디버깅용
-      console.log({
-        scrollPosition,
-        rawPageIndex,
-        currentPageIndex,
-        nextPageIndex,
-        scrollProgress,
-        currentColor: PAGE_COLORS[currentPageIndex],
-        nextColor:
-          nextPageIndex < totalPages ? PAGE_COLORS[nextPageIndex] : null,
-      });
+      // console.log({
+      //   scrollPosition,
+      //   rawPageIndex,
+      //   currentPageIndex,
+      //   nextPageIndex,
+      //   scrollProgress,
+      //   currentColor: PAGE_COLORS[currentPageIndex],
+      //   nextColor:
+      //     nextPageIndex < totalPages ? PAGE_COLORS[nextPageIndex] : null,
+      // });
 
       // 배경색 전환 로직
-      if (nextPageIndex < totalPages) {
-        // 스크롤이 페이지의 반 이상 넘어갔을 때만 색상 변경 시작
-        if (scrollProgress >= 0.5) {
-          const transitionProgress = (scrollProgress - 0.5) * 2; // 0.5~1 범위를 0~1로 변환
+      // if (nextPageIndex < totalPages) {
+      //   // 스크롤이 페이지의 반 이상 넘어갔을 때만 색상 변경 시작
+      //   if (scrollProgress >= 0.5) {
+      //     const transitionProgress = (scrollProgress - 0.5) * 2; // 0.5~1 범위를 0~1로 변환
 
-          const currentColor = PAGE_COLORS[currentPageIndex];
-          const nextColor = PAGE_COLORS[nextPageIndex];
+      //     const currentColor = PAGE_COLORS[currentPageIndex];
+      //     const nextColor = PAGE_COLORS[nextPageIndex];
 
-          console.log(
-            `Transitioning to next color: ${nextColor}, progress: ${transitionProgress}`
-          );
+      //     // console.log(
+      //     //   `Transitioning to next color: ${nextColor}, progress: ${transitionProgress}`
+      //     // );
 
-          if (currentColor === "transparent") {
-            // 첫 페이지에서 두 번째 페이지로 전환 시
-            overlayElement.style.backgroundColor = nextColor;
-            overlayElement.style.opacity = String(transitionProgress);
-          } else if (nextColor === "transparent") {
-            // 다른 페이지에서 첫 페이지로 전환 시
-            overlayElement.style.backgroundColor = currentColor;
-            overlayElement.style.opacity = String(1 - transitionProgress);
-          } else {
-            // 일반적인 색상 간 전환 (페이지 2->3 또는 3->4)
-            overlayElement.style.backgroundColor = nextColor;
-            overlayElement.style.opacity = "1";
-          }
-        } else {
-          // 스크롤이 페이지의 반 미만일 때는 현재 페이지 색상 유지
-          console.log(
-            `Staying at current color: ${PAGE_COLORS[currentPageIndex]}`
-          );
-          overlayElement.style.backgroundColor = PAGE_COLORS[currentPageIndex];
-          overlayElement.style.opacity = currentPageIndex === 0 ? "0" : "1";
-        }
-      } else {
-        // 마지막 페이지일 경우
-        console.log(`Last page color: ${PAGE_COLORS[currentPageIndex]}`);
-        overlayElement.style.backgroundColor = PAGE_COLORS[currentPageIndex];
-        overlayElement.style.opacity = "1";
-      }
+      //     if (currentColor === "transparent") {
+      //       // 첫 페이지에서 두 번째 페이지로 전환 시
+      //       overlayElement.style.backgroundColor = nextColor;
+      //       overlayElement.style.opacity = String(transitionProgress);
+      //     } else if (nextColor === "transparent") {
+      //       // 다른 페이지에서 첫 페이지로 전환 시
+      //       overlayElement.style.backgroundColor = currentColor;
+      //       overlayElement.style.opacity = String(1 - transitionProgress);
+      //     } else {
+      //       // 일반적인 색상 간 전환 (페이지 2->3 또는 3->4)
+      //       overlayElement.style.backgroundColor = nextColor;
+      //       overlayElement.style.opacity = "1";
+      //     }
+      //   } else {
+      //     // 스크롤이 페이지의 반 미만일 때는 현재 페이지 색상 유지
+      //     // console.log(
+      //     //   `Staying at current color: ${PAGE_COLORS[currentPageIndex]}`
+      //     // );
+      //     overlayElement.style.backgroundColor = PAGE_COLORS[currentPageIndex];
+      //     overlayElement.style.opacity = currentPageIndex === 0 ? "0" : "1";
+      //   }
+      // } else {
+      //   // 마지막 페이지일 경우
+      //   console.log(`Last page color: ${PAGE_COLORS[currentPageIndex]}`);
+      //   overlayElement.style.backgroundColor = PAGE_COLORS[currentPageIndex];
+      //   overlayElement.style.opacity = "1";
+      // }
     };
 
     // 초기 실행 - 페이지 로드 시 배경색 설정
@@ -264,41 +266,47 @@ export default function Home() {
       <div className={cn("page")}>
         <div className={cn("secondPageContent")}>
           <div className={cn("secondPageSentence")}>
+            <p className={cn("miniTitle")}>체크리스트</p>
             <h2>
-              맞춤형 설정과
+              결혼준비 올인원
               <br />
-              체계적인 정보 관리
+              템플릿으로 똑똑하게
             </h2>
             <p>
-              사용자 맞춤형 커스터마이징 기능을 통해 개인화된 체크리스트를
-              만들고, 필요한 정보를 한곳에 정리하여 효율적으로 관리할 수
-              있습니다.
+              결혼 준비에 필요한 주요 항목이 담긴 기본 템플릿으로 바로
+              시작하세요. 원하는 대로 항목을 추가, 삭제, 수정할 수 있어 더욱
+              편리합니다.
             </p>
           </div>
-          <Image src={page2Img} alt="웨디 이미지" width={400} height={400} />
+          <div className={cn("imgCover")}>
+            <Image src={main1} alt="웨디 이미지" fill objectFit="contain" />
+          </div>
         </div>
       </div>
 
       {/* Page 3 */}
       <div className={cn("page")}>
         <div className={cn("thirdPageContent")}>
+          <div className={cn("imgCover")}>
+            <Image src={main2} alt="웨디 이미지" fill objectFit="contain" />
+          </div>
           <div className={cn("thirdPageSentence")}>
+            <p className={cn("miniTitle")}>대시보드</p>
             <h2>
-              예비 부부의
+              진행 상황 확인도,
               <br />
-              막막함 해소
+              예산 관리도 한번에
             </h2>
             <p>
-              방대한 준비 항목을 체계적으로 정리하여 시작점부터 명확하게
-              제시하고, 결혼 준비의 복잡함을 덜어줍니다.
+              상태별 필터링을 통해 진행 상황을 한눈에 확인하세요. 메모와 기한
+              설정까지 모든 정보를 한곳에서 편리하게 관리할 수 있습니다.
             </p>
           </div>
-          <Image src={page2Img} alt="웨디 이미지" width={400} height={400} />
         </div>
       </div>
 
       {/* Page 4 */}
-      <div className={cn("page")}>
+      {/* <div className={cn("page")}>
         <div className={cn("fourthPageContent")}>
           <div className={cn("foruthPageSentence")}>
             <h2>
@@ -314,7 +322,7 @@ export default function Home() {
           </div>
           <Image src={page2Img} alt="웨디 이미지" width={400} height={400} />
         </div>
-      </div>
+      </div> */}
 
       {currentPage < totalPages - 1 && (
         <ScrollArrow
@@ -323,6 +331,7 @@ export default function Home() {
           className={cn("downArrow")}
         />
       )}
+      <Footer />
     </div>
   );
 }

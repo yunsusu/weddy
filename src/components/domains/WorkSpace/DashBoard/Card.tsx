@@ -1,5 +1,5 @@
-import date from "@/../public/icons/date.svg";
-import assignee from "@/../public/icons/people.svg";
+import date from "@/../public/icons/date2.svg";
+import assignee from "@/../public/icons/people2.svg";
 import useCardStore from "@/lib/store/choiceCard";
 import useColorStore from "@/lib/store/mainColor";
 import classNames from "classnames/bind";
@@ -60,11 +60,11 @@ export default function Card({ item, checklistId, onOpenModal }: Card) {
           <h3>{item.title}</h3>
         </div>
         <div className={cn("assignee")}>
-          <Image src={assignee} alt="담당자" width={16} height={16} />
+          <Image src={assignee} alt="담당자" width={26} height={26} />
           <p>{item.assigneeName}</p>
         </div>
         <div className={cn("date")}>
-          <Image src={date} alt="날짜" width={16} height={16} />
+          <Image src={date} alt="날짜" width={26} height={26} />
           <p>{itemDate}</p>
         </div>
       </div>

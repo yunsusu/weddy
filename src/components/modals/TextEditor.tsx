@@ -16,7 +16,7 @@ const cn = classNames.bind(styles);
 type EditorProps = {
   content: any;
   onContentChange: any;
-  onFileUpload?: (fileUrl: string) => void;
+  onFileUpload?: (fileUrl: string, isNewFile?: boolean) => void;
   item: {
     checklistId: number;
     id: number;
@@ -62,6 +62,7 @@ export default function TextEditor({ content, onContentChange, onFileUpload, ite
       if (editorRef.current.innerHTML !== content) {
         editorRef.current.innerHTML = content;
         setPrevHtml(content);
+        applyImageProtection();
       }
     }
   }, [content, isUpdatingContent]);
@@ -74,6 +75,31 @@ export default function TextEditor({ content, onContentChange, onFileUpload, ite
     const sel = window.getSelection();
     if (sel && sel.getRangeAt && sel.rangeCount) {
       setSelection(sel.getRangeAt(0));
+    }
+  };
+
+  const applyImageProtection = () => {
+    if (editorRef.current) {
+      const images = editorRef.current.querySelectorAll('img');
+      images.forEach(img => {
+        // 이미지 드래그 방지
+        img.setAttribute('draggable', 'false');
+        
+        // 이미지에 직접 이벤트 추가
+        img.addEventListener('dragstart', preventEvent);
+        img.addEventListener('contextmenu', preventEvent);
+        
+        // 이미지 부모 컨테이너에도 이벤트 적용
+        const parentContainer = img.closest('.image-attachment');
+        if (parentContainer) {
+          parentContainer.addEventListener('dragstart', preventEvent);
+          parentContainer.addEventListener('contextmenu', preventEvent);
+        }
+        
+        // 스타일 추가
+        img.style.userSelect = 'none';
+        img.style.pointerEvents = 'none';
+      });
     }
   };
 
@@ -96,6 +122,11 @@ export default function TextEditor({ content, onContentChange, onFileUpload, ite
         sel.addRange(range);
       }
     }
+  };
+
+  const preventEvent = (e: Event) => {
+    e.preventDefault();
+    return false;
   };
 
   const applyStyle = (command: string, value?: string) => {
@@ -298,8 +329,8 @@ export default function TextEditor({ content, onContentChange, onFileUpload, ite
       const imgContainerId = `img-container-${randomId}`;
       restoreSelection();
       
-      const imgHtml = `<div contenteditable="false" id="${imgContainerId}" class="image-attachment" style="margin: 10px 0; text-align: center;">
-      <img src="${imageContent}" alt="업로드된 이미지" style="max-width: 100%; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);" />
+      const imgHtml = `<div contenteditable="false" id="${imgContainerId}" class="image-attachment" style="margin: 10px 0; text-align: center;" ondragstart="return false;" oncontextmenu="return false;">
+      <img src="${imageContent}" alt="업로드된 이미지" style="max-width: 100%; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); user-select: none; pointer-events: none;" draggable="false" />
     </div>&#8203;`; 
       
       document.execCommand("insertHTML", false, imgHtml);
@@ -319,7 +350,9 @@ export default function TextEditor({ content, onContentChange, onFileUpload, ite
           }
         }
         handleChange();
+        applyImageProtection();
       }, 10);
+
       setAttachedFileUrl(imageContent);
       if (onFileUpload && imageContent) {
         onFileUpload(imageContent);
@@ -345,10 +378,11 @@ export default function TextEditor({ content, onContentChange, onFileUpload, ite
 
     if ((hasFileAttachmentBefore && !hasFileAttachmentNow) || 
         (hasImageAttachmentBefore && !hasImageAttachmentNow)) {
+          console.log("파일 또는 이미지 삭제 감지됨");
       setAttachedFileUrl(undefined);
       
       if (onFileUpload) {
-        onFileUpload("");
+        onFileUpload("", false);
       }
     }
     setPrevHtml(newContent);

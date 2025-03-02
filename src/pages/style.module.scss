@@ -1,3 +1,30 @@
+.backgroundOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: transparent;
+  opacity: 0;
+  transition: background-color 0.3s ease-out, opacity 0.3s ease-out;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.secondPageContent,
+.thirdPageContent,
+.fourthPageContent {
+  background-color: transparent !important;
+  position: relative;
+  z-index: 1;
+}
+
+.indexWrap {
+  width: 100%;
+  height: 100vh;
+  padding-top: 7rem;
+}
+
 .indexBKG {
   position: relative;
   display: flex;
@@ -39,4 +66,131 @@
   border-radius: 3rem;
   color: white;
   font-weight: bold;
+}
+
+.pageContainer {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+}
+
+.page {
+  width: 100%;
+  height: 100vh;
+  scroll-snap-align: start;
+  position: relative;
+  overflow: hidden;
+}
+
+.scrollArrow {
+  position: fixed;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.9);
+    transform: scale(1.1);
+  }
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.upArrow {
+  top: 90px;
+  left: 50%;
+}
+
+.downArrow {
+  bottom: 20px;
+  left: 50%;
+}
+
+.secondPageContent, .thirdPageContent, .fourthPageContent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 20rem;
+  line-height: 1.6;
+  color: white;
+}
+
+.secondPageSentence {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  margin-right: 15rem;
+
+  & > h2 {
+    font-size: 4.8rem;
+    font-weight: 500;
+  }
+
+  & > p {
+    font-size: 1.8rem;
+  }
+}
+
+.thirdPageSentence {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  margin-right: 15rem;
+
+  & > h2 {
+    font-size: 4.8rem;
+    font-weight: 500;
+  }
+
+  & > p {
+    font-size: 1.8rem;
+  }
+}
+
+.foruthPageSentence {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  margin-right: 15rem;
+
+  & > h2 {
+    font-size: 4.8rem;
+    font-weight: 500;
+  }
+
+  & > p {
+    font-size: 1.8rem;
+  }
+}
+
+.startBtn {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #357ab8;
+  }
 }

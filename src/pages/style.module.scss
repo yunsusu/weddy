@@ -123,7 +123,7 @@
   align-items: center;
   justify-content: center;
   height: 100%;
-  padding: 20rem;
+  padding: 10rem;
   line-height: 1.6;
   // color: white;
   display: flex;
@@ -140,6 +140,7 @@
   flex-direction: column;
   justify-content: center;
   gap: 2.4rem;
+  flex: 2;
   // margin-right: 15rem;
 
   & > h2 {
@@ -179,6 +180,7 @@
   position: relative;
   width: 60rem;
   height: 33rem;
+  flex: 2;
 }
 .miniTitle {
   color: var(--Primary-Color, #7034f3);

@@ -39,7 +39,6 @@ export default function Card({ item, checklistId, onOpenModal }: Card) {
     <>
       <div
         className={item.statusName ? cn("cardWrap") : cn("cardWrapNone")}
-        style={{ border: `1px solid ${color}` }}
         onClick={handleOpenModal}
       >
         <div
@@ -61,11 +60,11 @@ export default function Card({ item, checklistId, onOpenModal }: Card) {
         </div>
         <div className={cn("assignee")}>
           <Image src={assignee} alt="담당자" width={26} height={26} />
-          <p>{item.assigneeName}</p>
+          <p>{item.assigneeName ? item.assigneeName : "담당자"}</p>
         </div>
         <div className={cn("date")}>
           <Image src={date} alt="날짜" width={26} height={26} />
-          <p>{itemDate}</p>
+          <p>{itemDate ? itemDate : "마감일자"}</p>
         </div>
       </div>
     </>

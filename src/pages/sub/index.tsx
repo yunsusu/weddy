@@ -8,11 +8,25 @@ const cn = classNames.bind(styles);
 
 export default function Sub() {
   const [number, setNumber] = useState<string>("");
+  const [hase, setHash] = useState<boolean>(false);
   useEffect(() => {
     const hashValue = window.location.hash;
 
-    const number = hashValue.substring(1);
-  }, []);
+    const num = hashValue.substring(1);
+    setNumber(num);
+  }, [hase]);
+
+  const handleScroll = (
+    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
+    id: string
+  ) => {
+    setHash((prev) => !prev);
+    e.preventDefault(); // 기본 동작 방지
+    const section = document.getElementById(id);
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  };
   return (
     <>
       <div className={cn("container")}>
@@ -196,47 +210,83 @@ export default function Sub() {
         <nav className={cn("sidebar")}>
           <ul className={cn("sidebar-list")}>
             <li>
-              <Link href="#1" className={cn(Number(number) === 1 && "on")}>
+              <Link
+                href="#1"
+                onClick={(e) => handleScroll(e, "1")}
+                className={cn(Number(number) === 1 && "on")}
+              >
                 1. 총칙
               </Link>
             </li>
             <li>
-              <Link href="#2" className={cn(Number(number) === 2 && "on")}>
+              <Link
+                href="#2"
+                onClick={(e) => handleScroll(e, "2")}
+                className={cn(Number(number) === 2 && "on")}
+              >
                 2. 개인정보의 수집 항목 및 방법
               </Link>
             </li>
             <li>
-              <Link href="#3" className={cn(Number(number) === 3 && "on")}>
+              <Link
+                href="#3"
+                onClick={(e) => handleScroll(e, "3")}
+                className={cn(Number(number) === 3 && "on")}
+              >
                 3. 개인정보의 이용 목적
               </Link>
             </li>
             <li>
-              <Link href="#4" className={cn(Number(number) === 4 && "on")}>
+              <Link
+                href="#4"
+                onClick={(e) => handleScroll(e, "4")}
+                className={cn(Number(number) === 4 && "on")}
+              >
                 4. 개인정보의 보관 및 파기
               </Link>
             </li>
             <li>
-              <Link href="#5" className={cn(Number(number) === 5 && "on")}>
+              <Link
+                href="#5"
+                onClick={(e) => handleScroll(e, "5")}
+                className={cn(Number(number) === 5 && "on")}
+              >
                 5. 개인정보 제공 및 위탁
               </Link>
             </li>
             <li>
-              <Link href="#6" className={cn(Number(number) === 6 && "on")}>
+              <Link
+                href="#6"
+                onClick={(e) => handleScroll(e, "6")}
+                className={cn(Number(number) === 6 && "on")}
+              >
                 6. 이용자의 권리 및 행사 방법
               </Link>
             </li>
             <li>
-              <Link href="#7" className={cn(Number(number) === 7 && "on")}>
+              <Link
+                href="#7"
+                onClick={(e) => handleScroll(e, "7")}
+                className={cn(Number(number) === 7 && "on")}
+              >
                 7. 개인정보 보호를 위한 조치
               </Link>
             </li>
             <li>
-              <Link href="#8" className={cn(Number(number) === 8 && "on")}>
+              <Link
+                href="#8"
+                onClick={(e) => handleScroll(e, "8")}
+                className={cn(Number(number) === 8 && "on")}
+              >
                 8. 개인정보 보호 책임자 및 문의
               </Link>
             </li>
             <li>
-              <Link href="#9" className={cn(Number(number) === 9 && "on")}>
+              <Link
+                href="#9"
+                onClick={(e) => handleScroll(e, "9")}
+                className={cn(Number(number) === 9 && "on")}
+              >
                 9. 개인정보처리방침 변경
               </Link>
             </li>

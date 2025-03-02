@@ -70,6 +70,7 @@ export default function WorkSpace() {
 
   const handleCloseSaveModal = () => {
     setShowSaveModal(false);
+    setCardLength((prev) => prev + 1);
   };
 
   const handleItemDelete = () => {
@@ -154,22 +155,19 @@ export default function WorkSpace() {
   };
   const { mutate: postDay } = useMutation({
     mutationFn: (data) => postDday(data),
-    onSuccess: () => {
-      setCardLength((prev) => prev + 1);
+    onSuccess: (data) => {
+      console.log(data);
+      // setCardLength((prev) => prev + 1);
+      // 수정 필요
+      location.reload();
     },
   });
 
-  useEffect(() => {
-    if (dDay && day && memberData) {
-      const dayBox: any = { memberId: memberData.memberId, dDay: day };
-      postDay(dayBox);
-    }
-  }, [dDay, day, memberData]);
-
   const handleChangeDday = () => {
-    setDDay(true);
+    setDDay(false);
+    let dayBox: any = { memberId: memberData.memberId, dDay: day };
+    postDay(dayBox);
   };
-  console.log(memberData);
   return (
     <div className={cn("workSide")}>
       <span className={cn("sideMenuBox", { active: sideMenuState })}></span>
@@ -193,9 +191,9 @@ export default function WorkSpace() {
             <p>
               결혼식{" "}
               {dDay ? (
-                <span onClick={() => setDDay((prev) => !prev)}>(변경하기)</span>
+                <span onClick={handleChangeDday}>(변경하기)</span>
               ) : (
-                <span onClick={handleChangeDday}>(수정)</span>
+                <span onClick={() => setDDay(true)}>(수정)</span>
               )}
             </p>
             <p className={cn("ddayNum")}>
@@ -216,7 +214,7 @@ export default function WorkSpace() {
           </div>
         </div>
 
-        <SpaceSearch placeholder={"할 일을 검색해 주세요."} />
+        <SpaceSearch placeholder={"플랜을 검색해주세요."} />
 
         <MobileFilter />
 

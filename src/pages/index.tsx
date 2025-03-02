@@ -2,7 +2,7 @@ import ScrollArrow from "@/components/commons/ScrollArrow";
 import { getMyData } from "@/lib/apis/authme";
 import useLoginData from "@/lib/store/loginData";
 import { useWorkSpaceStore } from "@/lib/store/workSpaceData";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import classNames from "classnames/bind";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -12,7 +12,6 @@ import styles from "./style.module.scss";
 import main1 from "@/../public/images/main1.png";
 import main2 from "@/../public/images/main2.png";
 import Footer from "@/components/commons/Footer";
-import { getCheckList, postCheckListCreate } from "@/lib/apis/firstVisit";
 
 const cn = classNames.bind(styles);
 
@@ -39,23 +38,6 @@ export default function Home() {
   const { data, isSuccess, isError } = useQuery({
     queryKey: ["getMyData"],
     queryFn: getMyData,
-  });
-  const { data: getCheck, isSuccess: checkSuccess } = useQuery({
-    queryKey: ["getMyData", data],
-    queryFn: () => getCheckList(data.id),
-  });
-  console.log(data);
-  const handlePost = () => {
-    if (data) {
-      const dataBox: any = {
-        memberId: data.id,
-      };
-      mutate(dataBox);
-    }
-  };
-
-  const { mutate } = useMutation({
-    mutationFn: (data) => postCheckListCreate(data),
   });
 
   const handleWorkSpaceClick = (checklistId: number) => {

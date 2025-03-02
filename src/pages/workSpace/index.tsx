@@ -13,6 +13,7 @@ import {
 
 import MobileFilter from "@/components/commons/Filter/mobileFilter";
 import SaveModal from "@/components/modals/SaveModal";
+import { getCheckList, postCheckListCreate } from "@/lib/apis/firstVisit";
 import { SmallCatItem } from "@/lib/apis/types/types";
 import useFilterStore from "@/lib/store/filter";
 import useLoginData from "@/lib/store/loginData";
@@ -55,6 +56,27 @@ export default function WorkSpace() {
     queryKey: ["memberData", cardId],
     queryFn: () => getMember(cardId),
   });
+  const handlePost = () => {
+    if (memberData) {
+      const dataBox: any = {
+        memberId: memberData.memberId,
+      };
+      mutate(dataBox);
+    }
+  };
+  const { data: getCheck, isSuccess: checkSuccess } = useQuery({
+    queryKey: ["getMyData", memberData],
+    queryFn: () => getCheckList(memberData.id),
+  });
+  const { mutate } = useMutation({
+    mutationFn: (data) => postCheckListCreate(data),
+  });
+  console.log(cardDatas);
+  useEffect(() => {
+    if (getCheck?.status === 200 && cardDatas?.length === 0) {
+      handlePost();
+    }
+  }, [getCheck]);
 
   const handleOpenModal = (item: SmallCatItem) => {
     setSelectedItem(item);

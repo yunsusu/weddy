@@ -244,7 +244,7 @@ export default function Home() {
       </div>
 
       {/* Page 2 */}
-      <div className={cn("page")}>
+      <div className={cn("page")} id="2">
         <div className={cn("secondPageContent")}>
           <div className={cn("secondPageSentence")}>
             <p className={cn("miniTitle")}>체크리스트</p>

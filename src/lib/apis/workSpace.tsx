@@ -113,3 +113,12 @@ export const moveSmallCard = async (data: any) => {
     console.error(e);
   }
 };
+
+export const postDday = async (data: any) => {
+  try {
+    const res = await instance.patch(`/checklist/me/d-day`, data);
+    return res.data;
+  } catch (e) {
+    console.error(e);
+  }
+};

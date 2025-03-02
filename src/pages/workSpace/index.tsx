@@ -210,14 +210,7 @@ export default function WorkSpace() {
             <br /> 웨디가 함께할께요.
           </h2>
           <div className={cn("dDay")}>
-            <p>
-              결혼식{" "}
-              {dDay ? (
-                <span onClick={handleChangeDday}>(변경하기)</span>
-              ) : (
-                <span onClick={() => setDDay(true)}>(수정)</span>
-              )}
-            </p>
+            <p>결혼식 </p>
             <p className={cn("ddayNum")}>
               D -{" "}
               {dDay ? (
@@ -233,6 +226,13 @@ export default function WorkSpace() {
                 </span>
               )}
             </p>
+            <div className={cn("change")}>
+              {dDay ? (
+                <span onClick={handleChangeDday}>✏️변경하기</span>
+              ) : (
+                <span onClick={() => setDDay(true)}>✏️수정</span>
+              )}
+            </div>
           </div>
         </div>
 

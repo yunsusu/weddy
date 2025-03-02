@@ -19,8 +19,6 @@ export default function MobileFilter() {
       : [], // 각 menu의 title을 추출해서 배열에 넣음
   };
 
-  console.log(filterBox);
-
   const assignee = {
     title: "담당자",
     item: ["신랑", "신부"],

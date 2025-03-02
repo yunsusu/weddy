@@ -18,6 +18,19 @@
 
 .section {
   flex: 2;
+  & ul {
+    margin-top: 2.4rem;
+    color: var(--Gray600, #756d80);
+    font-family: Pretendard;
+    font-size: 1.7rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 160%; /* 27.2px */
+  }
+  & li {
+    list-style: disc;
+    margin-left: 2.5rem;
+  }
 }
 
 .section-title {
@@ -55,14 +68,6 @@
   font-style: normal;
   font-weight: 600;
   line-height: 160%; /* 27.2px */
-
-  & ul {
-    margin-top: 2.4rem;
-  }
-  & li {
-    list-style: disc;
-    margin-left: 2.5rem;
-  }
 }
 
 .innerUl {

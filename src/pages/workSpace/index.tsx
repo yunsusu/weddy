@@ -4,7 +4,12 @@ import DashBoardMore from "@/components/domains/WorkSpace/DashBoardMore";
 import SideMenu from "@/components/domains/WorkSpace/SideMenu";
 import SpaceSearch from "@/components/domains/WorkSpace/SpaceSearch";
 import CheckListPage from "@/components/modals/CheckListPage";
-import { getCard, getMember, moveSmallCard } from "@/lib/apis/workSpace";
+import {
+  getCard,
+  getMember,
+  moveSmallCard,
+  postDday,
+} from "@/lib/apis/workSpace";
 
 import MobileFilter from "@/components/commons/Filter/mobileFilter";
 import SaveModal from "@/components/modals/SaveModal";
@@ -27,6 +32,7 @@ const cn = classNames.bind(styles);
 export default function WorkSpace() {
   const [card, setCard] = useState<any>([]);
   const [dDay, setDDay] = useState<boolean>(false);
+  const [day, setDay] = useState<string>("");
   const [cardId, setCardId] = useState<number>(1);
   const [cardLength, setCardLength] = useState<number>(0);
   const { sideMenuState } = useSideMenuStore();
@@ -40,6 +46,7 @@ export default function WorkSpace() {
   const { data: cardDatas, isSuccess } = useQuery({
     queryKey: ["cardData", cardId, cardLength],
     queryFn: () => getCard(cardId, filterBox.progressStatus),
+    enabled: !dDay,
   });
   useEffect(() => {
     setCardLength((prev) => prev + 1);
@@ -145,9 +152,24 @@ export default function WorkSpace() {
     setCard(dragCardList);
     moveCard(postMoveCard);
   };
+  const { mutate: postDay } = useMutation({
+    mutationFn: (data) => postDday(data),
+    onSuccess: () => {
+      setCardLength((prev) => prev + 1);
+    },
+  });
+
+  useEffect(() => {
+    if (dDay && day && memberData) {
+      const dayBox: any = { memberId: memberData.memberId, dDay: day };
+      postDay(dayBox);
+    }
+  }, [dDay, day, memberData]);
+
   const handleChangeDday = () => {
     setDDay(true);
   };
+  console.log(memberData);
   return (
     <div className={cn("workSide")}>
       <span className={cn("sideMenuBox", { active: sideMenuState })}></span>
@@ -181,12 +203,14 @@ export default function WorkSpace() {
               {dDay ? (
                 <input
                   style={{ color: color }}
-                  type="text"
-                  defaultValue={memberData?.dDay}
+                  type="date"
                   className={cn("dDayChange")}
+                  onChange={(e) => setDay(e.target.value)}
                 />
               ) : (
-                <span style={{ color: color }}>{memberData?.dDay}</span>
+                <span style={{ color: color, cursor: "auto" }}>
+                  {memberData?.dDay != null ? memberData?.dDay : "?"}
+                </span>
               )}
             </p>
           </div>

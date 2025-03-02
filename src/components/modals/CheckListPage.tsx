@@ -71,17 +71,11 @@ export default function CheckListPage({ onClose, item, ids, onDeleteSuccess, onS
 
   const { mutate: updateItemMutate, isPending: isUpdating } = useMutation({
     mutationFn: (payload: UpdateItemPayload) => {
-      const isImageData = payload.attachedFileUrl && 
-      payload.attachedFileUrl.startsWith('data:image/');
-      if (isImageData) {
-        console.log("이미지 데이터 감지됨, 특수 처리 적용");
-        
-        const modifiedPayload = {
-          ...payload,
-          attachedFileUrl: ""
-        };
-        return updateItem(modifiedPayload);
+      if (payload.attachedFileUrl && payload.attachedFileUrl.includes('.data:')) {
+        console.log('여러 파일이 감지되었습니다. 파일 개수:', 
+          payload.attachedFileUrl.split('.').filter(url => url.startsWith('data:')).length);
       }
+      
       return updateItem(payload);
     },
     onSuccess: async (data, variables) => {
@@ -104,6 +98,7 @@ export default function CheckListPage({ onClose, item, ids, onDeleteSuccess, onS
           statusName: variables.statusName,
           body: variables.body,
           amount: variables.amount,
+          attachedFileUrl: variables.attachedFileUrl || "",
         };
         const isImageAttachment = variables.attachedFileUrl && 
         variables.attachedFileUrl.startsWith('data:image/');
@@ -187,11 +182,30 @@ export default function CheckListPage({ onClose, item, ids, onDeleteSuccess, onS
     }));
   };
 
-  const handleFileUpload = (fileUrl: string) => {
-    setFormData(prev => ({
-      ...prev,
-      attachedFileUrl: fileUrl
-    }));
+  const handleFileUpload = (fileUrl: string, isNewFile: boolean = true) => {
+    setFormData(prev => {
+      if (fileUrl === "") {
+        return {
+          ...prev,
+          attachedFileUrl: ""
+        };
+      } else if (isNewFile) {
+        const existingUrl = prev.attachedFileUrl || "";
+        const newAttachedFileUrl = existingUrl ? 
+          `${existingUrl}.${fileUrl}` : 
+          fileUrl;
+        
+        return {
+          ...prev,
+          attachedFileUrl: newAttachedFileUrl
+        };
+      } else {
+        return {
+          ...prev,
+          attachedFileUrl: fileUrl
+        };
+      }
+    });
   };
 
   const handleProgressChange = (newStatus: string) => {
@@ -218,18 +232,24 @@ export default function CheckListPage({ onClose, item, ids, onDeleteSuccess, onS
 
     if (!ids.checklistId || !ids.largeCatItemId || !ids.smallCatItemId) {
       alert("필수 데이터가 누락되었습니다.");
+      console.log(ids.checklistId, ids.largeCatItemId, ids.smallCatItemId)
       return;
     }
 
     const serverAmount = Number(formData.amount) * 10000;
 
     if (formData.attachedFileUrl) {
-      const sizeInKB = Math.round(formData.attachedFileUrl.length / 1024);
-      console.log(`attachedFileUrl 크기: ${sizeInKB}KB`);
-      
-      // 경고: 1MB 이상이면 경고 표시
-      if (sizeInKB > 1024) {
-        console.warn(`첨부 파일 크기가 큽니다: ${sizeInKB}KB`);
+      const fileUrls = formData.attachedFileUrl.split('.');
+      for (const url of fileUrls) {
+        if (url.startsWith('data:')) {
+          const sizeInKB = Math.round(url.length / 1024);
+          console.log(`첨부 파일 크기: ${sizeInKB}KB`);
+          
+          // 경고: 1MB 이상이면 경고 표시
+          if (sizeInKB > 1024) {
+            console.warn(`첨부 파일 크기가 큽니다: ${sizeInKB}KB`);
+          }
+        }
       }
     }
 
@@ -254,6 +274,35 @@ export default function CheckListPage({ onClose, item, ids, onDeleteSuccess, onS
       body: formData.body || "",
       statusName: formData.statusName,
     }));
+
+    updateItemMutate(payload);
+  };
+
+  const handleFileDeleteSave = () => {
+    if (!ids.checklistId || !ids.largeCatItemId || !ids.smallCatItemId) {
+      console.error("필수 데이터가 누락되었습니다.");
+      return;
+    }
+  
+    const serverAmount = Number(formData.amount) * 10000;
+  
+    const payload: UpdateItemPayload = {
+      checklistId: ids.checklistId,
+      id: ids.smallCatItemId,
+      largeCatItemId: ids.largeCatItemId,
+      title: formData.title,
+      dueDate: formData.dueDate || new Date().toISOString().split("T")[0],
+      assigneeName: formData.assigneeName,
+      body: formData.body || "",
+      statusName: formData.statusName,
+      amount: serverAmount,
+      attachedFileUrl: "", // Set to empty string to remove from database
+    };
+  
+    console.log("파일 삭제로 인한 자동 저장:", {
+      ...payload,
+      body: payload.body.substring(0, 100) + (payload.body.length > 100 ? '...' : ''),
+    });
     
     updateItemMutate(payload);
   };

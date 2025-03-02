@@ -127,7 +127,7 @@ export default function DashBoard({
 
     return () => clearTimeout(debounceTimeout);
   }, [searchWord, data.smallCatItems]);
-  console.log(filteredItems);
+  // console.log(filteredItems);
   return (
     <div
       className={

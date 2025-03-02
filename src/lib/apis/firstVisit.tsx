@@ -3,7 +3,7 @@ import { instance } from "./axios";
 export const getCheckList = async (id: any) => {
   try {
     const res = await instance.get(`/checklist/assigned?memberId=${id}`);
-    return res.data;
+    return res;
   } catch (e) {
     console.error(e);
   }

@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
   //   additionalData: `@use "@/styles/main.scss" as *;`, // ✅ SCSS 파일 자동 추가
   // },
   images: {
-    domains: ["img1.kakaocdn.net"], // 외부 이미지 도메인 추가
+    domains: ["*"], // 외부 이미지 도메인 추가
   },
 };
 

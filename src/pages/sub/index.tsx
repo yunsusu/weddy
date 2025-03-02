@@ -1,14 +1,18 @@
 import Footer from "@/components/commons/Footer";
 import classNames from "classnames/bind";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import styles from "./style.module.scss";
 
 const cn = classNames.bind(styles);
 
 export default function Sub() {
-  const hashValue = window.location.hash;
+  const [number, setNumber] = useState<string>("");
+  useEffect(() => {
+    const hashValue = window.location.hash;
 
-  const number = hashValue.substring(1);
+    const number = hashValue.substring(1);
+  }, []);
   return (
     <>
       <div className={cn("container")}>
@@ -69,15 +73,15 @@ export default function Sub() {
             <span className={cn("number")}>3</span> 개인정보의 이용 목적
           </h2>
           <p className={cn("text")}>
-            웨디는 수집한 개인정보를 다음과 같은 목적으로 이용합니다.
-            <ul>
-              <li>이용자의 결혼 준비 체크리스트 저장 및 관리</li>
-              <li>서비스 운영 및 개선</li>
-              <li>고객 문의 응대 및 지원</li>
-              <li>서비스 이용 통계 분석 및 맞춤형 서비스 제공</li>
-              <li>법적 의무 준수 및 서비스 보안 강화</li>
-            </ul>
+            웨디는 수집한 개인정보를 다음과 같은 목적으로 이용합니다.{" "}
           </p>
+          <ul>
+            <li>이용자의 결혼 준비 체크리스트 저장 및 관리</li>
+            <li>서비스 운영 및 개선</li>
+            <li>고객 문의 응대 및 지원</li>
+            <li>서비스 이용 통계 분석 및 맞춤형 서비스 제공</li>
+            <li>법적 의무 준수 및 서비스 보안 강화</li>
+          </ul>
         </section>
 
         <section className={cn("section")} id="4">
@@ -88,30 +92,30 @@ export default function Sub() {
             웨디는 개인정보를 이용자가 서비스를 이용하는 동안 보관하며,
             원칙적으로 수집 및 이용 목적이 달성되면 즉시 파기합니다. 단, 관련
             법령에 의해 일정 기간 보관이 필요한 경우 다음과 같이 보관됩니다.
-            <ul>
-              <li>서비스 이용 기록: 이용자의 계정 삭제 시 즉시 삭제</li>
-              <li>
-                법령에 따른 보관 기간: 계약 또는 청약철회 등에 관한 기록: 5년
-                (전자상거래 등에서의 소비자 보호에 관한 법률)
-                <ul className={cn("innerUl")}>
-                  <li>
-                    소비자의 불만 또는 분쟁 처리에 관한 기록: 3년 (전자상거래법)
-                  </li>
-                  <li>방문 기록: 1년 (통신비밀보호법)</li>
-                </ul>
-              </li>
-              <li>
-                파기 절차 및 방법:
-                <ul className={cn("innerUl")}>
-                  <li>
-                    전자적 파일 형태의 개인정보는 복구 및 재생이 불가능한 기술적
-                    방법을 사용하여 완전 삭제
-                  </li>
-                  <li>종이에 출력된 개인정보는 분쇄하거나 소각하여 파기</li>
-                </ul>
-              </li>
-            </ul>
           </p>
+          <ul>
+            <li>서비스 이용 기록: 이용자의 계정 삭제 시 즉시 삭제</li>
+            <li>
+              법령에 따른 보관 기간: 계약 또는 청약철회 등에 관한 기록: 5년
+              (전자상거래 등에서의 소비자 보호에 관한 법률)
+              <ul className={cn("innerUl")}>
+                <li>
+                  소비자의 불만 또는 분쟁 처리에 관한 기록: 3년 (전자상거래법)
+                </li>
+                <li>방문 기록: 1년 (통신비밀보호법)</li>
+              </ul>
+            </li>
+            <li>
+              파기 절차 및 방법:
+              <ul className={cn("innerUl")}>
+                <li>
+                  전자적 파일 형태의 개인정보는 복구 및 재생이 불가능한 기술적
+                  방법을 사용하여 완전 삭제
+                </li>
+                <li>종이에 출력된 개인정보는 분쇄하거나 소각하여 파기</li>
+              </ul>
+            </li>
+          </ul>
         </section>
 
         <section className={cn("section")} id="5">
@@ -121,15 +125,15 @@ export default function Sub() {
           <p className={cn("text")}>
             웨디는 이용자의 개인정보를 원칙적으로 외부에 제공하지 않습니다.
             다만, 다음의 경우에는 예외로 합니다.
-            <ul>
-              <li>이용자가 사전에 동의한 경우</li>
-              <li>법령에 의해 제공이 요구되는 경우</li>
-              <li>
-                서비스 운영을 위한 일부 업무를 신뢰할 수 있는 외부 업체에
-                위탁하는 경우 (예: 데이터 서버 운영)
-              </li>
-            </ul>
           </p>
+          <ul>
+            <li>이용자가 사전에 동의한 경우</li>
+            <li>법령에 의해 제공이 요구되는 경우</li>
+            <li>
+              서비스 운영을 위한 일부 업무를 신뢰할 수 있는 외부 업체에 위탁하는
+              경우 (예: 데이터 서버 운영)
+            </li>
+          </ul>
         </section>
 
         <section className={cn("section")} id="6">
@@ -140,12 +144,12 @@ export default function Sub() {
             이용자는 언제든지 자신의 개인정보를 열람, 수정, 삭제 요청할 수
             있으며, 회원 탈퇴 시 개인정보가 즉시 삭제됩니다. 이용자는 다음
             방법을 통해 권리를 행사할 수 있습니다.
-            <ul>
-              <li>서비스 내 개인정보 수정 기능 이용</li>
-              <li>고객센터 문의를 통한 요청</li>
-              <li>이메일을 통한 개인정보 삭제 요청 (ajh02060@naver.com)</li>
-            </ul>
           </p>
+          <ul>
+            <li>서비스 내 개인정보 수정 기능 이용</li>
+            <li>고객센터 문의를 통한 요청</li>
+            <li>이메일을 통한 개인정보 삭제 요청 (ajh02060@naver.com)</li>
+          </ul>
         </section>
 
         <section className={cn("section")} id="7">
@@ -155,13 +159,13 @@ export default function Sub() {
           <p className={cn("text")}>
             웨디는 이용자의 개인정보를 보호하기 위해 다음과 같은 조치를 취하고
             있습니다.
-            <ul>
-              <li>개인정보 접근 제한 및 관리</li>
-              <li>데이터 암호화 및 보안 서버 운영</li>
-              <li>주기적인 보안 점검 및 관리</li>
-              <li>이용자 계정 보호를 위한 인증 절차 적용</li>
-            </ul>
           </p>
+          <ul>
+            <li>개인정보 접근 제한 및 관리</li>
+            <li>데이터 암호화 및 보안 서버 운영</li>
+            <li>주기적인 보안 점검 및 관리</li>
+            <li>이용자 계정 보호를 위한 인증 절차 적용</li>
+          </ul>
         </section>
 
         <section className={cn("section")} id="8">
@@ -171,12 +175,12 @@ export default function Sub() {
           <p className={cn("text")}>
             개인정보 보호와 관련된 문의사항은 아래의 연락처로 문의하실 수
             있습니다.
-            <ul>
-              <li>개인정보 보호 책임자: 최예린</li>
-              <li>이메일: ajh02060@naver.com</li>
-              <li>연락처: 010-2094-3722</li>
-            </ul>
           </p>
+          <ul>
+            <li>개인정보 보호 책임자: 최예린</li>
+            <li>이메일: ajh02060@naver.com</li>
+            <li>연락처: 010-2094-3722</li>
+          </ul>
         </section>
 
         <section className={cn("section")} id="9">

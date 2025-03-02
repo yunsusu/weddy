@@ -236,7 +236,6 @@ export default function Home() {
             className={cn("indexBtn")}
             onClick={() => {
               handleWorkSpaceClick(1);
-              handlePost();
             }}
           >
             체크리스트 만들기

@@ -450,25 +450,25 @@ export default function TextEditor({
         ></div>
         <div className={cn("editorBtns")}>
           <button type="button" onClick={() => applyStyle("bold")}>
-            <Image src={fontBold} alt="폰트 굵게" width={35} height={35} />
+            <Image src={fontBold} alt="폰트 굵게" width={25} height={25} />
           </button>
           <button type="button" onClick={() => applyStyle("italic")}>
-            <Image src={fontItalic} alt="폰트 기울기" width={35} height={35} />
+            <Image src={fontItalic} alt="폰트 기울기" width={25} height={25} />
           </button>
           <button type="button" onClick={() => applyStyle("strikeThrough")}>
-            <Image src={fontMiddle} alt="폰트 중간줄" width={35} height={35} />
+            <Image src={fontMiddle} alt="폰트 중간줄" width={25} height={25} />
           </button>
           <button type="button" onClick={() => applyStyle("underline")}>
-            <Image src={fontUnder} alt="폰트 밑줄" width={35} height={35} />
+            <Image src={fontUnder} alt="폰트 밑줄" width={25} height={25} />
           </button>
           <button type="button" onClick={insertYoutube}>
-            <Image src={youtube} alt="유튜브 링크" width={35} height={35} />
+            <Image src={youtube} alt="유튜브 링크" width={25} height={25} />
           </button>
           <button type="button" onClick={attachFile} disabled={isUploading}>
-            <Image src={link} alt="파일 첨부" width={35} height={35} />
+            <Image src={link} alt="파일 첨부" width={25} height={25} />
           </button>
           <button type="button" onClick={insertImage} disabled={isUploading}>
-            <Image src={picture} alt="사진 첨부" width={35} height={35} />
+            <Image src={picture} alt="사진 첨부" width={25} height={25} />
           </button>
         </div>
 

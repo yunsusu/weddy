@@ -11,6 +11,7 @@ import {
   postDday,
 } from "@/lib/apis/workSpace";
 
+import change from "@/../public/icons/pen.svg";
 import MobileFilter from "@/components/commons/Filter/mobileFilter";
 import SaveModal from "@/components/modals/SaveModal";
 import { getMyData } from "@/lib/apis/authme";
@@ -45,6 +46,7 @@ export default function WorkSpace() {
   const [showSaveModal, setShowSaveModal] = useState(false);
   const { filterBox } = useFilterStore();
 
+  // 체크리스트 대분류들
   const { data: cardDatas, isSuccess } = useQuery({
     queryKey: ["cardData", cardId, cardLength],
     queryFn: () => getCard(cardId, filterBox.progressStatus),
@@ -53,14 +55,17 @@ export default function WorkSpace() {
   useEffect(() => {
     setCardLength((prev) => prev + 1);
   }, [filterBox.progressStatus]);
+  // dday와 체크리스트 정보
   const { data: memberData } = useQuery({
     queryKey: ["memberData", cardId],
     queryFn: () => getMember(cardId),
   });
+  // 유저 정보
   const { data } = useQuery({
     queryKey: ["getMyData"],
     queryFn: getMyData,
   });
+  // 새로운 체크리스트 생성
   const handlePost = () => {
     if (data) {
       const dataBox: any = {
@@ -69,14 +74,16 @@ export default function WorkSpace() {
       mutate(dataBox);
     }
   };
+  // 체크리스트가 있는지 없는지 정보
   const { data: getCheck, isSuccess: checkSuccess } = useQuery({
     queryKey: ["getMyData", memberData],
     queryFn: () => getCheckList(memberData.id),
   });
+
   const { mutate } = useMutation({
     mutationFn: (data) => postCheckListCreate(data),
   });
-
+  // 체크리스트가 없으면 생성
   useEffect(() => {
     if (getCheck?.status === 404) {
       handlePost();
@@ -208,7 +215,6 @@ export default function WorkSpace() {
       <main className={cn("workSpaceWrap")}>
         <div className={cn("profile")}>
           <Image
-            onClick={handlePost}
             src={
               loginData?.profileImageUrl !== null
                 ? loginData?.profileImageUrl
@@ -223,9 +229,21 @@ export default function WorkSpace() {
             <br /> 웨디가 함께할께요.
           </h2>
           <div className={cn("dDay")}>
-            <p>결혼식 </p>
+            <p>
+              결혼식
+              {dDay ? (
+                <span onClick={handleChangeDday}>
+                  <Image src={change} alt="수정완료" width={20} height={20} />
+                  변경
+                </span>
+              ) : (
+                <span onClick={() => setDDay(true)}>
+                  <Image src={change} alt="수정하기" width={20} height={20} />
+                </span>
+              )}
+            </p>
             <p className={cn("ddayNum")}>
-              D -{" "}
+              D-{" "}
               {dDay ? (
                 <input
                   style={{ color: color }}
@@ -239,13 +257,6 @@ export default function WorkSpace() {
                 </span>
               )}
             </p>
-            <div className={cn("change")}>
-              {dDay ? (
-                <span onClick={handleChangeDday}>✏️변경하기</span>
-              ) : (
-                <span onClick={() => setDDay(true)}>✏️수정</span>
-              )}
-            </div>
           </div>
         </div>
 

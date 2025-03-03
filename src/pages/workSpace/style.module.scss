@@ -80,6 +80,8 @@
   font-weight: 700;
   & span {
     color: #7034f3;
+    display: flex;
+    align-items: baseline;
   }
   @media all and (max-width: 599px) {
     font-size: 3.6rem;

@@ -46,10 +46,19 @@
 }
 
 .dDay {
-  color: #000;
+  color: #756d80;
   font-size: 2rem;
   font-weight: 700;
   align-self: flex-end;
+  & > p {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  & span {
+    display: flex;
+  }
   @media all and (max-width: 599px) {
     font-size: 1.3rem;
   }
@@ -66,7 +75,7 @@
   align-items: center;
   gap: 1rem;
   font-family: Quicksand;
-  color: #000;
+  color: #756d80;
   font-size: 6.8rem;
   font-weight: 700;
   & span {

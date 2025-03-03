@@ -363,76 +363,72 @@ export default function CheckListPage({
       <div className={cn("modalContents")}>
         <ProgressModal item={item} onChange={handleProgressChange} />
         <form className={cn("modalForm")} onSubmit={handleSave}>
-          <h2>
-            <input
-              type="text"
-              name="title"
-              value={formData.title}
-              placeholder="제목을 입력하세요."
-              onChange={handleChange}
-            />
-          </h2>
-          <div className={cn("assignee", "label")}>
-            <Image src={assignee} alt="담당자" width={16} height={16} />
-            <p>담당자</p>
-          </div>
-          <div className={cn("people")}>
-            <button
-              type="button"
-              className={cn("assigneeBtn", {
-                active: formData.assigneeName === "신랑",
-              })}
-              onClick={() =>
-                setFormData((prev) => ({ ...prev, assigneeName: "신랑" }))
-              }
-            >
-              신랑
-            </button>
-            <button
-              type="button"
-              className={cn("assigneeBtn", {
-                active: formData.assigneeName === "신부",
-              })}
-              onClick={() =>
-                setFormData((prev) => ({ ...prev, assigneeName: "신부" }))
-              }
-            >
-              신부
-            </button>
-          </div>
-          <div className={cn("date", "label")}>
-            <Image src={date} alt="날짜" width={16} height={16} />
-            <input
-              type="date"
-              onChange={handleChange}
-              value={formData.dueDate}
-              name="dueDate"
-              placeholder="날짜를 선택하세요."
-              min={today}
-            />
-          </div>
-          <div className={cn("amount", "label")}>
-            <Image src={amount} alt="금액" width={16} height={16} />
-            <input
-              type="number"
-              onChange={handleChange}
-              value={formData.amount}
-              name="amount"
-            />
-            <span>만원</span>
+          <div className={cn("formFlex")}>
+            <h2>
+              <input
+                type="text"
+                name="title"
+                value={formData.title}
+                placeholder="제목을 입력하세요."
+                onChange={handleChange}
+              />
+            </h2>
+            <div className={cn("assignee", "label")}>
+              <Image src={assignee} alt="담당자" width={20} height={20} />
+              <p>담당자</p>
+            </div>
+            <div className={cn("people")}>
+              <button
+                type="button"
+                className={cn("assigneeBtn", {
+                  active: formData.assigneeName === "신랑",
+                })}
+                onClick={() =>
+                  setFormData((prev) => ({ ...prev, assigneeName: "신랑" }))
+                }
+              >
+                신랑
+              </button>
+              <button
+                type="button"
+                className={cn("assigneeBtn", {
+                  active: formData.assigneeName === "신부",
+                })}
+                onClick={() =>
+                  setFormData((prev) => ({ ...prev, assigneeName: "신부" }))
+                }
+              >
+                신부
+              </button>
+            </div>
+            <div className={cn("date", "label")}>
+              <Image src={date} alt="날짜" width={20} height={20} />
+              <input
+                type="date"
+                onChange={handleChange}
+                value={formData.dueDate}
+                name="dueDate"
+                placeholder="날짜를 선택하세요."
+                min={today}
+              />
+            </div>
+            <div className={cn("amount", "label")}>
+              <Image src={amount} alt="금액" width={20} height={20} />
+              <input
+                type="number"
+                onChange={handleChange}
+                value={formData.amount}
+                name="amount"
+              />
+              <span>만원</span>
+            </div>
           </div>
           <div className={cn("detail", "label")}>
-            <div className={cn("detailIcon")}>
-              <Image
-                className={cn("detailIconMargin")}
-                src={detail}
-                alt="내용"
-                width={16}
-                height={16}
-              />
-              <p>내용</p>
-            </div>
             <div className={cn("modalDetail")}>
+              <div className={cn("detailIcon")}>
+                <Image className={cn("detailIconMargin")} src={detail} alt="내용" width={20} height={20} />
+                <p>내용</p>
+              </div>
               <TextEditor
                 content={formData.body}
                 onContentChange={(newContent: any) =>
@@ -441,6 +437,7 @@ export default function CheckListPage({
                 onFileUpload={handleFileUpload}
                 item={item}
               />
+            </div>
               <div className={cn("modalFooter")}>
                 <button
                   type="submit"
@@ -450,7 +447,6 @@ export default function CheckListPage({
                   {isUpdating ? "저장 중..." : "저장하기"}
                 </button>
               </div>
-            </div>
           </div>
         </form>
       </div>

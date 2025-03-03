@@ -13,35 +13,39 @@
 .modalContents {
   width: 100%;
   height: 95%;
-  padding: 4rem 6rem 0 6rem;
+  padding: 4rem 6rem 2rem;
 }
 
 .modalForm {
   width: 100%;
-  height: 100%;
+  height: 94%;
   margin-top: 1rem;
   display: flex;
   flex-direction: column;
+  justify-content: space-around;
 
-  & > * {
-    margin-bottom: 1rem;
-  }
-
-  & > button > p {
-    margin-right: 0.5rem;
-  }
-
-  & > h2 {
-    font-size: 3rem;
-  }
-
-  & > .assignee {
-    margin-bottom: 1rem;
-  }
-
-  & > .people {
-    display: flex;
-    margin-bottom: 3rem;
+  & > .formFlex {
+    
+    & > * {
+      margin-bottom: 3rem;
+    }
+  
+    & > button > p {
+      margin-right: 0.5rem;
+    }
+  
+    & > h2 {
+      font-size: 3rem;
+    }
+  
+    & > .assignee {
+      margin-bottom: 1rem;
+    }
+  
+    & > .people {
+      display: flex;
+      margin-bottom: 3rem;
+    }
   }
 }
 
@@ -91,11 +95,10 @@
 }
 
 .label {
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   color: #333;
-  margin-bottom: 2rem;
 
   & > p {
     margin-left: 0.8rem;
@@ -125,11 +128,12 @@
 
 .detail {
   width: 100%;
-  // height: 70%;
+  height: 45%;
   flex: 1;
   display: flex;
   flex-direction: column;
   align-items: start;
+  margin-bottom: 0;
 }
 
 .detailIcon {
@@ -143,13 +147,9 @@
 
 .modalDetail {
   width: 100%;
-  height: 100%;
+  height: 85%;
   font-size: 1.5rem;
   position: relative;
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  padding-bottom: 2rem;
 }
 
 .placeholder {
@@ -158,14 +158,11 @@
 
 .modalFooter {
   width: 100%;
-  // position: absolute;
-  bottom: 0;
-  left: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 2rem 0;
+  padding-top: 2rem;
 
   & > .footerContents {
     width: 100%;
@@ -206,7 +203,7 @@
 
 .editorWrap {
   width: 100%;
-  height: 100%;
+  height: 92%;
 }
 
 .editorContents {
@@ -219,14 +216,12 @@
 
 .editor {
   width: 100%;
-  height: 85%;
-  margin-bottom: 2rem;
+  height: 92%;
   border: none;
   outline: none;
   overflow-y: auto;
-  overflow-x: hidden;
   line-height: 1.5;
-  font-size: 1.6rem;
+  font-size: 1.5rem;
 
   &::-webkit-scrollbar {
     width: 10px;

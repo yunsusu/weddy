@@ -1,6 +1,8 @@
+import more from "@/../public/icons/moreCard.svg";
 import { postCard } from "@/lib/apis/workSpace";
 import { useMutation } from "@tanstack/react-query";
 import classNames from "classnames/bind";
+import Image from "next/image";
 import { SubmitHandler, useForm } from "react-hook-form";
 import styles from "./style.module.scss";
 
@@ -32,8 +34,9 @@ export default function DashBoardMore({
   return (
     <div className={cn("dashWrap")}>
       <form onSubmit={handleSubmit(onSubmit)} className={cn("form")}>
-        <input type="text" {...register("title")} />
-        <button type="submit">만들기</button>
+        <button type="submit">항목 추가하기</button>
+        <Image src={more} alt="더보기" width={28} height={28} />
+        {/* <input type="text" {...register("title")} /> */}
       </form>
     </div>
   );

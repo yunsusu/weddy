@@ -13,6 +13,7 @@ import {
 
 import MobileFilter from "@/components/commons/Filter/mobileFilter";
 import SaveModal from "@/components/modals/SaveModal";
+import { getMyData } from "@/lib/apis/authme";
 import { getCheckList, postCheckListCreate } from "@/lib/apis/firstVisit";
 import { SmallCatItem } from "@/lib/apis/types/types";
 import useFilterStore from "@/lib/store/filter";
@@ -56,10 +57,14 @@ export default function WorkSpace() {
     queryKey: ["memberData", cardId],
     queryFn: () => getMember(cardId),
   });
+  const { data } = useQuery({
+    queryKey: ["getMyData"],
+    queryFn: getMyData,
+  });
   const handlePost = () => {
-    if (memberData) {
+    if (data) {
       const dataBox: any = {
-        memberId: memberData.memberId,
+        memberId: data.id,
       };
       mutate(dataBox);
     }
@@ -71,12 +76,19 @@ export default function WorkSpace() {
   const { mutate } = useMutation({
     mutationFn: (data) => postCheckListCreate(data),
   });
-  console.log(cardDatas);
+
   useEffect(() => {
-    if (getCheck?.status === 200 && cardDatas?.length === 0) {
+    if (getCheck?.status === 404) {
       handlePost();
+      location.reload();
     }
   }, [getCheck]);
+
+  useEffect(() => {
+    if (data) {
+      setCardId(data.id);
+    }
+  }, [data]);
 
   const handleOpenModal = (item: SmallCatItem) => {
     setSelectedItem(item);
@@ -196,6 +208,7 @@ export default function WorkSpace() {
       <main className={cn("workSpaceWrap")}>
         <div className={cn("profile")}>
           <Image
+            onClick={handlePost}
             src={
               loginData?.profileImageUrl !== null
                 ? loginData?.profileImageUrl

@@ -44,6 +44,7 @@ export default function WorkSpace() {
   const { color } = useColorStore();
   const { checklistId, selectedItem, setSelectedItem } = useWorkSpaceStore();
   const [showSaveModal, setShowSaveModal] = useState(false);
+  const [currentStatusName, setCurrentStatusName] = useState<string>("");
   const { filterBox } = useFilterStore();
 
   // 체크리스트 대분류들
@@ -76,10 +77,10 @@ export default function WorkSpace() {
   };
   // 체크리스트가 있는지 없는지 정보
   const { data: getCheck, isSuccess: checkSuccess } = useQuery({
-    queryKey: ["getMyData", memberData],
-    queryFn: () => getCheckList(memberData.id),
+    queryKey: ["getMyData", data],
+    queryFn: () => getCheckList(data.id),
   });
-
+  console.log(data);
   const { mutate } = useMutation({
     mutationFn: (data) => postCheckListCreate(data),
   });
@@ -105,13 +106,20 @@ export default function WorkSpace() {
     setSelectedItem(null);
   };
 
-  const handleShowSaveModal = () => {
-    setShowSaveModal(true);
+  const handleShowSaveModal = (statusName: string) => {
+    if (statusName === "완료") {
+      setCurrentStatusName(statusName);
+      setShowSaveModal(true);
+    } else {
+      setCardLength((prev) => prev + 1);
+    }
   };
 
   const handleCloseSaveModal = () => {
     setShowSaveModal(false);
-    setCardLength((prev) => prev + 1);
+    if (currentStatusName === "완료") {
+      setCardLength((prev) => prev + 1);
+    }
   };
 
   const handleItemDelete = () => {
@@ -306,7 +314,12 @@ export default function WorkSpace() {
         />
       )}
 
-      {showSaveModal && <SaveModal onClose={handleCloseSaveModal} />}
+      {showSaveModal && (
+        <SaveModal 
+          onClose={handleCloseSaveModal} 
+          statusName={currentStatusName}
+        />
+      )}
     </div>
   );
 }

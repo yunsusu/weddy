@@ -36,7 +36,7 @@ export default function WorkSpace() {
   const [card, setCard] = useState<any>([]);
   const [dDay, setDDay] = useState<boolean>(false);
   const [day, setDay] = useState<string>("");
-  const [cardId, setCardId] = useState<number>(1);
+  const [cardId, setCardId] = useState<number>(0);
   const [cardLength, setCardLength] = useState<number>(0);
   const { sideMenuState } = useSideMenuStore();
   const { sideMenuValue, setSideMenuValue } = useSideMenuValStore();
@@ -46,20 +46,6 @@ export default function WorkSpace() {
   const [showSaveModal, setShowSaveModal] = useState(false);
   const { filterBox } = useFilterStore();
 
-  // 체크리스트 대분류들
-  const { data: cardDatas, isSuccess } = useQuery({
-    queryKey: ["cardData", cardId, cardLength],
-    queryFn: () => getCard(cardId, filterBox.progressStatus),
-    enabled: !dDay,
-  });
-  useEffect(() => {
-    setCardLength((prev) => prev + 1);
-  }, [filterBox.progressStatus]);
-  // dday와 체크리스트 정보
-  const { data: memberData } = useQuery({
-    queryKey: ["memberData", cardId],
-    queryFn: () => getMember(cardId),
-  });
   // 유저 정보
   const { data } = useQuery({
     queryKey: ["getMyData"],
@@ -75,27 +61,47 @@ export default function WorkSpace() {
     }
   };
   // 체크리스트가 있는지 없는지 정보
-  const { data: getCheck, isSuccess: checkSuccess } = useQuery({
-    queryKey: ["getMyData", data],
-    queryFn: () => getCheckList(data.id),
+  const { data: getCheck, isError: checkError } = useQuery({
+    queryKey: ["getMyData", data?.id],
+    queryFn: () => getCheckList(data?.id),
+    enabled: !!data?.id,
   });
-  console.log(data);
+  console.log(getCheck);
   const { mutate } = useMutation({
     mutationFn: (data) => postCheckListCreate(data),
   });
+
+  // 체크리스트 대분류들
+  const { data: cardDatas, isSuccess } = useQuery({
+    queryKey: ["cardData", cardId, cardLength],
+    queryFn: () => getCard(cardId, filterBox.progressStatus),
+    enabled: !dDay && cardId !== 0,
+  });
+
+  // dday와 체크리스트 정보
+  const { data: memberData } = useQuery({
+    queryKey: ["memberData", cardId, cardLength],
+    queryFn: () => getMember(cardId),
+    enabled: cardId !== 0,
+  });
+
   // 체크리스트가 없으면 생성
   useEffect(() => {
-    if (getCheck?.status === 404) {
+    if (checkError) {
       handlePost();
-      location.reload();
+      setCardLength((prev) => prev + 1);
     }
-  }, [getCheck]);
+  }, [checkError]);
 
   useEffect(() => {
     if (data) {
       setCardId(data.id);
     }
-  }, [data]);
+  }, [data, getCheck]);
+
+  useEffect(() => {
+    setCardLength((prev) => prev + 1);
+  }, [filterBox.progressStatus]);
 
   const handleOpenModal = (item: SmallCatItem) => {
     setSelectedItem(item);

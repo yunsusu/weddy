@@ -5,9 +5,11 @@ const cn = classNames.bind(styles);
 
 type SaveModalProps = {
   onClose: () => void;
+  statusName: string;
 };
 
-export default function SaveModal({ onClose }: SaveModalProps) {
+export default function SaveModal({ onClose, statusName }: SaveModalProps) {
+  
   return (
     <div className={cn("saveModalWrap")}>
       <div className={cn("saveModal")}>

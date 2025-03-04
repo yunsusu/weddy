@@ -77,10 +77,10 @@ export default function WorkSpace() {
   };
   // 체크리스트가 있는지 없는지 정보
   const { data: getCheck, isSuccess: checkSuccess } = useQuery({
-    queryKey: ["getMyData", memberData],
-    queryFn: () => getCheckList(memberData.id),
+    queryKey: ["getMyData", data],
+    queryFn: () => getCheckList(data.id),
   });
-
+  console.log(data);
   const { mutate } = useMutation({
     mutationFn: (data) => postCheckListCreate(data),
   });

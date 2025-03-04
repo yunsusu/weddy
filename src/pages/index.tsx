@@ -15,8 +15,6 @@ import Footer from "@/components/commons/Footer";
 
 const cn = classNames.bind(styles);
 
-const PAGE_COLORS = ["transparent", "#4a90e2", "cadetblue", "dodgerblue"];
-
 export default function Home() {
   const router = useRouter();
   const { data: loginData, setData } = useLoginData();
@@ -105,7 +103,6 @@ export default function Home() {
     setOverlayElement(overlay);
 
     return () => {
-      console.log("Removing overlay element");
       if (overlay && document.body.contains(overlay)) {
         document.body.removeChild(overlay);
       }
@@ -133,59 +130,6 @@ export default function Home() {
         setCurrentPage(roundedPageIndex);
         handleGNBVisibility(roundedPageIndex === 0);
       }
-
-      // 콘솔 로그 추가 - 디버깅용
-      // console.log({
-      //   scrollPosition,
-      //   rawPageIndex,
-      //   currentPageIndex,
-      //   nextPageIndex,
-      //   scrollProgress,
-      //   currentColor: PAGE_COLORS[currentPageIndex],
-      //   nextColor:
-      //     nextPageIndex < totalPages ? PAGE_COLORS[nextPageIndex] : null,
-      // });
-
-      // 배경색 전환 로직
-      // if (nextPageIndex < totalPages) {
-      //   // 스크롤이 페이지의 반 이상 넘어갔을 때만 색상 변경 시작
-      //   if (scrollProgress >= 0.5) {
-      //     const transitionProgress = (scrollProgress - 0.5) * 2; // 0.5~1 범위를 0~1로 변환
-
-      //     const currentColor = PAGE_COLORS[currentPageIndex];
-      //     const nextColor = PAGE_COLORS[nextPageIndex];
-
-      //     // console.log(
-      //     //   `Transitioning to next color: ${nextColor}, progress: ${transitionProgress}`
-      //     // );
-
-      //     if (currentColor === "transparent") {
-      //       // 첫 페이지에서 두 번째 페이지로 전환 시
-      //       overlayElement.style.backgroundColor = nextColor;
-      //       overlayElement.style.opacity = String(transitionProgress);
-      //     } else if (nextColor === "transparent") {
-      //       // 다른 페이지에서 첫 페이지로 전환 시
-      //       overlayElement.style.backgroundColor = currentColor;
-      //       overlayElement.style.opacity = String(1 - transitionProgress);
-      //     } else {
-      //       // 일반적인 색상 간 전환 (페이지 2->3 또는 3->4)
-      //       overlayElement.style.backgroundColor = nextColor;
-      //       overlayElement.style.opacity = "1";
-      //     }
-      //   } else {
-      //     // 스크롤이 페이지의 반 미만일 때는 현재 페이지 색상 유지
-      //     // console.log(
-      //     //   `Staying at current color: ${PAGE_COLORS[currentPageIndex]}`
-      //     // );
-      //     overlayElement.style.backgroundColor = PAGE_COLORS[currentPageIndex];
-      //     overlayElement.style.opacity = currentPageIndex === 0 ? "0" : "1";
-      //   }
-      // } else {
-      //   // 마지막 페이지일 경우
-      //   console.log(`Last page color: ${PAGE_COLORS[currentPageIndex]}`);
-      //   overlayElement.style.backgroundColor = PAGE_COLORS[currentPageIndex];
-      //   overlayElement.style.opacity = "1";
-      // }
     };
 
     // 초기 실행 - 페이지 로드 시 배경색 설정
@@ -214,13 +158,7 @@ export default function Home() {
 
   return (
     <div className={cn("pageContainer")} ref={containerRef}>
-      {currentPage > 0 && (
-        <ScrollArrow
-          direction="up"
-          onClick={handleUpArrowClick}
-          className={cn("upArrow")}
-        />
-      )}
+
 
       {/* Page 1 */}
       <div className={cn("indexWrap")}>
@@ -286,26 +224,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Page 4 */}
-      {/* <div className={cn("page")}>
-        <div className={cn("fourthPageContent")}>
-          <div className={cn("foruthPageSentence")}>
-            <h2>
-              시간 절약과
-              <br />
-              효율적인 진행 관리
-            </h2>
-            <p>
-              필수 체크리스트를 통해 정보 검색 시간을 단축하고, 진행 상황을
-              직관적으로 파악하여 불필요한 시행착오 없이 체계적으로 결혼 준비를
-              할 수 있도록 돕습니다.
-            </p>
-          </div>
-          <Image src={page2Img} alt="웨디 이미지" width={400} height={400} />
-        </div>
-      </div> */}
-
-      {currentPage < totalPages - 1 && (
+      {currentPage === 0 && (
         <ScrollArrow
           direction="down"
           onClick={handleDownArrowClick}

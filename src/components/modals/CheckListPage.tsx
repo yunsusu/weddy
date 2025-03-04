@@ -14,6 +14,7 @@ import React, { useEffect, useRef, useState } from "react";
 import ProgressModal from "./ProgressModal";
 import TextEditor from "./TextEditor";
 import styles from "./style.module.scss";
+import SaveModal from "./SaveModal";
 
 const cn = classNames.bind(styles);
 
@@ -37,7 +38,7 @@ type CheckListPageProps = {
     smallCatItemId?: number;
   };
   onDeleteSuccess: () => void;
-  onShowSaveModal: () => void;
+  onShowSaveModal: (statusName: string) => void;
 };
 
 export default function CheckListPage({
@@ -94,7 +95,6 @@ export default function CheckListPage({
             .filter((url) => url.startsWith("data:")).length
         );
       }
-
       return updateItem(payload);
     },
     onSuccess: async (data, variables) => {
@@ -146,7 +146,12 @@ export default function CheckListPage({
         amount: displayAmount,
         attachedFileUrl: variables.attachedFileUrl || "",
       });
-      onShowSaveModal();
+
+      if (variables.statusName === "완료") {
+        onShowSaveModal(variables.statusName);
+      } else {
+        setCardLength((prev) => prev + 1);
+      }
     },
     onError: (error: Error) => {
       console.error("에러 발생:", error);
@@ -311,38 +316,6 @@ export default function CheckListPage({
       body: formData.body || "",
       statusName: formData.statusName,
     }));
-
-    updateItemMutate(payload);
-  };
-
-  const handleFileDeleteSave = () => {
-    if (!ids.checklistId || !ids.largeCatItemId || !ids.smallCatItemId) {
-      console.error("필수 데이터가 누락되었습니다.");
-      return;
-    }
-
-    const serverAmount = Number(formData.amount) * 10000;
-
-    const payload: UpdateItemPayload = {
-      checklistId: ids.checklistId,
-      id: ids.smallCatItemId,
-      largeCatItemId: ids.largeCatItemId,
-      title: formData.title,
-      dueDate: formData.dueDate || new Date().toISOString().split("T")[0],
-      assigneeName: formData.assigneeName,
-      body: formData.body || "",
-      statusName: formData.statusName,
-      amount: serverAmount,
-      attachedFileUrl: "", // Set to empty string to remove from database
-    };
-
-    console.log("파일 삭제로 인한 자동 저장:", {
-      ...payload,
-      body:
-        payload.body.substring(0, 100) +
-        (payload.body.length > 100 ? "..." : ""),
-    });
-
     updateItemMutate(payload);
   };
 

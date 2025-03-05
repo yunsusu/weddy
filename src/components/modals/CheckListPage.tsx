@@ -386,7 +386,7 @@ export default function CheckListPage({
               />
             </div>
             <div className={cn("amount", "label")}>
-              <Image src={amount} alt="금액" width={20} height={20} />
+              <Image src={amount} alt="금액" width={22} height={22} />
               <input
                 type="number"
                 onChange={handleChange}

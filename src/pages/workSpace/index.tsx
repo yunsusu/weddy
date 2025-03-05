@@ -312,7 +312,9 @@ export default function WorkSpace() {
         />
       )}
 
-      {showSaveModal && <SaveModal onClose={handleCloseSaveModal} />}
+      {showSaveModal && (
+        <SaveModal onClose={handleCloseSaveModal} statusName={""} />
+      )}
     </div>
   );
 }

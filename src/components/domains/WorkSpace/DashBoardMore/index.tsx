@@ -32,12 +32,12 @@ export default function DashBoardMore({
   });
 
   return (
-    <div className={cn("dashWrap")}>
-      <form onSubmit={handleSubmit(onSubmit)} className={cn("form")}>
-        <button type="submit">항목 추가하기</button>
+    <form onSubmit={handleSubmit(onSubmit)} className={cn("form")}>
+      <div className={cn("dashWrap")}>
+        <button type="submit">카테고리 추가</button>
         <Image src={more} alt="더보기" width={28} height={28} />
         {/* <input type="text" {...register("title")} /> */}
-      </form>
-    </div>
+      </div>
+    </form>
   );
 }

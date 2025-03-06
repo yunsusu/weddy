@@ -122,3 +122,19 @@ export const postDday = async (data: any) => {
     console.error(e);
   }
 };
+export const postFile = async (data: any) => {
+  try {
+    const res = await instance.post(`/api/files`, data);
+    return res;
+  } catch (e) {
+    console.error(e);
+  }
+};
+export const saveProfile = async (id: any, dat: any) => {
+  try {
+    const res = await instance.patch(`/member/${id}`, dat);
+    return res;
+  } catch (e) {
+    console.error(e);
+  }
+};

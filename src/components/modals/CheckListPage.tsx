@@ -14,7 +14,6 @@ import React, { useEffect, useRef, useState } from "react";
 import ProgressModal from "./ProgressModal";
 import TextEditor from "./TextEditor";
 import styles from "./style.module.scss";
-import SaveModal from "./SaveModal";
 
 const cn = classNames.bind(styles);
 
@@ -399,7 +398,13 @@ export default function CheckListPage({
           <div className={cn("detail", "label")}>
             <div className={cn("modalDetail")}>
               <div className={cn("detailIcon")}>
-                <Image className={cn("detailIconMargin")} src={detail} alt="내용" width={20} height={20} />
+                <Image
+                  className={cn("detailIconMargin")}
+                  src={detail}
+                  alt="내용"
+                  width={20}
+                  height={20}
+                />
                 <p>내용</p>
               </div>
               <TextEditor
@@ -411,15 +416,15 @@ export default function CheckListPage({
                 item={item}
               />
             </div>
-              <div className={cn("modalFooter")}>
-                <button
-                  type="submit"
-                  className={cn("saveBtn")}
-                  disabled={isUpdating}
-                >
-                  {isUpdating ? "저장 중..." : "저장하기"}
-                </button>
-              </div>
+            <div className={cn("modalFooter")}>
+              <button
+                type="submit"
+                className={cn("saveBtn")}
+                disabled={isUpdating}
+              >
+                {isUpdating ? "저장 중..." : "저장하기"}
+              </button>
+            </div>
           </div>
         </form>
       </div>

@@ -1,4 +1,3 @@
-import profileImg from "@/../public/images/testImg.jpg";
 import DashBoard from "@/components/domains/WorkSpace/DashBoard";
 import DashBoardMore from "@/components/domains/WorkSpace/DashBoardMore";
 import SideMenu from "@/components/domains/WorkSpace/SideMenu";
@@ -9,6 +8,8 @@ import {
   getMember,
   moveSmallCard,
   postDday,
+  postFile,
+  saveProfile,
 } from "@/lib/apis/workSpace";
 
 import change from "@/../public/icons/pen.svg";
@@ -28,9 +29,14 @@ import classNames from "classnames/bind";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { DragDropContext } from "react-beautiful-dnd";
+import { SubmitHandler, useForm } from "react-hook-form";
 import styles from "./style.module.scss";
 
 const cn = classNames.bind(styles);
+
+interface IFormInput {
+  newProfile: any;
+}
 
 export default function WorkSpace() {
   const [card, setCard] = useState<any>([]);
@@ -45,6 +51,18 @@ export default function WorkSpace() {
   const { checklistId, selectedItem, setSelectedItem } = useWorkSpaceStore();
   const [showSaveModal, setShowSaveModal] = useState(false);
   const { filterBox } = useFilterStore();
+  const [profile, setProfile] = useState<string>("");
+  const [saveBtn, setSaveBtn] = useState<boolean>(false);
+
+  const { register, handleSubmit, watch } = useForm<IFormInput>();
+  const onSubmit: SubmitHandler<IFormInput> = (data) => {
+    const dat = {
+      profileImageUrl: profile,
+    };
+    console.log(123123);
+    saveProfileImg({ id: loginData.id, dat });
+    setSaveBtn(false);
+  };
 
   // 유저 정보
   const { data } = useQuery({
@@ -60,15 +78,25 @@ export default function WorkSpace() {
       mutate(dataBox);
     }
   };
+
   // 체크리스트가 있는지 없는지 정보
   const { data: getCheck, isSuccess: checkError } = useQuery({
     queryKey: ["getMyData", data?.id],
     queryFn: () => getCheckList(data?.id),
     enabled: !!data?.id,
   });
-  console.log(getCheck);
+
   const { mutate } = useMutation({
     mutationFn: (data) => postCheckListCreate(data),
+  });
+  const { mutate: saveProfileImg } = useMutation({
+    mutationFn: ({ id, dat }: { id: any; dat: any }) => saveProfile(id, dat),
+  });
+  const { mutate: postImgFile } = useMutation({
+    mutationFn: (data: any) => postFile(data),
+    onSuccess: (data) => {
+      setProfile(data?.data);
+    },
   });
 
   // 체크리스트 대분류들
@@ -92,6 +120,9 @@ export default function WorkSpace() {
       setCardLength((prev) => prev + 1);
     }
   }, [checkError]);
+  useEffect(() => {
+    setSaveBtn(false);
+  }, []);
 
   useEffect(() => {
     if (data) {
@@ -102,6 +133,24 @@ export default function WorkSpace() {
   useEffect(() => {
     setCardLength((prev) => prev + 1);
   }, [filterBox.progressStatus]);
+
+  useEffect(() => {
+    setProfile(loginData?.profileImageUrl);
+  }, [loginData]);
+
+  useEffect(() => {
+    const newProfile = watch("newProfile");
+
+    if (newProfile && newProfile[0]) {
+      const formData = new FormData();
+      formData.append("file", newProfile[0]); // 실제 파일 객체 추가
+
+      console.log([...formData]); // 디버깅용: FormData 내용 확인
+
+      postImgFile(formData); // FormData를 그대로 전송
+      setSaveBtn(true);
+    }
+  }, [watch("newProfile")]);
 
   const handleOpenModal = (item: SmallCatItem) => {
     setSelectedItem(item);
@@ -220,16 +269,23 @@ export default function WorkSpace() {
       <span className={cn("sideMenuBox", { active: sideMenuState })}></span>
       <main className={cn("workSpaceWrap")}>
         <div className={cn("profile")}>
-          <Image
-            src={
-              loginData?.profileImageUrl !== null
-                ? loginData?.profileImageUrl
-                : profileImg
-            }
-            alt="프로필 사진"
-            width={169}
-            height={169}
-          />
+          <div className={cn("profileImg")}>
+            <Image src={profile} alt="프로필 사진" width={169} height={169} />
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              className={cn("profileChange")}
+              // style={{ display: saveBtn ? "block" : "none" }}
+            >
+              <input
+                type="file"
+                id="profileChange"
+                accept="image/*"
+                {...register("newProfile")}
+              />
+              {!saveBtn && <label htmlFor="profileChange">변경하기</label>}
+              {saveBtn && <button type="submit">저장하기</button>}
+            </form>
+          </div>
           <h2>
             {loginData?.name}님, 소중한 결혼식을 위해
             <br /> 웨디가 함께할께요.
@@ -286,6 +342,7 @@ export default function WorkSpace() {
                   memberData={memberData}
                   setCard={setCard}
                   onOpenModal={handleOpenModal}
+                  setCardLength={setCardLength}
                 />
               ))}
             <DashBoardMore
@@ -312,7 +369,9 @@ export default function WorkSpace() {
         />
       )}
 
-      {showSaveModal && <SaveModal onClose={handleCloseSaveModal} />}
+      {showSaveModal && (
+        <SaveModal onClose={handleCloseSaveModal} statusName={""} />
+      )}
     </div>
   );
 }

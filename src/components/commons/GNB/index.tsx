@@ -129,7 +129,7 @@ export default function GNB() {
               height={50}
             />
           </Link>
-          <Link className={cn("aboutWeddy")} href="#2">
+          <Link className={cn("aboutWeddy")} href="/#2">
             <p>웨디 소개</p>
           </Link>
         </div>

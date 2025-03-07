@@ -101,7 +101,10 @@ export default function DashBoard({
   const { mutate: changeCardTitle } = useMutation({
     mutationFn: (name: string) =>
       changeCardName(memberData.memberId, data.id, name),
-    onSuccess: () => setChangeName(true),
+    onSuccess: () => {
+      setChangeName(true);
+      setCardLength((prev: number) => prev + 1);
+    },
   });
 
   const { mutate: addCard } = useMutation({
@@ -194,6 +197,24 @@ export default function DashBoard({
                   (filterBox.assignee && filterBox.assignee.length === 0) ||
                   filterBox.assignee?.includes(item.assigneeName)
               )
+              .filter((item: any) => {
+                if (filterBox.dueDate === "") return true;
+                if (filterBox.dueDate !== "" && item.dueDate === null)
+                  return false;
+
+                const subItemDate = new Date(item.dueDate);
+                const today = new Date();
+                const filterDate = new Date(today);
+                filterDate.setDate(today.getDate() + Number(filterBox.dueDate));
+
+                const diffInDays = Math.ceil(
+                  (filterDate.getTime() - subItemDate.getTime()) /
+                    (1000 * 60 * 60 * 24)
+                );
+                console.log(diffInDays);
+
+                return diffInDays <= 7;
+              })
               .map((item, index) => (
                 <Draggable
                   key={item.id}

@@ -54,6 +54,8 @@ export default function WorkSpace() {
   const [profile, setProfile] = useState<string>("");
   const [saveBtn, setSaveBtn] = useState<boolean>(false);
 
+  const now = new Date();
+
   const { register, handleSubmit, watch } = useForm<IFormInput>();
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
     const dat = {
@@ -192,7 +194,7 @@ export default function WorkSpace() {
   useEffect(() => {
     setCard(cardDatas);
     setSideMenuValue(cardDatas);
-  }, [isSuccess]);
+  }, [isSuccess, cardLength]);
 
   const { mutate: moveCard } = useMutation({
     mutationFn: (data) => moveSmallCard(data),
@@ -264,6 +266,7 @@ export default function WorkSpace() {
     let dayBox: any = { memberId: memberData.memberId, dDay: day };
     postDay(dayBox);
   };
+  console.log(card);
   return (
     <div className={cn("workSide")}>
       <span className={cn("sideMenuBox", { active: sideMenuState })}></span>
@@ -307,12 +310,23 @@ export default function WorkSpace() {
             <p className={cn("ddayNum")}>
               D-{" "}
               {dDay ? (
-                <input
-                  style={{ color: color }}
-                  type="date"
-                  className={cn("dDayChange")}
-                  onChange={(e) => setDay(e.target.value)}
-                />
+                <>
+                  <span>
+                    {day
+                      ? Math.ceil(
+                          (new Date(day).getTime() - now.getTime()) /
+                            (1000 * 60 * 60 * 24)
+                        )
+                      : memberData?.dDay}
+                  </span>
+                  <input
+                    style={{ color: color }}
+                    type="date"
+                    className={cn("dDayChange")}
+                    onChange={(e) => setDay(e.target.value)}
+                    id="date"
+                  />
+                </>
               ) : (
                 <span style={{ color: color, cursor: "auto" }}>
                   {memberData?.dDay != null ? memberData?.dDay : "?"}
@@ -328,6 +342,7 @@ export default function WorkSpace() {
 
         <div className={cn("dashWrap")}>
           <DragDropContext onDragEnd={onDragEnd}>
+            {/* item.smallCatItems[i].dueDate - filterBox.dueDate  */}
             {card
               ?.filter((item: any) =>
                 filterBox.category.length === 0

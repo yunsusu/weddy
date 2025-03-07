@@ -107,21 +107,21 @@ export default function Amount({ data, setAmount, onOpenModal }: AmountProps) {
     <div className={cn("amountWrap")}>
       <p>결혼 예산</p>
       <div className={cn("amountContents")}>
-        <p>총 {formatKoreanNumber(totalAmount)}</p>
+        <p>총 {formatKoreanNumber(totalAmount)}원</p>
         <ul className={cn("amountUl")}>
-        {data.map((category, index) => (
-          <li key={category.id} onClick={() => handleItemClick(category)}>
-            <Image 
-              src={getCategoryIcon(category.title)}
-              alt={category.title}
-              width={50} 
-              height={50} 
-            />
-            <div>
-              <p>{category.title}</p>
-              <span>{largeCatNumber(calculateCategoryAmount(category))}원</span>
-            </div>
-          </li>
+          {data.map((category, index) => (
+            <li key={category.id} onClick={() => handleItemClick(category)}>
+              <Image 
+                src={getCategoryIcon(category.title)}
+                alt={category.title}
+                width={50} 
+                height={50} 
+              />
+              <div>
+                <p>{category.title}</p>
+                <span>{largeCatNumber(calculateCategoryAmount(category))}원</span>
+              </div>
+            </li>
           ))}
         </ul>
       </div>

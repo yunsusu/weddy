@@ -10,6 +10,7 @@ import picture from "@/../public/icons/picture-icon.png";
 import youtube from "@/../public/icons/youtube-icon.png";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
+import { postFile } from "@/lib/apis/workSpace";
 
 const cn = classNames.bind(styles);
 
@@ -31,19 +32,20 @@ type EditorProps = {
   };
 };
 
-const fileToBase64 = (file: File): Promise<string> => {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => {
-      if (typeof reader.result === "string") {
-        resolve(reader.result);
-      } else {
-        reject(new Error("Failed to convert file to base64"));
-      }
-    };
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
+const uploadFileToS3 = async (file: File): Promise<string> => {
+  try {
+    const formData = new FormData();
+    formData.append('file', file);
+    
+    const response = await postFile(formData);
+    if (!response || !response.data) {
+      throw new Error('파일 업로드에 실패했습니다.');
+    }
+    return response.data;
+  } catch (error) {
+    console.error('S3 업로드 오류:', error);
+    throw error;
+  }
 };
 
 export default function TextEditor({
@@ -89,21 +91,17 @@ export default function TextEditor({
     if (editorRef.current) {
       const images = editorRef.current.querySelectorAll("img");
       images.forEach((img) => {
-        // 이미지 드래그 방지
         img.setAttribute("draggable", "false");
 
-        // 이미지에 직접 이벤트 추가
         img.addEventListener("dragstart", preventEvent);
         img.addEventListener("contextmenu", preventEvent);
 
-        // 이미지 부모 컨테이너에도 이벤트 적용
         const parentContainer = img.closest(".image-attachment");
         if (parentContainer) {
           parentContainer.addEventListener("dragstart", preventEvent);
           parentContainer.addEventListener("contextmenu", preventEvent);
         }
 
-        // 스타일 추가
         img.style.userSelect = "none";
         img.style.pointerEvents = "none";
       });
@@ -179,18 +177,6 @@ export default function TextEditor({
     }
   };
 
-  const createImagePreview = (file: File): Promise<string> => {
-    return new Promise((resolve) => {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        if (e.target && typeof e.target.result === "string") {
-          resolve(e.target.result);
-        }
-      };
-      reader.readAsDataURL(file);
-    });
-  };
-
   const attachFile = () => {
     if (fileInputRef.current) {
       fileInputRef.current.click();
@@ -242,7 +228,7 @@ export default function TextEditor({
     setIsUploading(true);
 
     try {
-      const fileContent = await fileToBase64(file);
+      const fileUrl = await uploadFileToS3(file);
       const fileContainerId = `file-container-${randomId}`;
       restoreSelection();
       const fileName = file.name;
@@ -264,7 +250,7 @@ export default function TextEditor({
             <div style="color: #666; font-size: 12px;">${fileSize}</div>
           </div>
         </div>
-        <a href="${fileContent}" download="${fileName}" style="padding: 5px 10px; background-color: #f0f0f0; border-radius: 4px; text-decoration: none; color: #333; font-size: 12px;">
+        <a href="${fileUrl}" download="${fileName}" style="padding: 5px 10px; background-color: #f0f0f0; border-radius: 4px; text-decoration: none; color: #333; font-size: 12px;">
           다운로드
         </a>
       </div>
@@ -292,9 +278,9 @@ export default function TextEditor({
         }
       }, 10);
 
-      setAttachedFileUrl(fileContent);
+      setAttachedFileUrl(fileUrl);
       if (onFileUpload) {
-        onFileUpload(fileContent);
+        onFileUpload(fileUrl);
       }
     } catch (error) {
       console.error("파일 업로드 오류:", error);
@@ -337,23 +323,23 @@ export default function TextEditor({
     setIsUploading(true);
 
     try {
-      const imageContent = await fileToBase64(file);
+      const imageUrl = await uploadFileToS3(file);
       const imgContainerId = `img-container-${randomId}`;
       restoreSelection();
 
       const imgHtml = `<div contenteditable="false" id="${imgContainerId}" class="image-attachment" style="margin: 10px 0; text-align: center;" ondragstart="return false;" oncontextmenu="return false;">
-      <img src="${imageContent}" alt="업로드된 이미지" style="max-width: 100%; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); user-select: none; pointer-events: none;" draggable="false" />
+      <img src="${imageUrl}" alt="업로드된 이미지" style="max-width: 100%; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); user-select: none; pointer-events: none;" draggable="false" />
     </div>&#8203;`;
 
       document.execCommand("insertHTML", false, imgHtml);
 
       setTimeout(() => {
-        const cursorPosition = editorRef.current?.querySelector(
-          `#cursor-position-${randomId}`
+        const imgContainer = editorRef.current?.querySelector(
+          `#${imgContainerId}`
         );
-        if (cursorPosition && editorRef.current) {
+        if (imgContainer && editorRef.current) {
           const range = document.createRange();
-          range.setStartAfter(cursorPosition);
+          range.setStartAfter(imgContainer);
           range.collapse(true);
 
           const selection = window.getSelection();
@@ -367,9 +353,9 @@ export default function TextEditor({
         applyImageProtection();
       }, 10);
 
-      setAttachedFileUrl(imageContent);
-      if (onFileUpload && imageContent) {
-        onFileUpload(imageContent);
+      setAttachedFileUrl(imageUrl);
+      if (onFileUpload && imageUrl) {
+        onFileUpload(imageUrl);
       }
     } catch (error) {
       console.error("이미지 업로드 오류:", error);

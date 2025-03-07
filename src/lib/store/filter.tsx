@@ -4,6 +4,7 @@ interface FilterBox {
   category: any[];
   progressStatus: string;
   assignee: string[];
+  dueDate: any;
 }
 
 interface WorkSpaceState {
@@ -12,7 +13,7 @@ interface WorkSpaceState {
 }
 
 const useFilterStore = create<WorkSpaceState>((set) => ({
-  filterBox: { category: [], progressStatus: "", assignee: [] },
+  filterBox: { category: [], progressStatus: "", assignee: [], dueDate: "" },
   setFilterBox: (newFilterBox) => set({ filterBox: newFilterBox }),
 }));
 

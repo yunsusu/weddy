@@ -2,6 +2,7 @@ import useFilterStore from "@/lib/store/filter";
 import useSideMenuValStore from "@/lib/store/sideMenuValue";
 import classNames from "classnames/bind";
 import FilterShare from "./FilterShare";
+import DateFilter from "./dateFilter";
 import ProgressFilter from "./progressFilter";
 import styles from "./style.module.scss";
 
@@ -42,10 +43,9 @@ export default function Filter() {
       assignee: filterBox.assignee.includes(newStatus)
         ? filterBox.assignee.filter((status) => status !== newStatus)
         : [...filterBox.assignee, newStatus],
+      dueDate: filterBox.dueDate,
     });
   };
-
-  // dueDate 정의
 
   // progressStatus 정의
   const progressStatus = {
@@ -59,6 +59,7 @@ export default function Filter() {
         : [...filterBox.category, newStatus],
       progressStatus: filterBox.progressStatus,
       assignee: [],
+      dueDate: filterBox.dueDate,
     });
   };
 
@@ -67,6 +68,7 @@ export default function Filter() {
       <FilterShare item={category} func={handleCategoryChange} />
       <ProgressFilter item={progressStatus} />
       <FilterShare item={assignee} func={handleAssigneeChange} />
+      <DateFilter item={dueDate} />
     </div>
   );
 }

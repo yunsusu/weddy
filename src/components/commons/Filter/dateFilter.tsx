@@ -9,22 +9,40 @@ import styles from "./style.module.scss";
 
 const cn = classNames.bind(styles);
 
-export default function ProgressFilter({ item, status }: any) {
+export default function DateFilter({ item, status }: any) {
   const [dropState, setDropState] = useState<boolean>(false);
+  const [a, setA] = useState<string>("");
+
   const { filterBox, setFilterBox } = useFilterStore();
 
   const handleDrop = () => {
     setDropState((prev) => !prev);
   };
 
-  const handleProgressStatusChange = (
-    newStatus: "시작전" | "진행중" | "완료"
-  ) => {
+  const handleDueDateChange = (newStatus: string) => {
+    let minDate = new Date();
+    let now = new Date();
+
+    if (newStatus === "오늘") {
+      // 오늘 그대로 유지
+    } else if (newStatus === "이번주") {
+      minDate.setDate(minDate.getDate() + 7); // 현재 날짜에서 7일 후
+    } else if (newStatus === "다음주") {
+      minDate.setDate(minDate.getDate() + 14); // 현재 날짜에서 14일 후
+    } else if (newStatus === "이번달") {
+      minDate.setMonth(minDate.getMonth() + 1);
+      minDate.setDate(0); // 이번 달의 마지막 날로 설정
+    }
+
+    const diffInDays = Math.ceil(
+      (minDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)
+    );
+    console.log(filterBox.dueDate, String(diffInDays));
     setFilterBox({
       category: filterBox.category,
-      progressStatus: filterBox.progressStatus === newStatus ? "" : newStatus,
+      progressStatus: filterBox.progressStatus,
       assignee: [],
-      dueDate: filterBox.dueDate,
+      dueDate: filterBox.dueDate === diffInDays ? "" : diffInDays,
     });
   };
   useEffect(() => {
@@ -32,6 +50,21 @@ export default function ProgressFilter({ item, status }: any) {
       setDropState(true);
     }
   }, []);
+  useEffect(() => {
+    if (filterBox.dueDate === 0) {
+      setA("오늘");
+    } else if (filterBox.dueDate >= 1 && filterBox.dueDate <= 7) {
+      setA("이번주");
+    } else if (filterBox.dueDate >= 8 && filterBox.dueDate <= 14) {
+      setA("다음주");
+    } else if (filterBox.dueDate <= 30 && filterBox.dueDate !== "") {
+      setA("이번달");
+    } else {
+      setA("");
+    }
+  }, [filterBox.dueDate]);
+
+  console.log(a);
   return (
     <div>
       {/* filterTitle 부분 */}
@@ -56,14 +89,14 @@ export default function ProgressFilter({ item, status }: any) {
             {status ? (
               <MoProgressItem
                 item={item}
-                func={handleProgressStatusChange}
-                selectedStatus={filterBox.progressStatus}
+                func={handleDueDateChange}
+                selectedStatus={a}
               />
             ) : (
               <ProgressItem
                 item={item}
-                func={handleProgressStatusChange}
-                selectedStatus={filterBox.progressStatus}
+                func={handleDueDateChange}
+                selectedStatus={a}
               />
             )}
           </div>

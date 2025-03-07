@@ -26,7 +26,7 @@ export default function Card({ item, checklistId, onOpenModal }: Card) {
   const { color } = useColorStore();
   const statusName = item.statusName;
   const itemDate = item?.dueDate === "string" ? item.dueDate.split("T")[0] : "";
-
+  // console.log(item);
   const handleOpenModal = () => {
     onOpenModal?.(item);
   };

@@ -21,17 +21,22 @@
 
 .indexWrap {
   width: 100%;
-  height: 100vh;
+  height: 100%;
   padding-top: 7rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .indexBKG {
+  width: 100%;
+  height: 50%;
   position: relative;
   display: flex;
   justify-content: center;
+  align-items: center;
   text-align: center;
   overflow: hidden;
-  margin-top: 7rem;
 }
 
 .indexBKG::after {
@@ -40,14 +45,14 @@
   content: "";
   position: absolute;
   background: url("../../public/images/home_GIF.gif") center center;
-  transform: translateX(3%);
+  background-size: 160%;
+  transform: translate(4%, -40%);
 }
 
 .indexTitle {
-  font-size: 6rem;
-  font-weight: 800;
-  margin-top: 30rem;
-  position: relative;
+  font-size: 9rem;
+  font-weight: 700;
+  line-height: 1.3;
   display: inline-block;
   z-index: 1;
 }
@@ -108,11 +113,13 @@
 .upArrow {
   top: 90px;
   left: 50%;
+  transform: translatex(-50%)
 }
 
 .downArrow {
   bottom: 20px;
   left: 50%;
+  transform: translatex(-50%);
 }
 
 .secondPageContent,

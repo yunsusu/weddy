@@ -48,7 +48,7 @@ export default function WorkSpace() {
   const { sideMenuValue, setSideMenuValue } = useSideMenuValStore();
   const { data: loginData } = useLoginData();
   const { color } = useColorStore();
-  const { checklistId, selectedItem, setSelectedItem, setChecklistId } = useWorkSpaceStore();
+  const { selectedItem, setSelectedItem, setChecklistId } = useWorkSpaceStore();
   const [showSaveModal, setShowSaveModal] = useState(false);
   const { filterBox } = useFilterStore();
   const [profile, setProfile] = useState<string>("");

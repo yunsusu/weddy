@@ -2,6 +2,7 @@ import styles from "@/pages/dashBoard/style.module.scss"
 import classNames from "classnames/bind"
 import Image, { StaticImageData } from "next/image";
 import { useEffect } from "react";
+import { LargeCatItem } from "@/lib/apis/types/types";
 
 import calenderIcon from "@/../public/images/Calendar.gif"
 import weddingIcon from "@/../public/images/Wedding Arch.gif"
@@ -17,30 +18,13 @@ import closeIcon from "@/../public/icons/close-modal-icon.svg"
 const cn = classNames.bind(styles);
 
 interface DashBoarModalProps {
-  data: CategoryData;
+  data: LargeCatItem;
   isOpen: boolean;
   onClose: () => void;
 }
 
-interface SmallCatItem {
-  id: number;
-  largeCatItemId: number;
-  title: string;
-  dueDate: string;
-  assigneeName: string;
-  statusName: string;
-  attachedFileUrl: string;
-  amount?: number;
-}
-
-interface CategoryData {
-  id: number;
-  checklistId: number;
-  title: string;
-  smallCatItems: SmallCatItem[];
-}
-
 export default function DashBoardModal({ data, isOpen, onClose }: DashBoarModalProps) {
+  
   const icons: Record<string, StaticImageData> = {
     '결혼 준비 시작': calenderIcon, 
     '웨딩홀': weddingIcon, 
@@ -97,7 +81,7 @@ export default function DashBoardModal({ data, isOpen, onClose }: DashBoarModalP
             <li key={item.id}>
               <p>{index+1}</p>
               <span>{item.title}</span>
-              <span className={cn("modalAmount")}>{item.amount ? `${item.amount}원` : "0원"}</span>
+              <span className={cn("modalAmount")}>{(item.amount || 0).toLocaleString()} 원</span>
             </li>
           ))}
         </ul>

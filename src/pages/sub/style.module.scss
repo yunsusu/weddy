@@ -6,6 +6,10 @@
   margin: 0 auto;
   padding: 2rem 20.8rem 20rem;
   margin-top: 10rem;
+  @media all and (max-width: 599px) {
+    gap: 3rem;
+    padding: 2rem 5rem;
+  }
 }
 
 .title {
@@ -80,7 +84,7 @@
   top: 50%;
   right: 4rem;
   transform: translateY(-50%);
-  // transition: all 0.5s;
+  transition: all 0.5s;
 }
 
 .sidebar-list {
@@ -103,7 +107,7 @@
 }
 
 .sidebar:hover {
-  right: 0;
+  right: 2rem;
   background: #f8f9fa;
   padding: 15px;
   border-radius: 8px;

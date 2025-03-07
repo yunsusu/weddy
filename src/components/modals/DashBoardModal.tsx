@@ -1,53 +1,46 @@
 import styles from "@/pages/dashBoard/style.module.scss"
 import classNames from "classnames/bind"
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 import { useEffect } from "react";
+import { LargeCatItem } from "@/lib/apis/types/types";
 
-import calenderIcon from "@/../public/icons/progress-calender.svg"
-import weddingIcon from "@/../public/icons/progress-wedding.svg"
-import lipstickIcon from "@/../public/icons/progress-lipstick.svg"
-import airplaneIcon from "@/../public/icons/progress-airplane.svg"
-import ringIcon from "@/../public/icons/progress-ring.svg"
-import congratulationIcon from "@/../public/icons/progress-congratulations.svg"
-import houseIcon from "@/../public/icons/progress-house.svg"
+import calenderIcon from "@/../public/images/Calendar.gif"
+import weddingIcon from "@/../public/images/Wedding Arch.gif"
+import lipstickIcon from "@/../public/images/Lipstick.gif"
+import airplaneIcon from "@/../public/images/Airplane_Gif.gif"
+import ringIcon from "@/../public/icons/progress-ring-icon.svg"
+import hanbokIcon from "@/../public/icons/progress-hanbok-icon.svg"
+import congratulationIcon from "@/../public/images/Congratulations.gif"
+import houseIcon from "@/../public/images/home_GIF.gif"
+import defaultIcon2 from "@/../public/images/Heart_Gif.gif"
+import closeIcon from "@/../public/icons/close-modal-icon.svg"
 
 const cn = classNames.bind(styles);
 
 interface DashBoarModalProps {
-  data: CategoryData;
+  data: LargeCatItem;
   isOpen: boolean;
   onClose: () => void;
 }
 
-interface SmallCatItem {
-  id: number;
-  largeCatItemId: number;
-  title: string;
-  dueDate: string;
-  assigneeName: string;
-  statusName: string;
-  attachedFileUrl: string;
-  amount?: number;
-}
-
-interface CategoryData {
-  id: number;
-  checklistId: number;
-  title: string;
-  smallCatItems: SmallCatItem[];
-}
-
 export default function DashBoardModal({ data, isOpen, onClose }: DashBoarModalProps) {
-  const icons = [
-    calenderIcon, 
-    weddingIcon, 
-    lipstickIcon, 
-    airplaneIcon, 
-    ringIcon, 
-    congratulationIcon, 
-    houseIcon
-  ];
-  const iconIndex = (data.id || 0) % icons.length;
+  
+  const icons: Record<string, StaticImageData> = {
+    '결혼 준비 시작': calenderIcon, 
+    '웨딩홀': weddingIcon, 
+    '스드메': lipstickIcon, 
+    '신혼여행': airplaneIcon, 
+    '예물/예단': ringIcon, 
+    '예복/한복': hanbokIcon,
+    '본식': congratulationIcon, 
+    '신혼집': houseIcon
+  };
+
+  const defaultIcon: StaticImageData = defaultIcon2;
+
+  const getCategoryIcon = (categoryTitle: string): StaticImageData => {
+    return icons[categoryTitle] || defaultIcon;
+  };
 
   const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
@@ -76,17 +69,19 @@ export default function DashBoardModal({ data, isOpen, onClose }: DashBoarModalP
       <div className={cn("dashBoardModalContents")}>
         <div className={cn("modalGNB")}>
           <p>{data.title}</p>
-          <button type="button" className={cn("modalCloseBtn")} onClick={onClose}>ⅹ</button>
+          <button type="button" className={cn("modalCloseBtn")} onClick={onClose}>
+            <Image src={closeIcon} alt={`data.title || "Category icon" + 닫기`} width={26} height={26} />
+          </button>
         </div>
-        <div className={cn("modalGNBImg")} >
-          <Image src={icons[iconIndex]} alt={data.title || "Category icon"} width={500} height={240}  />
+        <div className={cn("modalGNBImg")}>
+          <Image src={getCategoryIcon(data.title)} alt={data.title || "Category icon"} width={500} height={240} />
         </div>
         <ul className={cn("dashBoardModalUl")}>
           {data.smallCatItems && data.smallCatItems.map((item, index) => (
             <li key={item.id}>
               <p>{index+1}</p>
               <span>{item.title}</span>
-              <span className={cn("modalAmount")}>{item.amount ? `${item.amount}원` : "0원"}</span>
+              <span className={cn("modalAmount")}>{(item.amount || 0).toLocaleString()} 원</span>
             </li>
           ))}
         </ul>

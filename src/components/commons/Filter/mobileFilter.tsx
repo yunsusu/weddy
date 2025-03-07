@@ -2,6 +2,7 @@ import useFilterStore from "@/lib/store/filter";
 import useSideMenuValStore from "@/lib/store/sideMenuValue";
 import classNames from "classnames/bind";
 import FilterShare from "./FilterShare";
+import DateFilter from "./dateFilter";
 import ProgressFilter from "./progressFilter";
 import styles from "./style.module.scss";
 
@@ -42,6 +43,7 @@ export default function MobileFilter() {
       assignee: filterBox.assignee.includes(newStatus)
         ? filterBox.assignee.filter((status) => status !== newStatus)
         : [...filterBox.assignee, newStatus],
+      dueDate: filterBox.dueDate,
     });
   };
 
@@ -59,6 +61,7 @@ export default function MobileFilter() {
         : [...filterBox.category, newStatus],
       progressStatus: filterBox.progressStatus,
       assignee: [],
+      dueDate: filterBox.dueDate,
     });
   };
 
@@ -67,6 +70,7 @@ export default function MobileFilter() {
       <FilterShare item={category} func={handleCategoryChange} status={true} />
       <ProgressFilter item={progressStatus} status={true} />
       <FilterShare item={assignee} func={handleAssigneeChange} status={true} />
+      <DateFilter item={dueDate} status={true} />
     </div>
   );
 }

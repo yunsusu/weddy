@@ -48,11 +48,13 @@ export default function WorkSpace() {
   const { sideMenuValue, setSideMenuValue } = useSideMenuValStore();
   const { data: loginData } = useLoginData();
   const { color } = useColorStore();
-  const { checklistId, selectedItem, setSelectedItem } = useWorkSpaceStore();
+  const { selectedItem, setSelectedItem, setChecklistId } = useWorkSpaceStore();
   const [showSaveModal, setShowSaveModal] = useState(false);
   const { filterBox } = useFilterStore();
   const [profile, setProfile] = useState<string>("");
   const [saveBtn, setSaveBtn] = useState<boolean>(false);
+
+  const now = new Date();
 
   const { register, handleSubmit, watch } = useForm<IFormInput>();
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
@@ -85,7 +87,6 @@ export default function WorkSpace() {
     queryFn: () => getCheckList(data?.id),
     enabled: !!data?.id,
   });
-
   const { mutate } = useMutation({
     mutationFn: (data) => postCheckListCreate(data),
   });
@@ -192,7 +193,14 @@ export default function WorkSpace() {
   useEffect(() => {
     setCard(cardDatas);
     setSideMenuValue(cardDatas);
-  }, [isSuccess]);
+  }, [isSuccess, cardLength]);
+
+  useEffect(() => {
+    if (memberData && memberData.id) {
+      setChecklistId(memberData.id);
+      console.log("체크리스트 ID 설정됨:", memberData.id);
+    }
+  }, [memberData, setChecklistId]);
 
   const { mutate: moveCard } = useMutation({
     mutationFn: (data) => moveSmallCard(data),
@@ -264,6 +272,7 @@ export default function WorkSpace() {
     let dayBox: any = { memberId: memberData.memberId, dDay: day };
     postDay(dayBox);
   };
+  console.log(card);
   return (
     <div className={cn("workSide")}>
       <span className={cn("sideMenuBox", { active: sideMenuState })}></span>
@@ -307,12 +316,23 @@ export default function WorkSpace() {
             <p className={cn("ddayNum")}>
               D-{" "}
               {dDay ? (
-                <input
-                  style={{ color: color }}
-                  type="date"
-                  className={cn("dDayChange")}
-                  onChange={(e) => setDay(e.target.value)}
-                />
+                <>
+                  <span>
+                    {day
+                      ? Math.ceil(
+                          (new Date(day).getTime() - now.getTime()) /
+                            (1000 * 60 * 60 * 24)
+                        )
+                      : memberData?.dDay}
+                  </span>
+                  <input
+                    style={{ color: color }}
+                    type="date"
+                    className={cn("dDayChange")}
+                    onChange={(e) => setDay(e.target.value)}
+                    id="date"
+                  />
+                </>
               ) : (
                 <span style={{ color: color, cursor: "auto" }}>
                   {memberData?.dDay != null ? memberData?.dDay : "?"}
@@ -328,6 +348,7 @@ export default function WorkSpace() {
 
         <div className={cn("dashWrap")}>
           <DragDropContext onDragEnd={onDragEnd}>
+            {/* item.smallCatItems[i].dueDate - filterBox.dueDate  */}
             {card
               ?.filter((item: any) =>
                 filterBox.category.length === 0
@@ -358,9 +379,9 @@ export default function WorkSpace() {
       {selectedItem && (
         <CheckListPage
           onClose={handleCloseModal}
-          item={{ ...selectedItem, checklistId }}
+          item={{ ...selectedItem, checklistId: memberData?.id || 0 }}
           ids={{
-            checklistId: checklistId || 0,
+            checklistId: memberData?.id || 0,
             largeCatItemId: selectedItem?.largeCatItemId || 0,
             smallCatItemId: selectedItem?.id || 0,
           }}

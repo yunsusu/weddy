@@ -158,8 +158,6 @@ export default function Home() {
 
   return (
     <div className={cn("pageContainer")} ref={containerRef}>
-
-
       {/* Page 1 */}
       <div className={cn("indexWrap")}>
         <div className={cn("indexBKG")}>

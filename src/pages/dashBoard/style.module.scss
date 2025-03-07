@@ -56,6 +56,7 @@
   }
 }
 
+
 .amountWrap {
   width: 100%;
   margin-bottom: 6rem;
@@ -163,6 +164,7 @@
   & > p {
     font-size: 2.2rem;
     font-weight: 700;
+    z-index: 1;
   }
 
   & > button {
@@ -174,6 +176,7 @@
 .modalGNBImg {
   display: flex;
   justify-content: center;
+  transform: scale(2);
 }
 
 .dashBoardModalUl {

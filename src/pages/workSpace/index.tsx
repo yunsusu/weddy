@@ -48,7 +48,7 @@ export default function WorkSpace() {
   const { sideMenuValue, setSideMenuValue } = useSideMenuValStore();
   const { data: loginData } = useLoginData();
   const { color } = useColorStore();
-  const { checklistId, selectedItem, setSelectedItem } = useWorkSpaceStore();
+  const { selectedItem, setSelectedItem, setChecklistId } = useWorkSpaceStore();
   const [showSaveModal, setShowSaveModal] = useState(false);
   const { filterBox } = useFilterStore();
   const [profile, setProfile] = useState<string>("");
@@ -87,7 +87,6 @@ export default function WorkSpace() {
     queryFn: () => getCheckList(data?.id),
     enabled: !!data?.id,
   });
-
   const { mutate } = useMutation({
     mutationFn: (data) => postCheckListCreate(data),
   });
@@ -195,6 +194,13 @@ export default function WorkSpace() {
     setCard(cardDatas);
     setSideMenuValue(cardDatas);
   }, [isSuccess, cardLength]);
+
+  useEffect(() => {
+    if (memberData && memberData.id) {
+      setChecklistId(memberData.id);
+      console.log("체크리스트 ID 설정됨:", memberData.id);
+    }
+  }, [memberData, setChecklistId]);
 
   const { mutate: moveCard } = useMutation({
     mutationFn: (data) => moveSmallCard(data),
@@ -373,9 +379,9 @@ export default function WorkSpace() {
       {selectedItem && (
         <CheckListPage
           onClose={handleCloseModal}
-          item={{ ...selectedItem, checklistId }}
+          item={{ ...selectedItem, checklistId: memberData?.id || 0 }}
           ids={{
-            checklistId: checklistId || 0,
+            checklistId: memberData?.id || 0,
             largeCatItemId: selectedItem?.largeCatItemId || 0,
             smallCatItemId: selectedItem?.id || 0,
           }}

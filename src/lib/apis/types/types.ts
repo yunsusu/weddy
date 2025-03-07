@@ -1,4 +1,5 @@
 export interface SmallCatItem {
+  checklistId: number;
   id: number;
   largeCatItemId: number;
   title: string;
@@ -7,6 +8,7 @@ export interface SmallCatItem {
   statusName: string;
   amount: number;
   body: string;
+  attachedFileUrl: string;
 }
 
 export interface LargeCatItem {

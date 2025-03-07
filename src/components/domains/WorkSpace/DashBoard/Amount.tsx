@@ -6,11 +6,11 @@ import calenderIcon from "@/../public/icons/progress-calender.svg"
 import weddingIcon from "@/../public/icons/progress-wedding.svg"
 import lipstickIcon from "@/../public/icons/progress-lipstick.svg"
 import airplaneIcon from "@/../public/icons/progress-airplane.svg"
-import ringIcon from "@/../public/icons/progress-ring.svg"
-import hanbokIcon from "@/../public/images/testImg.jpg"
+import ringIcon from "@/../public/icons/progress-ring-icon.svg"
+import hanbokIcon from "@/../public/icons/progress-hanbok-icon.svg"
 import congratulationIcon from "@/../public/icons/progress-congratulations.svg"
 import houseIcon from "@/../public/icons/progress-house.svg"
-import defaultIcon2 from "@/../public/images/Workspace Logo.svg"
+import defaultIcon2 from "@/../public/icons/progress-default-Icon.svg"
 
 const cn = classNames.bind(styles);
 

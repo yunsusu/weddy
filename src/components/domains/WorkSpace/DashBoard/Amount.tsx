@@ -6,10 +6,10 @@ import calenderIcon from "@/../public/icons/progress-calender.svg"
 import weddingIcon from "@/../public/icons/progress-wedding.svg"
 import lipstickIcon from "@/../public/icons/progress-lipstick.svg"
 import airplaneIcon from "@/../public/icons/progress-airplane.svg"
-import ringIcon from "@/../public/icons/progress-ring-icon.svg"
+import ringIcon from "@/../public/icons/progress-ring-icon.png"
 import hanbokIcon from "@/../public/icons/progress-hanbok-icon.svg"
 import congratulationIcon from "@/../public/icons/progress-congratulations.svg"
-import houseIcon from "@/../public/icons/progress-house.svg"
+import houseIcon from "@/../public/icons/progress-house.png"
 import defaultIcon2 from "@/../public/icons/progress-default-Icon.svg"
 import { LargeCatItem } from "@/lib/apis/types/types";
 
@@ -52,7 +52,7 @@ const formatKoreanNumber = (num: number): string => {
     const chunk = num % 10000;
     if (chunk > 0) {
       const formattedChunk = chunk.toLocaleString();
-      result = formattedChunk + (units[unitIndex] ? ' ' + units[unitIndex] + ' ' : '') + result;
+      result = formattedChunk + (units[unitIndex] ? '' + units[unitIndex] + ' ' : '') + result;
     }
     num = Math.floor(num / 10000);
     unitIndex++;

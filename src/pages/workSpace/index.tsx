@@ -297,7 +297,7 @@ export default function WorkSpace() {
           </div>
           <h2>
             {loginData?.name}님, 소중한 결혼식을 위해
-            <br /> 웨디가 함께할께요.
+            <br /> 웨디가 함께할게요.
           </h2>
           <div className={cn("dDay")}>
             <p>

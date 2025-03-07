@@ -3,6 +3,7 @@ import classNames from "classnames/bind";
 import Image from "next/image";
 import { Key, useEffect, useState } from "react";
 import Item from "./item";
+import MobileItem from "./mobileItem";
 import styles from "./style.module.scss";
 
 const cn = classNames.bind(styles);
@@ -39,7 +40,11 @@ export default function FilterShare({ item, func, status }: any) {
             key={index}
             className={cn(dropState ? "filterWrapOff" : "filterWrap")}
           >
-            <Item item={item} func={func} />
+            {status ? (
+              <MobileItem item={item} func={func} />
+            ) : (
+              <Item item={item} func={func} />
+            )}
           </div>
         ))}
       </div>

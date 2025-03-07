@@ -21,51 +21,57 @@
 
 .indexWrap {
   width: 100%;
-  height: 100vh;
+  height: 100%;
   padding-top: 7rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 9rem;
+  position: relative;
+  background: url("../../public/images/home_GIF.gif") no-repeat;
+  background-size: cover;
+  background-position: calc(50% + 5rem) calc(50% - 13rem);
 }
 
 .indexBKG {
+  width: 100%;
+  height: 50%;
   position: relative;
   display: flex;
   justify-content: center;
+  align-items: center;
   text-align: center;
   overflow: hidden;
-  margin-top: 7rem;
-}
-
-.indexBKG::after {
-  width: 100%;
-  height: 100%;
-  content: "";
-  position: absolute;
-  background: url("../../public/images/home_GIF.gif") center center;
-  transform: translateX(3%);
 }
 
 .indexTitle {
   font-size: 6rem;
   font-weight: 800;
-  margin-top: 30rem;
-  position: relative;
+
   display: inline-block;
   z-index: 1;
+  @media all and (max-width: 599px) {
+    font-size: 4rem;
+  }
 }
 
 .checkList {
   display: flex;
   justify-content: center;
   font-size: 1.8rem;
-  margin-top: 9rem;
+  position: relative;
 }
 
 .indexBtn {
-  margin-left: 0.5rem;
   padding: 2rem 2.5rem;
   background-color: #7034f3;
   border-radius: 3rem;
   color: white;
   font-weight: bold;
+  @media all and (max-width: 599px) {
+    font-size: 1.5rem;
+  }
 }
 
 .pageContainer {
@@ -108,11 +114,13 @@
 .upArrow {
   top: 90px;
   left: 50%;
+  transform: translatex(-50%)
 }
 
 .downArrow {
   bottom: 20px;
   left: 50%;
+  transform: translatex(-50%);
 }
 
 .secondPageContent,
@@ -128,6 +136,9 @@
   display: flex;
   justify-content: space-between;
   gap: 10.9rem;
+  @media all and (max-width: 599px) {
+    padding: 5rem;
+  }
 }
 
 .secondPageSentence,
@@ -150,10 +161,16 @@
     font-weight: 700;
     line-height: 140%; /* 56px */
     letter-spacing: -0.4px;
+    @media all and (max-width: 599px) {
+      font-size: 3rem;
+    }
   }
 
   & > p {
     font-size: 1.8rem;
+    @media all and (max-width: 599px) {
+      font-size: 1.5rem;
+    }
   }
 }
 

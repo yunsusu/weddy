@@ -3,6 +3,7 @@ import useFilterStore from "@/lib/store/filter";
 import classNames from "classnames/bind";
 import Image from "next/image";
 import { Key, useEffect, useState } from "react";
+import MoProgressItem from "./moProgressItem";
 import ProgressItem from "./progressItem";
 import styles from "./style.module.scss";
 
@@ -23,6 +24,7 @@ export default function ProgressFilter({ item, status }: any) {
       category: filterBox.category,
       progressStatus: filterBox.progressStatus === newStatus ? "" : newStatus,
       assignee: [],
+      dueDate: filterBox.dueDate,
     });
   };
   useEffect(() => {
@@ -51,11 +53,19 @@ export default function ProgressFilter({ item, status }: any) {
             key={index}
             className={cn(dropState ? "filterWrapOff" : "filterWrap")}
           >
-            <ProgressItem
-              item={item}
-              func={handleProgressStatusChange}
-              selectedStatus={filterBox.progressStatus}
-            />
+            {status ? (
+              <MoProgressItem
+                item={item}
+                func={handleProgressStatusChange}
+                selectedStatus={filterBox.progressStatus}
+              />
+            ) : (
+              <ProgressItem
+                item={item}
+                func={handleProgressStatusChange}
+                selectedStatus={filterBox.progressStatus}
+              />
+            )}
           </div>
         ))}
       </div>

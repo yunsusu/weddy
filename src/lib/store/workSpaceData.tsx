@@ -3,7 +3,7 @@ import { LargeCatItem, SmallCatItem } from "../apis/types/types";
 import { getCard, getMember } from "../apis/workSpace";
 
 interface WorkSpaceState {
-  checklistId: number;
+  checklistId: any;
   card: any[];
   cardId: number;
   cardLength: number;
@@ -24,7 +24,7 @@ interface WorkSpaceState {
 }
 
 export const useWorkSpaceStore = create<WorkSpaceState>((set, get) => ({
-  checklistId: 1,
+  checklistId: null,
   card: [],
   cardId: 1,
   cardLength: 0,

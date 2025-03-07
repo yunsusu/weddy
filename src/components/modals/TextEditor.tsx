@@ -10,6 +10,7 @@ import picture from "@/../public/icons/picture-icon.png";
 import youtube from "@/../public/icons/youtube-icon.png";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
+import { postFile } from "@/lib/apis/workSpace";
 
 const cn = classNames.bind(styles);
 
@@ -31,19 +32,20 @@ type EditorProps = {
   };
 };
 
-const fileToBase64 = (file: File): Promise<string> => {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => {
-      if (typeof reader.result === "string") {
-        resolve(reader.result);
-      } else {
-        reject(new Error("Failed to convert file to base64"));
-      }
-    };
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
+const uploadFileToS3 = async (file: File): Promise<string> => {
+  try {
+    const formData = new FormData();
+    formData.append('file', file);
+    
+    const response = await postFile(formData);
+    if (!response || !response.data) {
+      throw new Error('파일 업로드에 실패했습니다.');
+    }
+    return response.data.fileUrl;
+  } catch (error) {
+    console.error('S3 업로드 오류:', error);
+    throw error;
+  }
 };
 
 export default function TextEditor({
@@ -177,18 +179,6 @@ export default function TextEditor({
     if (imageInputRef.current) {
       imageInputRef.current.click();
     }
-  };
-
-  const createImagePreview = (file: File): Promise<string> => {
-    return new Promise((resolve) => {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        if (e.target && typeof e.target.result === "string") {
-          resolve(e.target.result);
-        }
-      };
-      reader.readAsDataURL(file);
-    });
   };
 
   const attachFile = () => {

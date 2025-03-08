@@ -99,10 +99,13 @@
   cursor: pointer;
   z-index: 10;
   transition: all 0.3s ease;
+  animation: arrowUpDown 2.5s ease infinite;
+  // animation-timing-function: cubic-bezier(0.25, 1.5, 0.5, 1);
+  transform: translateY(0);
 
   &:hover {
-    background-color: rgba(255, 255, 255, 0.9);
-    transform: scale(1.1);
+    animation: none; // hover 시 애니메이션 정지
+    transform: translateY(0);
   }
 
   svg {
@@ -111,11 +114,23 @@
   }
 }
 
-.upArrow {
-  top: 90px;
-  left: 50%;
-  transform: translatex(-50%);
+@keyframes arrowUpDown {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+  100% {
+    transform: translateY(0);
+  }
 }
+
+// .upArrow {
+//   top: 90px;
+//   left: 50%;
+//   transform: translatex(-50%);
+// }
 
 .downArrow {
   bottom: 20px;

@@ -79,6 +79,7 @@ export default function WorkSpace() {
         memberId: data.id,
       };
       mutate(dataBox);
+      setReRander((prev: number) => prev + 1);
     }
   };
 

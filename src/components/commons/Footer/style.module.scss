@@ -18,7 +18,8 @@
     font-weight: 600;
   }
   @media all and (max-width: 599px) {
-    padding: 2.9rem 0 2.9rem 5rem;
+    padding: 2.9rem 0 2.9rem 3rem;
+    font-size: 1.2rem;
   }
 }
 
@@ -28,6 +29,9 @@
   gap: 1.2rem;
   & > p:first-child {
     margin-right: 1.2rem;
+    @media all and (max-width: 599px) {
+      margin-right: 0.5rem;
+    }
   }
   & > p:nth-child(2) {
     text-decoration: underline;

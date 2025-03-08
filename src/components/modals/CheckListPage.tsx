@@ -6,6 +6,7 @@ import assignee from "@/../public/icons/people.svg";
 import { deleteItem } from "@/lib/apis/types/deleteItem";
 import { UpdateItemPayload, updateItem } from "@/lib/apis/types/updateItem";
 import { getItem } from "@/lib/apis/workSpace";
+import useReStore from "@/lib/store/reStore";
 import { useWorkSpaceStore } from "@/lib/store/workSpaceData";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import classNames from "classnames/bind";
@@ -54,6 +55,7 @@ export default function CheckListPage({
   const [cardLength, setCardLength] = useState<number>(0);
   const today = new Date().toISOString().split("T")[0];
   const displayAmount = item.amount ? item.amount / 10000 : 0;
+  const { reRander, setReRander } = useReStore();
 
   const [formData, setFormData] = React.useState({
     title: item.title || "",
@@ -151,6 +153,7 @@ export default function CheckListPage({
       } else {
         setCardLength((prev) => prev + 1);
       }
+      setReRander((prev: number) => prev + 1);
     },
     onError: (error: Error) => {
       console.error("에러 발생:", error);

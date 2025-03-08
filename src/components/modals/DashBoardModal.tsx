@@ -8,7 +8,7 @@ import calenderIcon from "@/../public/images/Calendar.gif"
 import weddingIcon from "@/../public/images/Wedding Arch.gif"
 import lipstickIcon from "@/../public/images/Lipstick.gif"
 import airplaneIcon from "@/../public/images/Airplane_Gif.gif"
-import ringIcon from "@/../public/icons/progress-ring-icon.svg"
+import ringIcon from "@/../public/icons/progress-ring-icon.png"
 import hanbokIcon from "@/../public/icons/progress-hanbok-icon.svg"
 import congratulationIcon from "@/../public/images/Congratulations.gif"
 import houseIcon from "@/../public/images/home_GIF.gif"
@@ -64,6 +64,10 @@ export default function DashBoardModal({ data, isOpen, onClose }: DashBoarModalP
   
   if (!isOpen) return null;
 
+  const sortedSmallCatItems = data.smallCatItems ? 
+  [...data.smallCatItems].sort((a, b) => (b.amount || 0) - (a.amount || 0)) 
+  : [];
+
   return(
     <div className={cn("dashBoardModalWrap")} onClick={handleBackdropClick}>
       <div className={cn("dashBoardModalContents")}>
@@ -77,9 +81,9 @@ export default function DashBoardModal({ data, isOpen, onClose }: DashBoarModalP
           <Image src={getCategoryIcon(data.title)} alt={data.title || "Category icon"} width={500} height={240} />
         </div>
         <ul className={cn("dashBoardModalUl")}>
-          {data.smallCatItems && data.smallCatItems.map((item, index) => (
+          {sortedSmallCatItems.map((item, index) => (
             <li key={item.id}>
-              <p>{index+1}</p>
+              <p>{String(index + 1).padStart(2, '0')}</p>
               <span>{item.title}</span>
               <span className={cn("modalAmount")}>{(item.amount || 0).toLocaleString()} 원</span>
             </li>

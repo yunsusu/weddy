@@ -21,10 +21,10 @@ export default function ProgressFilter({ item, status }: any) {
     newStatus: "시작전" | "진행중" | "완료"
   ) => {
     setFilterBox({
-      category: filterBox.category,
+      category: [],
       progressStatus: filterBox.progressStatus === newStatus ? "" : newStatus,
       assignee: [],
-      dueDate: filterBox.dueDate,
+      dueDate: "",
     });
   };
   useEffect(() => {

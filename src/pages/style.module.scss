@@ -101,11 +101,11 @@
   transition: all 0.3s ease;
   animation: arrowUpDown 2.5s ease infinite;
   // animation-timing-function: cubic-bezier(0.25, 1.5, 0.5, 1);
-  transform: translateY(0);
+  transform: translate(-50%, 0);
 
   &:hover {
     animation: none; // hover 시 애니메이션 정지
-    transform: translateY(0);
+    transform: translate(-50%, 0);
   }
 
   svg {
@@ -116,13 +116,13 @@
 
 @keyframes arrowUpDown {
   0% {
-    transform: translateY(0);
+    transform: translate(-50%, 0);
   }
   50% {
-    transform: translateY(-15px);
+    transform: translate(-50%, -15px);
   }
   100% {
-    transform: translateY(0);
+    transform: translate(-50%, 0);
   }
 }
 

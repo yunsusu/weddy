@@ -105,3 +105,34 @@ $speed: 0.4s;
   max-height: 0;
   opacity: 0;
 }
+.inputCheck {
+  appearance: none; /* 기본 체크박스 스타일 제거 */
+  width: 20px;
+  height: 20px;
+  border: 1px solid #78757c;
+  border-radius: 5px; /* 둥근 모서리 */
+  background-color: white;
+  cursor: pointer;
+  position: relative;
+}
+
+.inputCheck:checked {
+  background-color: #7034f3; /* 체크되면 색 변경 */
+  border-color: #78757c;
+}
+
+/* 체크박스 내부에 체크 표시 추가 */
+.inputCheck:before {
+  content: "";
+  font-size: 14px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  opacity: 0; /* 기본적으로 안 보이게 */
+}
+.inputCheck:before {
+  opacity: 1; /* 체크되면 보이게 */
+}

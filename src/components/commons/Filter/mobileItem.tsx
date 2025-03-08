@@ -8,6 +8,7 @@ export default function MobileItem({ item, func }: any) {
       <input
         type="checkbox"
         id={`checkbox-${item}`}
+        className={cn("inputCheck")}
         name="category"
         value="category-1"
         onChange={(e) => {

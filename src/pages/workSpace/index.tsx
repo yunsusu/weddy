@@ -274,7 +274,7 @@ export default function WorkSpace() {
     let dayBox: any = { memberId: memberData.memberId, dDay: day };
     postDay(dayBox);
   };
-  // console.log(card);
+  console.log(card);
   return (
     <div className={cn("workSide")}>
       <span className={cn("sideMenuBox", { active: sideMenuState })}></span>

@@ -7,32 +7,33 @@ import useSideMenuStore from "@/lib/store/sideMenu";
 import { useWorkSpaceStore } from "@/lib/store/workSpaceData";
 import { useQuery } from "@tanstack/react-query";
 import classNames from "classnames/bind";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import styles from "./style.module.scss";
-import Image from "next/image";
 
-import bride from "@/../public/images/dashBoard-bride.png"
-import groom from "@/../public/images/dashBoard-groom.png"
+import bride from "@/../public/images/dashBoard-bride.png";
+import groom from "@/../public/images/dashBoard-groom.png";
 import { getMyData } from "@/lib/apis/authme";
 import { getCheckList } from "@/lib/apis/firstVisit";
+import useReStore from "@/lib/store/reStore";
 
 const cn = classNames.bind(styles);
 
 export default function DashBoard() {
   const [amount, setAmount] = useState<any>([]);
   const [cardId, setCardId] = useState<number>(0);
-  const [cardLength, setCardLength] = useState<number>(0);
+  const { reRander, setReRander } = useReStore();
   const [selectedItem, setSelectedItem] = useState<any>(null);
   const [showModal, setShowModal] = useState(false);
   const { setSelectLargeItem, setChecklistId } = useWorkSpaceStore();
   const { sideMenuState } = useSideMenuStore();
 
   const { data: cardDatas, isSuccess } = useQuery({
-    queryKey: ["cardData", cardId, cardLength],
+    queryKey: ["cardData", cardId, reRander],
     queryFn: () => getCard(cardId, ""),
   });
   const { data: memberData } = useQuery({
-    queryKey: ["memberData", cardId, cardLength],
+    queryKey: ["memberData", cardId, reRander],
     queryFn: () => getMember(cardId),
     enabled: cardId !== 0,
   });
@@ -40,11 +41,11 @@ export default function DashBoard() {
     queryKey: ["getMyData"],
     queryFn: getMyData,
   });
-    const { data: getCheck, isSuccess: checkError } = useQuery({
-      queryKey: ["getMyData", data?.id],
-      queryFn: () => getCheckList(data?.id),
-      enabled: !!data?.id,
-    });
+  const { data: getCheck, isSuccess: checkError } = useQuery({
+    queryKey: ["getMyData", data?.id],
+    queryFn: () => getCheckList(data?.id),
+    enabled: !!data?.id,
+  });
   useEffect(() => {
     if (data) {
       setCardId(data.id);
@@ -53,8 +54,10 @@ export default function DashBoard() {
 
   const handleOpenModal = (item: any) => {
     if (cardDatas && cardDatas.length > 0) {
-      const fullItemData = cardDatas.find((cardItem: any) => cardItem.id === item.id);
-      
+      const fullItemData = cardDatas.find(
+        (cardItem: any) => cardItem.id === item.id
+      );
+
       if (fullItemData) {
         setSelectedItem(fullItemData);
         setShowModal(true);
@@ -89,7 +92,7 @@ export default function DashBoard() {
     setAmount(cardDatas);
   }, [isSuccess]);
 
-  console.log(cardDatas)
+  console.log(cardDatas);
 
   return (
     <div className={cn("workSide")}>
@@ -109,11 +112,21 @@ export default function DashBoard() {
             <p>담당자</p>
             <div className={cn("assigneeNameContent")}>
               <div>
-                <Image src={groom} alt="담당자 신부인 리스트" width={193} height={230} />
+                <Image
+                  src={groom}
+                  alt="담당자 신부인 리스트"
+                  width={193}
+                  height={230}
+                />
                 <p>10개</p>
               </div>
               <div>
-                <Image src={bride} alt="담당자 신랑인 리스트" width={193} height={230} />
+                <Image
+                  src={bride}
+                  alt="담당자 신랑인 리스트"
+                  width={193}
+                  height={230}
+                />
                 <p>5개</p>
               </div>
             </div>

@@ -109,7 +109,7 @@ $speed: 0.4s;
   appearance: none; /* 기본 체크박스 스타일 제거 */
   width: 20px;
   height: 20px;
-  border: 1px solid #78757c;
+  border: 1.5px solid #cbc8d1;
   border-radius: 5px; /* 둥근 모서리 */
   background-color: white;
   cursor: pointer;
@@ -118,13 +118,15 @@ $speed: 0.4s;
 
 .inputCheck:checked {
   background-color: #7034f3; /* 체크되면 색 변경 */
-  border-color: #78757c;
+  background-image: url("/icons/inputCheck.svg");
+  background-position: center center;
+  border-color: #cbc8d1;
 }
 
 /* 체크박스 내부에 체크 표시 추가 */
 .inputCheck:before {
   content: "";
-  font-size: 14px;
+  font-size: 1.2rem;
   color: white;
   display: flex;
   align-items: center;

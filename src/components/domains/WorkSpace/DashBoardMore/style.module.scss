@@ -24,6 +24,10 @@
   transition: width 0.5s ease-in-out, opacity 0.5s ease-in-out;
 }
 
+.dashWrap:hover {
+  border: 1px solid #7034f3;
+}
+
 .dashWrapNone {
   min-width: 29.2rem;
   opacity: 0;
@@ -182,7 +186,7 @@
     font-size: 1.6rem;
     padding: 1rem;
   }
-  & button {
+  & p {
     color: var(--Gray500, #ada8b8);
     font-family: "Noto Sans KR";
     font-size: 2rem;

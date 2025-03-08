@@ -5,7 +5,6 @@ import useLoginData from "@/lib/store/loginData";
 import useSideMenuStore from "@/lib/store/sideMenu";
 import { useQuery } from "@tanstack/react-query";
 import classNames from "classnames/bind";
-import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -15,7 +14,7 @@ import styles from "./style.module.scss";
 const cn = classNames.bind(styles);
 
 export default function GNB() {
-  const { data: session } = useSession();
+  // const { data: session } = useSession();
   const { sideMenuState, setSideMenuState } = useSideMenuStore();
   const { data: loginData, setData } = useLoginData();
   const [page, setPage] = useState<String>("");
@@ -26,25 +25,25 @@ export default function GNB() {
     setPage(router.pathname);
   }, [router]);
 
-  useEffect(() => {
-    console.log("Session 데이터:", session);
+  // useEffect(() => {
+  //   console.log("Session 데이터:", session);
 
-    if (session?.accessToken) {
-      fetch("https://your-weddy.pe.kr/auth/login/kakao", {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ token: session.accessToken }),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          console.log("쿠키 설정 완료", data);
-        })
-        .catch((err) => console.error("쿠키 설정 실패", err));
-    }
-  }, [session]);
+  //   if (session?.accessToken) {
+  //     fetch("https://your-weddy.pe.kr/auth/login/kakao", {
+  //       method: "POST",
+  //       credentials: "include",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({ token: session.accessToken }),
+  //     })
+  //       .then((res) => res.json())
+  //       .then((data) => {
+  //         console.log("쿠키 설정 완료", data);
+  //       })
+  //       .catch((err) => console.error("쿠키 설정 실패", err));
+  //   }
+  // }, [session]);
 
   const handleLogin = () => {
     router.push("/logIn");

@@ -31,11 +31,6 @@ export default function Filter() {
     item: ["오늘", "이번주", "다음주", "이번달"],
   };
 
-  // assignee 정의
-  const assigneeStatus = {
-    title: "��당자",
-    item: ["신��", "신부"],
-  };
   const handleAssigneeChange = (newStatus: any) => {
     setFilterBox({
       category: filterBox.category,

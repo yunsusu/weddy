@@ -130,6 +130,19 @@ export const postFile = async (data: any) => {
     console.error(e);
   }
 };
+export const deleteFile = async (fileUrl: any) => {
+  try {
+    const urlWithoutQuery = fileUrl.split('?')[0];
+    const filename = urlWithoutQuery.split('/').pop() || '';
+    
+    console.log("Deleting file with filename:", filename);
+    
+    const res = await instance.delete(`/api/files/${filename}`);
+    return res;
+  } catch (e) {
+    console.error(e);
+  }
+};
 export const saveProfile = async (id: any, dat: any) => {
   try {
     const res = await instance.patch(`/member/${id}`, dat);

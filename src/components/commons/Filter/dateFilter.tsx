@@ -64,7 +64,6 @@ export default function DateFilter({ item, status }: any) {
     }
   }, [filterBox.dueDate]);
 
-  console.log(a);
   return (
     <div>
       {/* filterTitle 부분 */}

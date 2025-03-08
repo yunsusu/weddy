@@ -10,7 +10,7 @@ const cn = classNames.bind(styles);
 
 interface DashBoardProps {
   memberData: any;
-  setCardLength: any;
+  setReRander: any;
 }
 
 interface IFormInput {
@@ -19,25 +19,28 @@ interface IFormInput {
 
 export default function DashBoardMore({
   memberData,
-  setCardLength,
+  setReRander,
 }: DashBoardProps) {
   const { register, handleSubmit } = useForm<IFormInput>();
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
-    moreCard(data.title);
+    // moreCard(data.title);
+    moreCard("새로운 카테고리");
   };
 
   const { mutate: moreCard } = useMutation({
     mutationFn: (data: string) => postCard(memberData.memberId, data),
-    onSuccess: () => setCardLength((prev: number) => prev + 1),
+    onSuccess: () => setReRander((prev: number) => prev + 1),
   });
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className={cn("form")}>
-      <div className={cn("dashWrap")}>
-        <button type="submit">카테고리 추가</button>
-        <Image src={more} alt="더보기" width={28} height={28} />
-        {/* <input type="text" {...register("title")} /> */}
-      </div>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <button className={cn("form")}>
+        <div className={cn("dashWrap")}>
+          <p>카테고리 추가</p>
+          <Image src={more} alt="더보기" width={28} height={28} />
+          {/* <input type="text" {...register("title")} /> */}
+        </div>
+      </button>
     </form>
   );
 }

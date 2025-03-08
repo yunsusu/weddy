@@ -160,6 +160,7 @@ export default function WorkSpace() {
 
   const handleCloseModal = () => {
     setSelectedItem(null);
+    setReRander((prev: number) => prev + 1);
   };
 
   const handleShowSaveModal = () => {

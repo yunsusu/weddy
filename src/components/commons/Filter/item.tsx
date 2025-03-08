@@ -9,6 +9,7 @@ export default function Item({ item, func }: any) {
         type="checkbox"
         id={item}
         name="category"
+        className={cn("inputCheck")}
         value="category-1"
         onChange={(e) => {
           func(item);

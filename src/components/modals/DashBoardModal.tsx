@@ -95,6 +95,7 @@ export default function DashBoardModal({
             alt={data.title || "Category icon"}
             width={500}
             height={240}
+            objectFit="contain"
           />
         </div>
         <ul className={cn("dashBoardModalUl")}>

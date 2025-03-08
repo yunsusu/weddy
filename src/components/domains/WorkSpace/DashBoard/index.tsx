@@ -35,7 +35,7 @@ interface DashBoardProps {
   setCard: any;
   num: number;
   onOpenModal: (item: any) => void;
-  setCardLength: any;
+  setReRander: any;
 }
 
 interface IFormInput {
@@ -48,16 +48,14 @@ export default function DashBoard({
   setCard,
   num,
   onOpenModal,
-  setCardLength,
+  setReRander,
 }: DashBoardProps) {
   const { searchWord, setSearchWord } = useWorkSpaceStore();
   const [dotDrop, setDotDrop] = useState<boolean>(false);
   const [changeName, setChangeName] = useState<boolean>(true);
-  const [newTitle, setNewTitle] = useState<string>(data.title);
+  const [newTitle, setNewTitle] = useState<string>(data?.title);
   const [filteredItems, setFilteredItems] = useState(
-    data.smallCatItems.sort(
-      (a, b) => Number(b.statusName) - Number(a.statusName)
-    ) // statusName을 기준으로 정렬
+    data?.smallCatItems.sort((a, b) => (a.title === "새로운 항목" ? -1 : 1))
   );
   const { filterBox } = useFilterStore();
 
@@ -69,8 +67,8 @@ export default function DashBoard({
   const nowDate = new Date();
   const addItem = {
     id: 0,
-    checklistId: data.checklistId,
-    largeCatItemId: data.id,
+    checklistId: data?.checklistId,
+    largeCatItemId: data?.id,
     title: "새로운 항목",
     dueDate: nowDate,
     assigneeName: "담당자",
@@ -93,7 +91,7 @@ export default function DashBoard({
       setCard((prev: any) => {
         const newCard = [...prev];
         newCard.splice(num, 1);
-        setCardLength((prev: any) => prev + 1);
+        setReRander((prev: any) => prev + 1);
         return newCard;
       }),
   });
@@ -103,37 +101,28 @@ export default function DashBoard({
       changeCardName(memberData.memberId, data.id, name),
     onSuccess: () => {
       setChangeName(true);
-      setCardLength((prev: number) => prev + 1);
+      setReRander((prev: number) => prev + 1);
     },
   });
 
   const { mutate: addCard } = useMutation({
     mutationFn: () => addSmallCard(addItem),
     onSuccess: () => {
-      setCard((prev: any[]) =>
-        prev.map((card) =>
-          card.id === data.id
-            ? {
-                ...card,
-                smallCatItems: [addItem, ...card.smallCatItems],
-              }
-            : card
-        )
-      );
+      setReRander((prev: number) => prev + 1);
     },
   });
 
   useEffect(() => {
     const debounceTimeout = setTimeout(() => {
-      const result = data.smallCatItems.filter((item) =>
+      const result = data?.smallCatItems.filter((item) =>
         item?.title.includes(searchWord)
       );
       setFilteredItems(result);
     }, 300);
 
     return () => clearTimeout(debounceTimeout);
-  }, [searchWord, data.smallCatItems]);
-  // console.log(filteredItems);
+  }, [searchWord, data?.smallCatItems]);
+
   return (
     <div
       className={
@@ -182,7 +171,7 @@ export default function DashBoard({
       </div>
 
       {/* Droppable 영역 */}
-      <Droppable droppableId={`${data.id}`}>
+      <Droppable droppableId={`${data?.id}`}>
         {(provided) => (
           <div
             ref={provided.innerRef}

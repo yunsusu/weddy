@@ -21,6 +21,7 @@ import { SmallCatItem } from "@/lib/apis/types/types";
 import useFilterStore from "@/lib/store/filter";
 import useLoginData from "@/lib/store/loginData";
 import useColorStore from "@/lib/store/mainColor";
+import useReStore from "@/lib/store/reStore";
 import useSideMenuStore from "@/lib/store/sideMenu";
 import useSideMenuValStore from "@/lib/store/sideMenuValue";
 import { useWorkSpaceStore } from "@/lib/store/workSpaceData";
@@ -43,7 +44,7 @@ export default function WorkSpace() {
   const [dDay, setDDay] = useState<boolean>(false);
   const [day, setDay] = useState<string>("");
   const [cardId, setCardId] = useState<number>(0);
-  const [cardLength, setCardLength] = useState<number>(0);
+  const { reRander, setReRander } = useReStore();
   const { sideMenuState } = useSideMenuStore();
   const { sideMenuValue, setSideMenuValue } = useSideMenuValStore();
   const { data: loginData } = useLoginData();
@@ -102,14 +103,14 @@ export default function WorkSpace() {
 
   // 체크리스트 대분류들
   const { data: cardDatas, isSuccess } = useQuery({
-    queryKey: ["cardData", cardId, cardLength],
+    queryKey: ["cardData", cardId, reRander],
     queryFn: () => getCard(cardId, filterBox.progressStatus),
     enabled: !dDay && cardId !== 0,
   });
 
   // dday와 체크리스트 정보
   const { data: memberData } = useQuery({
-    queryKey: ["memberData", cardId, cardLength],
+    queryKey: ["memberData", cardId, reRander],
     queryFn: () => getMember(cardId),
     enabled: cardId !== 0,
   });
@@ -118,7 +119,7 @@ export default function WorkSpace() {
   useEffect(() => {
     if (checkError) {
       handlePost();
-      setCardLength((prev) => prev + 1);
+      setReRander((prev: number) => prev + 1);
     }
   }, [checkError]);
   useEffect(() => {
@@ -132,7 +133,7 @@ export default function WorkSpace() {
   }, [data, getCheck]);
 
   useEffect(() => {
-    setCardLength((prev) => prev + 1);
+    setReRander((prev: number) => prev + 1);
   }, [filterBox.progressStatus]);
 
   useEffect(() => {
@@ -167,7 +168,7 @@ export default function WorkSpace() {
 
   const handleCloseSaveModal = () => {
     setShowSaveModal(false);
-    setCardLength((prev) => prev + 1);
+    setReRander((prev: number) => prev + 1);
   };
 
   const handleItemDelete = () => {
@@ -193,12 +194,12 @@ export default function WorkSpace() {
   useEffect(() => {
     setCard(cardDatas);
     setSideMenuValue(cardDatas);
-  }, [isSuccess, cardLength]);
+  }, [isSuccess, reRander]);
 
   useEffect(() => {
     if (memberData && memberData.id) {
       setChecklistId(memberData.id);
-      console.log("체크리스트 ID 설정됨:", memberData.id);
+      // console.log("체크리스트 ID 설정됨:", memberData.id);
     }
   }, [memberData, setChecklistId]);
 
@@ -261,7 +262,7 @@ export default function WorkSpace() {
     mutationFn: (data) => postDday(data),
     onSuccess: (data) => {
       console.log(data);
-      // setCardLength((prev) => prev + 1);
+      // setReRander((prev) => prev + 1);
       // 수정 필요
       location.reload();
     },
@@ -272,7 +273,7 @@ export default function WorkSpace() {
     let dayBox: any = { memberId: memberData.memberId, dDay: day };
     postDay(dayBox);
   };
-  console.log(card);
+  // console.log(card);
   return (
     <div className={cn("workSide")}>
       <span className={cn("sideMenuBox", { active: sideMenuState })}></span>
@@ -282,7 +283,7 @@ export default function WorkSpace() {
             <Image src={profile} alt="프로필 사진" width={169} height={169} />
             <form
               onSubmit={handleSubmit(onSubmit)}
-              className={cn("profileChange")}
+
               // style={{ display: saveBtn ? "block" : "none" }}
             >
               <input
@@ -291,8 +292,16 @@ export default function WorkSpace() {
                 accept="image/*"
                 {...register("newProfile")}
               />
-              {!saveBtn && <label htmlFor="profileChange">변경하기</label>}
-              {saveBtn && <button type="submit">저장하기</button>}
+              {!saveBtn && (
+                <label className={cn("profileChange")} htmlFor="profileChange">
+                  변경하기
+                </label>
+              )}
+              {saveBtn && (
+                <button className={cn("profileChange")} type="submit">
+                  저장하기
+                </button>
+              )}
             </form>
           </div>
           <h2>
@@ -358,18 +367,15 @@ export default function WorkSpace() {
               .map((item: any, index: number) => (
                 <DashBoard
                   data={item}
-                  key={item.id}
+                  key={item?.id}
                   num={index}
                   memberData={memberData}
                   setCard={setCard}
                   onOpenModal={handleOpenModal}
-                  setCardLength={setCardLength}
+                  setReRander={setReRander}
                 />
               ))}
-            <DashBoardMore
-              memberData={memberData}
-              setCardLength={setCardLength}
-            />
+            <DashBoardMore memberData={memberData} setReRander={setReRander} />
           </DragDropContext>
         </div>
       </main>

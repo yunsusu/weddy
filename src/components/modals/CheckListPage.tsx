@@ -89,12 +89,12 @@ export default function CheckListPage({
         payload.attachedFileUrl &&
         payload.attachedFileUrl.includes(".data:")
       ) {
-        console.log(
-          "여러 파일이 감지되었습니다. 파일 개수:",
-          payload.attachedFileUrl
-            .split(".")
-            .filter((url) => url.startsWith("data:")).length
-        );
+        // console.log(
+        //   "여러 파일이 감지되었습니다. 파일 개수:",
+        //   payload.attachedFileUrl
+        //     .split(".")
+        //     .filter((url) => url.startsWith("data:")).length
+        // );
       }
       return updateItem(payload);
     },
@@ -197,7 +197,7 @@ export default function CheckListPage({
 
   useEffect(() => {
     if (smallCatData) {
-      console.log("Loaded small cat data:", smallCatData);
+      // console.log("Loaded small cat data:", smallCatData);
 
       const displayAmount = smallCatData.amount
         ? smallCatData.amount / 10000
@@ -276,7 +276,7 @@ export default function CheckListPage({
 
     if (!ids.checklistId || !ids.largeCatItemId || !ids.smallCatItemId) {
       alert("필수 데이터가 누락되었습니다.");
-      console.log(ids.checklistId, ids.largeCatItemId, ids.smallCatItemId);
+      // console.log(ids.checklistId, ids.largeCatItemId, ids.smallCatItemId);
       return;
     }
 
@@ -287,11 +287,11 @@ export default function CheckListPage({
       for (const url of fileUrls) {
         if (url.startsWith("data:")) {
           const sizeInKB = Math.round(url.length / 1024);
-          console.log(`첨부 파일 크기: ${sizeInKB}KB`);
+          // console.log(`첨부 파일 크기: ${sizeInKB}KB`);
 
           // 경고: 1MB 이상이면 경고 표시
           if (sizeInKB > 1024) {
-            console.warn(`첨부 파일 크기가 큽니다: ${sizeInKB}KB`);
+            // console.warn(`첨부 파일 크기가 큽니다: ${sizeInKB}KB`);
           }
         }
       }

@@ -13,7 +13,7 @@ import congratulationIcon from "@/../public/images/Congratulations.gif";
 import defaultIcon2 from "@/../public/images/Heart_Gif.gif";
 import lipstickIcon from "@/../public/images/Lipstick.gif";
 import weddingIcon from "@/../public/images/Wedding Arch.gif";
-import houseIcon from "@/../public/images/home_GIF.gif";
+import houseIcon from "@/../public/icons/progress-house.png";
 
 const cn = classNames.bind(styles);
 
@@ -23,25 +23,32 @@ interface DashBoarModalProps {
   onClose: () => void;
 }
 
+interface IconConfig {
+  src: StaticImageData;
+  scale?: number;
+  xOffset?: number;
+  yOffset?: number;
+}
+
 export default function DashBoardModal({
   data,
   isOpen,
   onClose,
 }: DashBoarModalProps) {
-  const icons: Record<string, StaticImageData> = {
-    "결혼 준비 시작": calenderIcon,
-    웨딩홀: weddingIcon,
-    스드메: lipstickIcon,
-    신혼여행: airplaneIcon,
-    "예물/예단": ringIcon,
-    "예복/한복": hanbokIcon,
-    본식: congratulationIcon,
-    신혼집: houseIcon,
+  const icons: Record<string, IconConfig> = {
+    "결혼 준비 시작": { src: calenderIcon, scale: 3.5, yOffset: 140, xOffset: -20 },
+    웨딩홀: { src: weddingIcon, scale: 2.5, yOffset: 10, xOffset: -10 },
+    스드메: { src: lipstickIcon, scale: 3, yOffset: 20, xOffset: -10 },
+    신혼여행: { src: airplaneIcon, scale: 2 },
+    "예물/예단": { src: ringIcon, scale: 1 },
+    "예복/한복": { src: hanbokIcon, scale: 1 },
+    본식:  { src: congratulationIcon, scale: 3, yOffset: 60, xOffset: -20 },
+    신혼집: { src: houseIcon, scale: 1 },
   };
 
-  const defaultIcon: StaticImageData = defaultIcon2;
+  const defaultIcon: IconConfig = { src: defaultIcon2, scale: 1.3, yOffset: -10 };
 
-  const getCategoryIcon = (categoryTitle: string): StaticImageData => {
+  const getCategoryIcon = (categoryTitle: string): IconConfig => {
     return icons[categoryTitle] || defaultIcon;
   };
 
@@ -71,6 +78,18 @@ export default function DashBoardModal({
     ? [...data.smallCatItems].sort((a, b) => (b.amount || 0) - (a.amount || 0))
     : [];
 
+  const icon = getCategoryIcon(data.title);
+
+  const imageStyle: React.CSSProperties = {
+    transform: `scale(${icon.scale || 1})`,
+    transformOrigin: 'center',
+    margin: '0 auto',
+    position: 'relative',
+    left: `${icon.xOffset || 0}px`,
+    top: `${icon.yOffset || 0}px`,
+    objectFit: 'contain',
+  };
+
   return (
     <div className={cn("dashBoardModalWrap")} onClick={handleBackdropClick}>
       <div className={cn("dashBoardModalContents")}>
@@ -91,11 +110,11 @@ export default function DashBoardModal({
         </div>
         <div className={cn("modalGNBImg")}>
           <Image
-            src={getCategoryIcon(data.title)}
+            src={icon.src}
             alt={data.title || "Category icon"}
-            width={500}
+            width={480}
             height={240}
-            objectFit="contain"
+            style={imageStyle}
           />
         </div>
         <ul className={cn("dashBoardModalUl")}>

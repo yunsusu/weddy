@@ -37,7 +37,6 @@ export default function DateFilter({ item, status }: any) {
     const diffInDays = Math.ceil(
       (minDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)
     );
-    console.log(filterBox.dueDate, String(diffInDays));
     setFilterBox({
       category: filterBox.category,
       progressStatus: filterBox.progressStatus,

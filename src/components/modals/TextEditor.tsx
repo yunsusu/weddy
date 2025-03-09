@@ -8,9 +8,9 @@ import fontUnder from "@/../public/icons/font-underline.png";
 import link from "@/../public/icons/link-icon.png";
 import picture from "@/../public/icons/picture-icon.png";
 import youtube from "@/../public/icons/youtube-icon.png";
+import { deleteFile, postFile } from "@/lib/apis/workSpace";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
-import { deleteFile, postFile } from "@/lib/apis/workSpace";
 
 const cn = classNames.bind(styles);
 
@@ -35,15 +35,15 @@ type EditorProps = {
 const uploadFileToS3 = async (file: File): Promise<string> => {
   try {
     const formData = new FormData();
-    formData.append('file', file);
-    
+    formData.append("file", file);
+
     const response = await postFile(formData);
     if (!response || !response.data) {
-      throw new Error('파일 업로드에 실패했습니다.');
+      throw new Error("파일 업로드에 실패했습니다.");
     }
     return response.data;
   } catch (error) {
-    console.error('S3 업로드 오류:', error);
+    console.error("S3 업로드 오류:", error);
     throw error;
   }
 };
@@ -374,53 +374,59 @@ export default function TextEditor({
     if (fileMatch && fileMatch[1]) {
       return fileMatch[1];
     }
-    
+
     const imgMatch = html.match(/img\s+src="([^"]+)"/);
     if (imgMatch && imgMatch[1]) {
       return imgMatch[1];
     }
-    
+
     return null;
   };
 
   const extractFileKeyFromS3Url = (url: string): string | null => {
     try {
-      const urlWithoutQuery = url.split('?')[0];
+      const urlWithoutQuery = url.split("?")[0];
       const parsedUrl = new URL(urlWithoutQuery);
       const pathname = parsedUrl.pathname;
-      const filename = pathname.split('/').pop() || '';
+      const filename = pathname.split("/").pop() || "";
       if (filename) {
         return filename;
       }
       const filenameMatch = url.match(/\/([^\/]+?)(\?|$)/);
       return filenameMatch ? filenameMatch[1] : null;
     } catch (error) {
-      console.error('Failed to parse S3 URL:', error);
+      console.error("Failed to parse S3 URL:", error);
       return null;
     }
   };
 
   const checkForFileDeletedContent = async (newContent: string) => {
     if (!editorRef.current) return;
-    const hasFileAttachmentBefore = prevHtml.includes('class="file-attachment"');
+    const hasFileAttachmentBefore = prevHtml.includes(
+      'class="file-attachment"'
+    );
     const hasFileAttachmentNow = newContent.includes('class="file-attachment"');
-    const hasImageAttachmentBefore = prevHtml.includes('class="image-attachment"');
-    const hasImageAttachmentNow = newContent.includes('class="image-attachment"');
+    const hasImageAttachmentBefore = prevHtml.includes(
+      'class="image-attachment"'
+    );
+    const hasImageAttachmentNow = newContent.includes(
+      'class="image-attachment"'
+    );
 
     if (
       (hasFileAttachmentBefore && !hasFileAttachmentNow) ||
       (hasImageAttachmentBefore && !hasImageAttachmentNow)
     ) {
-      console.log("파일 또는 이미지 삭제 감지됨");
+      // console.log("파일 또는 이미지 삭제 감지됨");
       const fileUrl = extractFileUrlFromHtml(prevHtml);
-      
+
       if (fileUrl) {
         try {
-          console.log("삭제할 파일 URL:", fileUrl);
+          // console.log("삭제할 파일 URL:", fileUrl);
           await deleteFile(fileUrl);
-          console.log("S3에서 파일 삭제 성공");
+          // console.log("S3에서 파일 삭제 성공");
         } catch (error) {
-          console.error("S3에서 파일 삭제 실패:", error);
+          // console.error("S3에서 파일 삭제 실패:", error);
         }
       }
       setAttachedFileUrl(undefined);

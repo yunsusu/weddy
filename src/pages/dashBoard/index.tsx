@@ -80,19 +80,17 @@ export default function DashBoard() {
   useEffect(() => {
     if (memberData && memberData.id) {
       setChecklistId(memberData.id);
-      console.log("체크리스트 ID 설정됨:", memberData.id);
+      // console.log("체크리스트 ID 설정됨:", memberData.id);
     }
   }, [memberData, setChecklistId]);
 
   useEffect(() => {
-    console.log("Modal state:", { showModal, selectedItem });
+    // console.log("Modal state:", { showModal, selectedItem });
   }, [showModal, selectedItem]);
 
   useEffect(() => {
     setAmount(cardDatas);
   }, [isSuccess]);
-
-  console.log(cardDatas);
 
   return (
     <div className={cn("workSide")}>

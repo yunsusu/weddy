@@ -155,12 +155,12 @@ export default function DashBoard({
                 item={[
                   {
                     color: "gray",
-                    text: "섹션 이름 바꾸기",
+                    text: "카테고리 이름 바꾸기",
                     click: () => setChangeName(false),
                   },
                   {
                     color: "red",
-                    text: "섹션 삭제하기",
+                    text: "카테고리 삭제하기",
                     click: deleteCardMutate,
                   },
                 ]}

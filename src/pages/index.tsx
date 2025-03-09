@@ -163,7 +163,7 @@ export default function Home() {
         <div className={cn("indexBKG")}>
           <h1 className={cn("indexTitle")}>
             나만의 웨딩 버디 
-            <br /> 쉽고 편하게 시작하세요
+            <br /> 쉽고 편하게 시작하세요!
           </h1>
         </div>
         <div className={cn("checkList")}>

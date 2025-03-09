@@ -46,11 +46,11 @@ export default function Home() {
     }
 
     if (isSuccess) {
-      console.log("Navigating to workspace");
+      // console.log("Navigating to workspace");
       setChecklistId(checklistId);
       router.push("/workSpace");
     } else if (!isSuccess) {
-      console.log("Navigating to login");
+      // console.log("Navigating to login");
       router.push("/logIn");
     }
   };

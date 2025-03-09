@@ -190,7 +190,7 @@ export default function DashBoard({
                 if (filterBox.dueDate === "") return true;
                 if (filterBox.dueDate !== "" && item.dueDate === null)
                   return false;
-
+                // console.log(filterBox.dueDate);
                 const subItemDate = new Date(item.dueDate);
                 const today = new Date();
                 const filterDate = new Date(today);
@@ -200,9 +200,12 @@ export default function DashBoard({
                   (filterDate.getTime() - subItemDate.getTime()) /
                     (1000 * 60 * 60 * 24)
                 );
-                console.log(diffInDays);
 
-                return diffInDays <= 7;
+                if (Number(filterBox.dueDate) <= -1) {
+                  return diffInDays >= 1;
+                }
+
+                return diffInDays >= 0 && diffInDays <= filterBox.dueDate + 1;
               })
               .map((item, index) => (
                 <Draggable

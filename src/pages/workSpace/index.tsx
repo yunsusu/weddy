@@ -24,6 +24,7 @@ import useColorStore from "@/lib/store/mainColor";
 import useReStore from "@/lib/store/reStore";
 import useSideMenuStore from "@/lib/store/sideMenu";
 import useSideMenuValStore from "@/lib/store/sideMenuValue";
+import useUserDataStore from "@/lib/store/user";
 import { useWorkSpaceStore } from "@/lib/store/workSpaceData";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import classNames from "classnames/bind";
@@ -54,6 +55,7 @@ export default function WorkSpace() {
   const { filterBox } = useFilterStore();
   const [profile, setProfile] = useState<string>("");
   const [saveBtn, setSaveBtn] = useState<boolean>(false);
+  const { userData, setUserData } = useUserDataStore();
 
   const now = new Date();
 
@@ -62,7 +64,6 @@ export default function WorkSpace() {
     const dat = {
       profileImageUrl: profile,
     };
-    console.log(123123);
     saveProfileImg({ id: loginData.id, dat });
     setSaveBtn(false);
   };
@@ -131,6 +132,7 @@ export default function WorkSpace() {
     if (data) {
       setCardId(data.id);
     }
+    setUserData(data);
   }, [data, getCheck]);
 
   useEffect(() => {
@@ -147,8 +149,6 @@ export default function WorkSpace() {
     if (newProfile && newProfile[0]) {
       const formData = new FormData();
       formData.append("file", newProfile[0]); // 실제 파일 객체 추가
-
-      console.log([...formData]); // 디버깅용: FormData 내용 확인
 
       postImgFile(formData); // FormData를 그대로 전송
       setSaveBtn(true);
@@ -201,7 +201,6 @@ export default function WorkSpace() {
   useEffect(() => {
     if (memberData && memberData.id) {
       setChecklistId(memberData.id);
-      // console.log("체크리스트 ID 설정됨:", memberData.id);
     }
   }, [memberData, setChecklistId]);
 
@@ -211,7 +210,7 @@ export default function WorkSpace() {
 
   const onDragEnd = (result: any) => {
     const { destination, source } = result;
-    console.log("이동한곳", destination, "이동전", source);
+    // console.log("이동한곳", destination, "이동전", source);
 
     if (!destination) return; // 드롭이 완료되지 않으면 아무것도 하지 않음
 
@@ -263,7 +262,6 @@ export default function WorkSpace() {
   const { mutate: postDay } = useMutation({
     mutationFn: (data) => postDday(data),
     onSuccess: (data) => {
-      console.log(data);
       // setReRander((prev) => prev + 1);
       // 수정 필요
       location.reload();
@@ -275,7 +273,7 @@ export default function WorkSpace() {
     let dayBox: any = { memberId: memberData.memberId, dDay: day };
     postDay(dayBox);
   };
-  console.log(card);
+
   return (
     <div className={cn("workSide")}>
       <span className={cn("sideMenuBox", { active: sideMenuState })}></span>

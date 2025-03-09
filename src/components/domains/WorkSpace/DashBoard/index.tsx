@@ -200,7 +200,6 @@ export default function DashBoard({
                   (filterDate.getTime() - subItemDate.getTime()) /
                     (1000 * 60 * 60 * 24)
                 );
-                console.log(filterBox.dueDate, diffInDays);
 
                 if (Number(filterBox.dueDate) <= -1) {
                   return diffInDays >= 1;

@@ -132,11 +132,9 @@ export const postFile = async (data: any) => {
 };
 export const deleteFile = async (fileUrl: any) => {
   try {
-    const urlWithoutQuery = fileUrl.split('?')[0];
-    const filename = urlWithoutQuery.split('/').pop() || '';
-    
-    console.log("Deleting file with filename:", filename);
-    
+    const urlWithoutQuery = fileUrl.split("?")[0];
+    const filename = urlWithoutQuery.split("/").pop() || "";
+
     const res = await instance.delete(`/api/files/${filename}`);
     return res;
   } catch (e) {

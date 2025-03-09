@@ -24,6 +24,7 @@ import useColorStore from "@/lib/store/mainColor";
 import useReStore from "@/lib/store/reStore";
 import useSideMenuStore from "@/lib/store/sideMenu";
 import useSideMenuValStore from "@/lib/store/sideMenuValue";
+import useUserDataStore from "@/lib/store/user";
 import { useWorkSpaceStore } from "@/lib/store/workSpaceData";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import classNames from "classnames/bind";
@@ -54,6 +55,7 @@ export default function WorkSpace() {
   const { filterBox } = useFilterStore();
   const [profile, setProfile] = useState<string>("");
   const [saveBtn, setSaveBtn] = useState<boolean>(false);
+  const { userData, setUserData } = useUserDataStore();
 
   const now = new Date();
 
@@ -131,6 +133,7 @@ export default function WorkSpace() {
     if (data) {
       setCardId(data.id);
     }
+    setUserData(data);
   }, [data, getCheck]);
 
   useEffect(() => {
